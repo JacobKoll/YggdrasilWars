@@ -1,1 +1,3 @@
-# 309 Semester Project CHANGELOG
+# Army Fighter CHANGELOG
+
+COM S 309 Semester Project
