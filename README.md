@@ -1,3 +1,4 @@
 # Army Fighter README
 
-COM S 309 Semester Project
+COM S 309 Semester Experiments
+
