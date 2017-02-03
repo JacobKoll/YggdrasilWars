@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+<meta name="viewport" content="width = device-width, initial-scale = 1.0"/>
+<style>
+canvas{
+  border: 5px solid ##00FFFF;
+  background-color: #00FFFF;
+}
+</style>
+</head>
+<body onload="startGame()">
+<script>
+
+function startGame(){
+  myGameArea.start();
+}
+
+var myGameArea = {
+  canvas : document.createElement("canvas"),
+  start : function() {
+    this.canvas.width = 480;
+    this.canvas.height = 270;
+    this.context = this.canvas.getContext("2d");
+    document.body.insertBefore(this.canvas,document.body.childNodes[0]);
+  }
+}
+
+</script>
+
+<p>I created an empty canvas that can be used as a game area. I made it cyan because it is my favorite color</p>
+
+
+</html>
+</body>
