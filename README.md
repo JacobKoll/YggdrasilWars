@@ -1,6 +1,6 @@
 # Army Fighter README
-Ashley Young \n
-Chandler Davis
-Jake Koll
-
+Ashley Young <br />
+Chandler Davis <br />
+Jake Koll <br />
+Andrew Messerly <br />
 COM S 309 Semester Project
