@@ -10,3 +10,6 @@ Fri Feb 17 21:57:34 CST 2017	- Jake - Added the file structure and some basic se
 
 
 Fri Feb 17 22:21:54 CST 2017	- Jake - Added an experimental branch to add a layer of redundancy.
+
+
+Sat Feb 18 15:53:23 CST 2017	- Jake - Made a simple game that simulates characters and movements. In preparation for adding the server/client code.
