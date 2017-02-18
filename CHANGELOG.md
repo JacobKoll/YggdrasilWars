@@ -2,4 +2,5 @@
 
 COM S 309 Semester Project
 
-:pu=strftime('%c') - Jake - Made changes to the repo and started to organize the files.
+
+Fri Feb 17 18:52:05 CST 2017  - Jake - Made changes to the repo and started to organize the files.
