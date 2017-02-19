@@ -1,21 +1,58 @@
 var ship;
-var r;
-var b;
+var socket;
+var ships = [];
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(700,700);
+  socket = io.connect('http://localhost:3000');
   ship = new Ship();
-  r = random(0, 255);
-  g = random(0, 255);
-  b = random(0, 255);
+
+  var data = {
+    x: ship.pos.x,
+    y: ship.pos.y,
+    r: ship.r,
+    heading: ship.heading,
+    rotation: ship.rotation,
+    red: ship.red,
+    blue: ship.blue
+};
+  socket.emit('start', data);
+
+  socket.on('heartbeat',
+    function(data) {
+      ships = data;
+    }
+  );
 }
 
 function draw() {
   background(0);
+
+  for(var i = 0; i < ships.length; i++){
+    push();
+    translate(ships[i].x, ships[i].y);
+    rotate(ships[i].heading + PI/2);
+    fill(ships[i].red,0,ships[i].blue);
+    stroke(random(0,255),0,random(0,255));
+    triangle(-ships[i].r, ships[i].r, ships[i].r, ships[i].r, 0, -ships[i].r);
+    pop();
+  }
+
   ship.render();
   ship.turn();
   ship.update();
   ship.edges();
+
+  var data = {
+    x: ship.pos.x,
+    y: ship.pos.y,
+    r: ship.r,
+    heading: ship.heading,
+    rotation: ship.rotation,
+    red: ship.red,
+    blue: ship.blue
+};
+  socket.emit('update', data);
 }
 
 function keyReleased(){
@@ -43,6 +80,8 @@ function Ship() {
   this.rotation = 0;
   this.vel = createVector(0,0);
   this.isBoosing = false;
+  this.red = random(0, 255);
+  this.blue = random(0, 255);
 
 
   this.boosting = function(b){
@@ -66,11 +105,13 @@ function Ship() {
 
 
   this.render = function(){
+    push();
     translate(this.pos.x, this.pos.y);
     rotate(this.heading + PI/2);
-    fill(r,0,b);
+    fill(this.red,0,this.blue);
     stroke(random(0,255),0,random(0,255));
     triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
+    pop();
   }
 
   this.edges = function() {
