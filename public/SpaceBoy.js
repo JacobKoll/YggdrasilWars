@@ -11,11 +11,7 @@ var socket;
 // Load the images and animations before the game starts.
 function preload()
 {
-  spritesheet = loadSpriteSheet('assets/spaceboy.png', 64, 64, 9);
-  flail_animation = loadAnimation(spritesheet);
-
-  explode_sprite_sheet = loadSpriteSheet('assets/explode_sprite_sheet.png', 171, 158, 11);
-  explode_animation = loadAnimation(explode_sprite_sheet);
+  flail_animation = loadAnimation('assets/spaceboy0000.png', 'assets/spaceboy0008.png');
 
 }
 
@@ -24,16 +20,14 @@ function setup()
   createCanvas(500, 500);
   socket = io.connect('http://localhost:3000');
 
-  spaceboy = createSprite(100, 100, 64, 64);
+  spaceboy = createSprite(200, 165, 64, 64);
   spaceboy.addAnimation('flail', flail_animation);
-
-  explode_sprite = createSprite(width/2, 100, 171, 158);
-  explode_sprite.addAnimation('explode', explode_animation);
 
 //  socket.emit('start', data);
 //  socket.on('heartbeat', function(data) {
 //    spaceboys = data;
 //  });
+  console.log(getSprites());
 
 }
 
@@ -42,7 +36,8 @@ function draw()
   clear();
   background(51);
 
-  drawSprites();
+  drawSprite(spaceboy);
+  animation(flail_animation, 0, 0);
 }
 
 function SpaceBoy()
