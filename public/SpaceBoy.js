@@ -22,12 +22,15 @@ function setup()
 
   spaceboy = createSprite(200, 165, 64, 64);
   spaceboy.addAnimation('flail', flail_animation);
+  spaceboy.friction =.95;
+  spaceboy.maxSpeed = 6;
 
 //  socket.emit('start', data);
 //  socket.on('heartbeat', function(data) {
 //    spaceboys = data;
 //  });
   console.log(getSprites());
+
 
 }
 
@@ -36,11 +39,39 @@ function draw()
   clear();
   background(51);
 
-  drawSprite(spaceboy);
-  animation(flail_animation, 0, 0);
-}
+  /* Controls go below */
+  if(keyDown("d"))
+  {
+    spaceboy.rotation += 2.7;
+  }
+  if(keyDown("a"))
+  {
+    spaceboy.rotation -= 2.7;
+  }
+  if(keyDown("w"))
+  {
+    spaceboy.addSpeed(.2, spaceboy.rotation);
+  }
 
-function SpaceBoy()
-{
+  if(spaceboy.position.x > width + 20)
+  {
+    spaceboy.position.x = -20;
+  }
+  if(spaceboy.position.x < -20)
+  {
+    spaceboy.position.x = width + 20;
+  }
+  if(spaceboy.position.y > height + 20)
+  {
+    spaceboy.position.y = -20;
+  }
+  if(spaceboy.position.y < -20)
+  {
+    spaceboy.position.y = height + 20;
+  }
 
+  document.getElementById("x").innerHTML = Number(Math.round(spaceboy.position.x + 'e1')+'e-1');
+  document.getElementById("y").innerHTML = Number(Math.round(spaceboy.position.y + 'e1')+'e-1');
+
+  drawSprites();
 }
