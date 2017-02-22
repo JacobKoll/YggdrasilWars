@@ -41,7 +41,7 @@ function draw()
 	cursorSprite.position.y = mouseY;
 
 	fighter.sprite.changeAnimation('idle');
-	if(keyDown("w"))
+	if(mouseDown(RIGHT))
 	{
 		fighter.walk("forward");
 	}

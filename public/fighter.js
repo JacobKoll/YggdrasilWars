@@ -67,9 +67,9 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 
 				/* Trying to make the bounding box for the sword follow the rotation */
 				this.sword.setCollider("circle", 
-					64 * cos(radians(this.sprite.getDirection() - 12)), 
-					64 * sin(radians(this.sprite.getDirection() - 12)), 
-					44);		
+					60 * cos(radians(this.sprite.getDirection() - 16)), 
+					60 * sin(radians(this.sprite.getDirection() - 16)), 
+					46);		
 			}
 		}			
 	}
