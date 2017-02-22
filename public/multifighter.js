@@ -25,7 +25,7 @@ function setup()
 
 function draw()
 {
-	background(51);
+	background(108, 135, 175);
 
 	if(keyDown("a"))
 	{
@@ -39,9 +39,13 @@ function draw()
 	{
 		fighter.walk("forward");
 	}
-	if(keyDown("s"))
+	else if(keyDown("s"))
 	{
 		fighter.walk("back");
+	}
+	else
+	{
+		fighter.sprite.changeAnimation('idle');
 	}
 	if(keyWentDown(" "))
 	{

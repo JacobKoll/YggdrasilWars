@@ -2,9 +2,9 @@
 
 // These values are defined here for ease of access
 var turnSpeed = 1.57;
-var acceleration = .253;
-var maxSpeed = 6;
-var friction = .9;
+var acceleration = 1.753;
+var maxSpeed = 4;
+var friction = .5;
 
 function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation, idleAnimation)
 {
@@ -38,6 +38,7 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	// Move forward
 	this.walk = function(direction)
 	{
+		this.sprite.changeAnimation('walk');
 		if(direction == "forward")
 		{
 			this.sprite.addSpeed(acceleration, this.sprite.rotation);
@@ -53,10 +54,13 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	{
 		if(direction == "left")
 		{
+		
+			this.sprite.addSpeed(-.025, this.sprite.rotation+90);
 			this.sprite.rotation -= turnSpeed;
 		}
 		else
 		{
+			this.sprite.addSpeed(-.025, this.sprite.rotation-90);
 			this.sprite.rotation += turnSpeed;
 		}
 	}
