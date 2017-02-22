@@ -40,15 +40,11 @@ function draw()
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
+	fighter.sprite.changeAnimation('idle');
 	if(keyDown("w"))
 	{
 		fighter.walk("forward");
 	}
-	else
-	{
-		//fighter.sprite.changeAnimation('idle');
-	}
-
 	if(keyDown(" "))
 	{
 		fighter.swing();
@@ -56,11 +52,6 @@ function draw()
 	if(keyWentDown("e")) // This one is just for testing purposes
 	{
 		fighter.die();
-	}
-
-	if(fighter.sprite.getAnimationLabel() == 'death')
-	{
-
 	}
 
 	drawSprites();	

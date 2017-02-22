@@ -38,10 +38,20 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	// Move forward
 	this.walk = function(direction)
 	{
-		this.sprite.changeAnimation('walk');
-
-		this.sprite.addSpeed(acceleration, this.sprite.getDirection());
-		this.sprite.attractionPoint(100, mouseX, mouseY);
+		if( Math.round(this.sprite.position.x) < Math.round(mouseX) + 4 &&
+			Math.round(this.sprite.position.x) > Math.round(mouseX) - 4 &&
+		 	Math.round(this.sprite.position.y) < Math.round(mouseY) + 4 &&
+			Math.round(this.sprite.position.y) > Math.round(mouseY) - 4)
+		{
+			this.sprite.changeAnimation('idle');
+		}
+		else
+		{
+			this.sprite.attractionPoint(100, mouseX, mouseY);
+			this.sprite.addSpeed(acceleration, this.sprite.getDirection());
+			this.sprite.changeAnimation('walk');
+		}
+					
 	}
 
 	this.swing = function()
