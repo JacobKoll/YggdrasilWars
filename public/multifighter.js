@@ -6,6 +6,8 @@ var deathAnimation;
 var idleAnimation;
 
 var fighter;
+var customCursor;
+var cursorSprite;
 
 function preload()
 {
@@ -13,37 +15,41 @@ function preload()
 	swingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
 	deathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
 	idleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
+
+	customCursor = loadAnimation("assets/fighter/cursor.png");
 }
 
 function setup()
 {
 	createCanvas(600, 480);
 
+	noCursor();
+
 	fighter = new Fighter(100, width/2, height/2, "temp", walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+
+	cursorSprite = createSprite(mouseX, mouseY);
+	cursorSprite.addAnimation('reg', customCursor);
+
 	console.log(fighter.sprite);
 }
 
 function draw()
 {
-	background(51);
+	background(108, 135, 175);
 
-	if(keyDown("a"))
-	{
-		fighter.turn("left");
-	}
-	if(keyDown("d"))
-	{
-		fighter.turn("right");
-	}
+	cursorSprite.position.x = mouseX;
+	cursorSprite.position.y = mouseY;
+
 	if(keyDown("w"))
 	{
 		fighter.walk("forward");
 	}
-	if(keyDown("s"))
+	else
 	{
-		fighter.walk("back");
+		//fighter.sprite.changeAnimation('idle');
 	}
-	if(keyWentDown(" "))
+
+	if(keyDown(" "))
 	{
 		fighter.swing();
 	}
@@ -52,7 +58,10 @@ function draw()
 		fighter.die();
 	}
 
-	drawSprites();
-	
-	//fighter.sprite.changeAnimation('idle');
+	if(fighter.sprite.getAnimationLabel() == 'death')
+	{
+
+	}
+
+	drawSprites();	
 }

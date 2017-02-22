@@ -2,73 +2,59 @@
 
 // These values are defined here for ease of access
 var turnSpeed = 1.57;
-var acceleration = .253;
-var maxSpeed = 6;
-var friction = .9;
+var acceleration = 1.753;
+var maxSpeed = 2;
+var friction = .5;
 
 function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation, idleAnimation)
 {
 	/* Properties of this fighter */
 	this.health = health; //Amount of health.
 	this.id = id; // 
+
 	
 	/* Initialize the animations */
 	this.walkAnimation = walkAnimation;// Walk animations
 	this.swingAnimation = swingAnimation; // Attack animation
 	this.deathAnimation = deathAnimation; // Death animation
-	this.idleAnimation = idleAnimation;
+	this.idleAnimation = idleAnimation; // Animation for when the player is not moving
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 138, 96);
+	this.sprite.rotateToDirection = true;
 	this.sprite.maxSpeed = maxSpeed;
 	this.sprite.friction = friction;
-
-	/* This is the sword that follows the player sprite */
-	// this.sword = createSprite(x, y, 138, 96);
-	// this.sword.addAnimation('swing', swingAnimation);
-	// // Make the sword follow the player
-	// this.sword.position = this.sprite.position; 
-	
-	
+	this.sprite.debug = true;
 
 	this.sprite.addAnimation('walk', walkAnimation);
 	this.sprite.addAnimation('death', deathAnimation);
 	this.sprite.addAnimation('idle', idleAnimation);
+	this.sprite.addAnimation('swing', swingAnimation);
+
+	//this.healthbar = createSprite(x, y, 30, 12);
+	//this.healthbar.debug = true;
+
 
 	// Move forward
 	this.walk = function(direction)
 	{
-		if(direction == "forward")
-		{
-			this.sprite.addSpeed(acceleration, this.sprite.rotation);
-		}
-		else
-		{
-			this.sprite.addSpeed(-acceleration / 1.64, this.sprite.rotation);
-		}
-	}
+		this.sprite.changeAnimation('walk');
 
-	// Turn left or right
-	this.turn = function(direction)
-	{
-		if(direction == "left")
-		{
-			this.sprite.rotation -= turnSpeed;
-		}
-		else
-		{
-			this.sprite.rotation += turnSpeed;
-		}
+		this.sprite.addSpeed(acceleration, this.sprite.getDirection());
+		this.sprite.attractionPoint(100, mouseX, mouseY);
 	}
 
 	this.swing = function()
 	{
-		//this.sword.rotation = this.sprite.getDirection(); // Make the sword rotate with the player
 		console.log("You swing!");
+
+		this.sprite.setSpeed(0);
+		this.sprite.changeAnimation('swing');
 	}
 
 	this.die = function()
 	{
+		this.sprite.changeAnimation('death');	
 		console.log("You died!");
 	}
 
