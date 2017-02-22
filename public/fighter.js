@@ -78,8 +78,6 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	{
 		this.sword.visible = true;
 		this.sprite.setSpeed(0);
-		this.sword.setSpeed(0);
-
 	}
 
 	this.die = function()
