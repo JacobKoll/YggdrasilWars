@@ -45,13 +45,23 @@ function draw()
 	{
 		fighter.walk("forward");
 	}
-	if(keyDown(" "))
+	if(mouseDown(LEFT))
 	{
 		fighter.swing();
+	}
+	else
+	{
+		fighter.sword.visible = false;
 	}
 	if(keyWentDown("e")) // This one is just for testing purposes
 	{
 		fighter.die();
+	}
+
+	if(!fighter.alive)
+	{
+		deathAnimation.looping = false;
+		animation(deathAnimation, fighter.sprite.position.x, fighter.sprite.position.y);
 	}
 
 	drawSprites();	

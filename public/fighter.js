@@ -12,6 +12,7 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	this.health = health; //Amount of health.
 	this.id = id; // 
 
+	this.alive = true;
 	
 	/* Initialize the animations */
 	this.walkAnimation = walkAnimation;// Walk animations
@@ -20,52 +21,72 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	this.idleAnimation = idleAnimation; // Animation for when the player is not moving
 
 	/* This is where we initialize the sprite and it's animations */
-	this.sprite = createSprite(x, y, 138, 96);
+	this.sprite = createSprite(x, y, 72, 96);
 	this.sprite.rotateToDirection = true;
 	this.sprite.maxSpeed = maxSpeed;
 	this.sprite.friction = friction;
-	this.sprite.debug = true;
+	this.sprite.debug = true;	
+
 
 	this.sprite.addAnimation('walk', walkAnimation);
 	this.sprite.addAnimation('death', deathAnimation);
 	this.sprite.addAnimation('idle', idleAnimation);
-	this.sprite.addAnimation('swing', swingAnimation);
 
-	//this.healthbar = createSprite(x, y, 30, 12);
-	//this.healthbar.debug = true;
+	this.sword = createSprite(x, y, 138, 96);
+	this.sword.rotateToDirection = true;
+	this.sword.maxSpeed = maxSpeed;
+	this.sword.friction = friction;
+	this.sword.debug = true;
+	this.sword.visible = false;
 
+	this.sword.addAnimation('swing', swingAnimation);
+
+	this.sword.position = this.sprite.position;
+
+	/* Bounding boxes */
+	this.sprite.setCollider("circle", 0, 0, 45);
 
 	// Move forward
 	this.walk = function(direction)
 	{
-		if( Math.round(this.sprite.position.x) < Math.round(mouseX) + 4 &&
-			Math.round(this.sprite.position.x) > Math.round(mouseX) - 4 &&
-		 	Math.round(this.sprite.position.y) < Math.round(mouseY) + 4 &&
-			Math.round(this.sprite.position.y) > Math.round(mouseY) - 4)
+		if(this.alive && this.sword.visible == false)
 		{
-			this.sprite.changeAnimation('idle');
-		}
-		else
-		{
-			this.sprite.attractionPoint(100, mouseX, mouseY);
-			this.sprite.addSpeed(acceleration, this.sprite.getDirection());
-			this.sprite.changeAnimation('walk');
-		}
-					
+			if( Math.round(this.sprite.position.x) < Math.round(mouseX) + 4 &&
+				Math.round(this.sprite.position.x) > Math.round(mouseX) - 4 &&
+			 	Math.round(this.sprite.position.y) < Math.round(mouseY) + 4 &&
+				Math.round(this.sprite.position.y) > Math.round(mouseY) - 4)
+			{
+				this.sprite.changeAnimation('idle');
+			}
+			else
+			{
+				this.sprite.attractionPoint(100, mouseX, mouseY);
+				this.sword.attractionPoint(50, mouseX, mouseY);
+				this.sprite.addSpeed(acceleration, this.sprite.getDirection());
+				this.sprite.changeAnimation('walk');
+
+				/* Trying to make the bounding box for the sword follow the rotation */
+				this.sword.setCollider("circle", 
+					64 * cos(radians(this.sprite.getDirection() - 12)), 
+					64 * sin(radians(this.sprite.getDirection() - 12)), 
+					44);		
+			}
+		}			
 	}
 
 	this.swing = function()
 	{
-		console.log("You swing!");
-
+		this.sword.visible = true;
 		this.sprite.setSpeed(0);
-		this.sprite.changeAnimation('swing');
+		this.sword.setSpeed(0);
+
 	}
 
 	this.die = function()
-	{
-		this.sprite.changeAnimation('death');	
-		console.log("You died!");
+	{	
+		this.alive = false;
+		this.sprite.remove();
+		this.sword.remove();
 	}
 
 }
