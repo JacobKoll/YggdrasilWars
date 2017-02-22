@@ -1,9 +1,19 @@
 var spaceboys = [];
 
-
+function SpaceBoy(x, y, rotation, id)
+{
+  this.x = x;
+  this.y = y;
+  this.sprite = createSprite(x,y);
+  this.flail_animation = loadAnimation('../public/assets/spaceboy/flail/spaceboy0000.png', 'assets/spaceboy/flail/spaceboy0008.png');
+  this.love_animation = loadAnimation('../public/assets/spaceboy/love/spacelove0000.png', 'assets/spaceboy/love/spacelove0008.png');
+  this.sprite.addAnimation('flail', flail_animation);
+  this.sprite.addAnimation('love', love_animation);
+  this.id = id;
+  this.rotation = rotation;
+}
 
 var express = require('express');
-
 
 setInterval(heartbeat, 1000/60);
 
@@ -31,7 +41,7 @@ io.sockets.on('connection',
       function(data){
         console.log(socket.id + " " + data.x + " " + data.y + "\n");
 
-        var spaceboy = new Ship(socket.id, data.x, data.y, data.r, data.heading, data.rotation, data.red, data.blue);
+        var spaceboy = new SpaceBoy(data.x, data.y, data.rotation, socket.id);
         spaceboys.push(spaceboy);
 
       }
@@ -43,13 +53,9 @@ io.sockets.on('connection',
           for(var i = 0; i < spaceboys.length; i++){
             if(socket.id == spaceboys[i].id){
               spaceboy = spaceboys[i];
-              spaceboy.x = data.x;
-              spaceboy.y = data.y;
-              spaceboy.r = data.r;
-              spaceboy.heading = data.heading;
+              spaceboy.position.x = data.x;
+              spaceboy.position.y = data.y;
               spaceboy.rotation = data.rotation;
-              spaceboy.red = data.red;
-              spaceboy.blue = data.blue;
             }
           }
         }
