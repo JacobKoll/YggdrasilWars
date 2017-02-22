@@ -47,7 +47,7 @@ function draw()
 	{
 		fighter.sprite.changeAnimation('idle');
 	}
-	if(keyWentDown(" "))
+	if(keyDown(" "))
 	{
 		fighter.swing();
 	}

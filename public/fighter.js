@@ -20,20 +20,14 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 138, 96);
+	this.sprite.rotateToDirection = true;
 	this.sprite.maxSpeed = maxSpeed;
 	this.sprite.friction = friction;
-
-	/* This is the sword that follows the player sprite */
-	// this.sword = createSprite(x, y, 138, 96);
-	// this.sword.addAnimation('swing', swingAnimation);
-	// // Make the sword follow the player
-	// this.sword.position = this.sprite.position; 
-	
-	
 
 	this.sprite.addAnimation('walk', walkAnimation);
 	this.sprite.addAnimation('death', deathAnimation);
 	this.sprite.addAnimation('idle', idleAnimation);
+	this.sprite.addAnimation('swing', swingAnimation);
 
 	// Move forward
 	this.walk = function(direction)
@@ -67,7 +61,8 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 
 	this.swing = function()
 	{
-		//this.sword.rotation = this.sprite.getDirection(); // Make the sword rotate with the player
+		this.sprite.setSpeed(0);
+		this.sprite.changeAnimation('swing');
 		console.log("You swing!");
 	}
 
