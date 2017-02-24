@@ -60,10 +60,17 @@ function setup()
 		
 		if(data.length > fightersArr.length)
 		{
-			fightersArr = [data.length];
 			for(var i = 0; i<data.length; i++)
-			{
+			{	
 				fightersArr[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+				fightersArr[i].health = fighterData.health;
+				fightersArr[i].alive = fighterData.alive;
+				fightersArr[i].sprite.position.x = fighterData.x;
+				fightersArr[i].sprite.position.y = fighterData.y;
+				fightersArr[i].sword.visible = fighterData.swinging;
+				fightersArr[i].sprite.changeAnimation(fighterData.currAnimation);
+				fightersArr[i].sprite.debug = fighterData.spriteDebug;
+				fightersArr[i].sword.debug = fighterData.swordDebug;
 			}
 		}
 
@@ -95,19 +102,6 @@ function draw()
 		spriteDebug: fighter.sprite.debug,
 		swordDebug: fighter.sword.debug
 	};
-
-
-	for(var i = 0; i < fightersArr.length; i++)
-	{
-		fightersArr[i].health = fighterData.health;
-		fightersArr[i].alive = fighterData.alive;
-		fightersArr[i].sprite.position.x = fighterData.x;
-		fightersArr[i].sprite.position.y = fighterData.y;
-		fightersArr[i].sword.visible = fighterData.swinging;
-		fightersArr[i].sprite.changeAnimation(fighterData.currAnimation);
-		fightersArr[i].sprite.debug = fighterData.spriteDebug;
-		fightersArr[i].sword.debug = fighterData.swordDebug;
-	}
 
 	if(keyDown("w"))
 	{
