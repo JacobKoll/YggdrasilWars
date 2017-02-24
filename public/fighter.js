@@ -92,4 +92,11 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 		this.sword.remove();
 	}
 
+	/* This method is used to draw all the related sprites in one function */
+	this.draw = function()
+	{
+		drawSprite(this.sprite);
+		drawSprite(this.sword);
+	}
+
 }

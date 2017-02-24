@@ -1,5 +1,5 @@
 // This is the code for the multi-fighter game.
-var FPS = 30;
+var FPS = 45;
 
 var fightersArr = [];
 
@@ -98,11 +98,10 @@ io.sockets.on('connection',
 				console.log((socket.id).substring(0,3) + " has disconnected!\n");
 				for(var i = 0; i < fightersArr.length; i++)
 				{
-					console.log(socket.id + ", " + fightersArr[i].id)
 					if(socket.id == fightersArr[i].id)
 					{
-						console.log((socket.id).substring(0,3) + "was spliced");
-				    	fightersArr.splice(i);
+						console.log((socket.id).substring(0,3) + " was spliced.");
+				    	fightersArr.splice(i,1);
 					}
 				}
 			}

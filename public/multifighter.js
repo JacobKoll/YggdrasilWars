@@ -22,14 +22,29 @@ function preload()
 	customCursor = loadAnimation("assets/fighter/cursor.png");
 }
 
+function disconnectFromServer()
+{
+	//socket.close();
+	socket.disconnect();
+	//socket.emit('remove');
+	for(var i = 0; i<fightersArr.length; i++)
+	{	
+		fightersArr[i].remove();
+	}
+	fightersArr = [];
+	console.log("\nDisconnected from the server");
+}
+
 function setup()
 {
 	createCanvas(720, 480);
-	socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
+	//socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
+	socket = io.connect('localhost:3000');
 
 	noCursor(); // Hides the cursor when in the canvas
 
 	fighter = new Fighter(100, random(0 + 20, width - 20), random(0 + 20, height - 20), walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+	fightersArr.push(fighter)
 
 	cursorSprite = createSprite(mouseX, mouseY, 16, 16);
 	cursorSprite.addAnimation('reg', customCursor);
@@ -45,7 +60,6 @@ function setup()
 		swordDebug: fighter.sword.debug,
 		rot: fighter.sprite.rotation
 	};
-
 	socket.emit('start', fighterData);
 
 	socket.on('connect', function()
@@ -62,7 +76,7 @@ function setup()
 		// 	newFighter = new Fighter(data[i].health, data[i].x, data[i].y, data[i].walkAnimation, data[i].swingAnimation, data[i].deathAnimation, data[i].idleAnimation)
 		// 	fightersArr.push(newFighter);
 		// }
-		
+
 		if(data.length > fightersArr.length)
 		{
 			for(var i = 0; i<data.length; i++)
@@ -82,9 +96,20 @@ function setup()
 			fightersArr[i].sprite.debug = data[i].spriteDebug;
 			fightersArr[i].sword.debug = data[i].swordDebug;
 			fightersArr[i].sprite.rotation = data[i].rot;
+			fightersArr[i].sword.rotation = data[i].rot;
 		}
-	
+
+		logTime++;
+
+		if(logTime % 100 == 0)
+		{
+			console.log(fightersArr);
+			console.log(data);
+			console.log("\n");
+		}
+
 	});
+
 
 }
 
@@ -113,14 +138,6 @@ function draw()
 	{
 		fighter.walk("forward");
 	}
-	if(keyWentDown(27))
-	{
-		//socket.close();
-		socket.disconnect();
-		//socket.emit('remove');
-		fightersArr = [];
-		console.log("\nDisconnected from the server");
-	}
 	if(mouseDown(LEFT))
 	{
 		fighter.swing();
@@ -143,5 +160,11 @@ function draw()
 
 	socket.emit('update', fighterData);
 
-	drawSprites();	
+	drawSprite(cursorSprite);
+
+	for(var i = 0; i < fightersArr.length; i++)
+	{
+		fightersArr[i].draw();
+	}
+		
 }
