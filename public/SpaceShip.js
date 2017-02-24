@@ -4,8 +4,8 @@ var ships = [];
 
 function setup() {
   createCanvas(700,700);
-  socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
-  // socket = io.connect('http://localhost:3000');
+  // socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
+  socket = io.connect('http://localhost:3000');
   ship = new Ship();
 
   var data = {
