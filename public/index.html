@@ -21,15 +21,25 @@
       <input type="button" onclick="window.open('signup.html', '_self')" value="Sign Up"/>
   </form>
   <script language="javascript">
-      function check(form) { /*function to check userid & password*/
-          /*the following code checkes whether the entered userid and password are matching*/
-          if(form.userid.value == "Jake" && form.pswrd.value == "Koll") {
-              window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
-          }
-          else {
-              alert("Wrong Password or Username")/*displays error message*/
-          }
-      }
+    function check(form){
+      socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
+      // var socket = io.connect('http://localhost:3000');
+      var data = {
+        UserName: form.userid.value,
+        Pass: form.pswrd.value
+      };
+      socket.emit('checkDB', data);
+
+      socket.on('checkedDB', function(data){
+        if(!data){
+          alert("Wrong Username or Password")/*displays error message*/
+          location.reload();
+        }
+        else {
+          window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
+        }
+      });
+    }
   </script>
 
 

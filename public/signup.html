@@ -14,22 +14,34 @@
 <body>
 
   <form name="SpaceShip">
-      Username<input type="text" name="userid"/>
-      Password<input type="password" name="pswrd"/>
+      Username<input type="text" id="userid" name="userid"/>
+      Password<input type="password" id="pswrd" name="pswrd"/>
       <input type="button" onclick="check(this.form)" value="Submit"/>
       <input type="reset" value="Cancel"/>
       <input type="button" onclick="window.open('index.html', '_self')" value="Back"/>
   </form>
   <script language="javascript">
-      function check(form) { /*function to check userid & password*/
-          /*the following code checkes whether the entered userid and password are matching*/
-          if(form.userid.value == "Jake") {
-              alert("Username already in use")/*displays error message*/
-          }
-          else {
-              window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
-          }
-      }
+
+    function check(form){
+      socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
+      // var socket = io.connect('http://localhost:3000');
+      var datain = {
+        UserName: form.userid.value,
+        Pass: form.pswrd.value
+      };
+      socket.emit('checkUserDB', datain);
+
+      socket.on('checkedUserDB', function(data){
+        if(data){
+          alert("Username in use")/*displays error message*/
+          location.reload();
+        }
+        else {
+          socket.emit('insertDB', datain);
+          window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
+        }
+      });
+    }
   </script>
 
 
