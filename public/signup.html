@@ -16,18 +16,18 @@
   <form name="SpaceShip">
       Username<input type="text" name="userid"/>
       Password<input type="password" name="pswrd"/>
-      <input type="button" onclick="check(this.form)" value="Login"/>
+      <input type="button" onclick="check(this.form)" value="Submit"/>
       <input type="reset" value="Cancel"/>
-      <input type="button" onclick="window.open('signup.html', '_self')" value="Sign Up"/>
+      <input type="button" onclick="window.open('index.html', '_self')" value="Back"/>
   </form>
   <script language="javascript">
       function check(form) { /*function to check userid & password*/
           /*the following code checkes whether the entered userid and password are matching*/
-          if(form.userid.value == "Jake" && form.pswrd.value == "Koll") {
-              window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
+          if(form.userid.value == "Jake") {
+              alert("Username already in use")/*displays error message*/
           }
           else {
-              alert("Wrong Password or Username")/*displays error message*/
+              window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
           }
       }
   </script>
