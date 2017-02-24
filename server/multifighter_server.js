@@ -53,6 +53,41 @@ var io = socket(server);
 
 console.log("The server is running...\n");
 
+var obstaclesArr = [];
+//var tileArr = [];
+
+for (var i=0; i<10; i++) {
+	a = Math.random()*720;
+	b = Math.random()*480;
+	var data = { x: a, y: b};
+	obstaclesArr.push(data);
+}
+
+// var canvas = {
+// 	height: 480,
+// 	width: 720
+// }
+
+// for (var i = 0; i<canvas.width; i++) {
+// 	for (var j = 0; j<canvas.height; j++) {
+// 		var gdorn = Math.floor(Math.random()*3);
+// 		var type;
+
+// 		if (gdorn == 0) {
+// 			type = "grass";
+// 		}
+// 		else if (gdorn == 1) {
+// 		 	type = "dirt";
+// 		}
+// 		else {
+// 			type = "road";
+// 		}
+// 		tileArr.push(type);
+// 		j = j + (canvas.height/10)-1;
+// 	}
+// 	i = i + (canvas.width/10)-1;
+// }
+
 // When someone connnects to the socket, do this:
 io.sockets.on('connection', 
 	function(socket)
@@ -64,6 +99,9 @@ io.sockets.on('connection',
 			{
 				var fighter = new Fighter(socket.id, data.health, data.alive, data.x, data.y, data.swinging, data.currAnimation, data.spriteDebug, data.swordDebug, data.rot);
 				fightersArr.push(fighter);
+
+				socket.emit('obstacles', obstaclesArr);
+				//socket.emit('tiles', tileArr);
 			}
 		);
 
