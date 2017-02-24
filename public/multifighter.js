@@ -25,7 +25,7 @@ function preload()
 function setup()
 {
 	createCanvas(720, 480);
-	socket = io.connect('http://localhost:3000');
+	socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
 
 	noCursor(); // Hides the cursor when in the canvas
 
