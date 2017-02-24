@@ -6,11 +6,10 @@ var acceleration = 1.753;
 var maxSpeed = 2;
 var friction = .5;
 
-function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation, idleAnimation)
+function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, idleAnimation)
 {
 	/* Properties of this fighter */
-	this.health = health; //Amount of health.
-	this.id = id; // 
+	this.health = health; //Amount of health. 
 
 	this.alive = true;
 	
@@ -83,6 +82,12 @@ function Fighter(health, x, y, id, walkAnimation, swingAnimation, deathAnimation
 	this.die = function()
 	{	
 		this.alive = false;
+		this.sprite.remove();
+		this.sword.remove();
+	}
+
+	this.remove = function()
+	{
 		this.sprite.remove();
 		this.sword.remove();
 	}
