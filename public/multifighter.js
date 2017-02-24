@@ -7,6 +7,7 @@ var idleAnimation;
 
 var fighter;
 var fightersArr = [];
+var dataArr = [];
 var customCursor;
 var cursorSprite;
 var logTime = 0;
@@ -28,7 +29,7 @@ function setup()
 
 	noCursor(); // Hides the cursor when in the canvas
 
-	fighter = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+	fighter = new Fighter(100, random(0 + 20, width - 20), random(0 + 20, height - 20), walkAnimation, swingAnimation, deathAnimation, idleAnimation);
 
 	cursorSprite = createSprite(mouseX, mouseY, 16, 16);
 	cursorSprite.addAnimation('reg', customCursor);
@@ -41,12 +42,16 @@ function setup()
 		swinging: fighter.sword.visible,
 		currAnimation: fighter.sprite.getAnimationLabel(),
 		spriteDebug: fighter.sprite.debug,
-		swordDebug: fighter.sword.debug
+		swordDebug: fighter.sword.debug,
+		rot: fighter.sprite.rotation
 	};
 
 	socket.emit('start', fighterData);
 
-	socket.on('connect', function(){console.log("\nConnected to Server\nSocket ID: " + (socket.id).substring(0,3))});
+	socket.on('connect', function()
+		{
+			console.log("\nConnected to Server\nSocket ID: " + (socket.id).substring(0,3));
+		});
 
 	
 	socket.on('heartbeat', function(data)
@@ -63,22 +68,22 @@ function setup()
 			for(var i = 0; i<data.length; i++)
 			{	
 				fightersArr[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
-				fightersArr[i].health = fighterData.health;
-				fightersArr[i].alive = fighterData.alive;
-				fightersArr[i].sprite.position.x = fighterData.x;
-				fightersArr[i].sprite.position.y = fighterData.y;
-				fightersArr[i].sword.visible = fighterData.swinging;
-				fightersArr[i].sprite.changeAnimation(fighterData.currAnimation);
-				fightersArr[i].sprite.debug = fighterData.spriteDebug;
-				fightersArr[i].sword.debug = fighterData.swordDebug;
 			}
 		}
 
-		logTime++;
-		if(logTime%100 == 0)
+		for(var i = 0; i < data.length; i++)
 		{
-			console.log(data);
+			fightersArr[i].health = data[i].health;
+			fightersArr[i].alive = data[i].alive;
+			fightersArr[i].sprite.position.x = data[i].x;
+			fightersArr[i].sprite.position.y = data[i].y;
+			fightersArr[i].sword.visible = data[i].swinging;
+			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
+			fightersArr[i].sprite.debug = data[i].spriteDebug;
+			fightersArr[i].sword.debug = data[i].swordDebug;
+			fightersArr[i].sprite.rotation = data[i].rot;
 		}
+	
 	});
 
 }
@@ -100,7 +105,8 @@ function draw()
 		swinging: fighter.sword.visible,
 		currAnimation: fighter.sprite.getAnimationLabel(),
 		spriteDebug: fighter.sprite.debug,
-		swordDebug: fighter.sword.debug
+		swordDebug: fighter.sword.debug,
+		rot: fighter.sprite.rotation
 	};
 
 	if(keyDown("w"))

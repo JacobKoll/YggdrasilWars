@@ -8,7 +8,7 @@ var acceleration = 1.753;
 var maxSpeed = 2;
 var friction = .5;
 
-function Fighter(id, health, alive, x, y, swinging, currAnimation, spriteDebug, swordDebug)
+function Fighter(id, health, alive, x, y, swinging, currAnimation, spriteDebug, swordDebug, rot)
 {
 	this.id = id;
 	this.health = health;
@@ -19,6 +19,7 @@ function Fighter(id, health, alive, x, y, swinging, currAnimation, spriteDebug, 
 	this.currAnimation = currAnimation;
 	this.spriteDebug = spriteDebug;
 	this.swordDebug = swordDebug;
+	this.rot = rot;
 }
 
 // Make sure that we have express library (?)
@@ -61,7 +62,7 @@ io.sockets.on('connection',
 		socket.on('start', 
 			function(data)
 			{
-				var fighter = new Fighter(socket.id, data.health, data.alive, data.x, data.y, data.swinging, data.currAnimation, data.spriteDebug, data.swordDebug);
+				var fighter = new Fighter(socket.id, data.health, data.alive, data.x, data.y, data.swinging, data.currAnimation, data.spriteDebug, data.swordDebug, data.rot);
 				fightersArr.push(fighter);
 			}
 		);
@@ -84,10 +85,9 @@ io.sockets.on('connection',
 						fighter.currAnimation = data.currAnimation;
 						fighter.spriteDebug = data.spriteDebug;
 						fighter.swordDebug = data.swordDebug;
+						fighter.rot = data.rot;
 					}
 				}
-
-
 			}
 		);
 
