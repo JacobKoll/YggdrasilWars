@@ -93,3 +93,47 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 	}
 
 }
+
+function Obstacle(x, y, width, height, image) {
+	this.sprite = createSprite(x, y, width, height);
+	this.sprite.immovable = true;
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.image = image;
+	this.sprite.addImage('image', image);
+
+	this.update = function() {
+		this.sprite.changeAnimation('image');
+	}
+}
+
+function Tile(x, y, type, canvas) {
+	this.sprite = createSprite(x, y, canvas.width/10, canvas.height/10);
+	this.sprite.immovable = true;
+	this.x = x;
+	this.y = y;
+	this.width = this.sprite.width;
+	this.height = this.sprite.height;
+	if (type == "grass") {
+		this.hardness = 1;
+		// this.colg = 255;
+		// this.colr = 0;
+		// this.colb = 0;
+		this.sprite.shapeColor = color(26, 157, 11);
+	}
+	else if (type == "dirt") {
+		this.hardness = 0;
+		this.sprite.shapeColor = color(229, 172, 77);
+		// this.colg = 125;
+		// this.colr = 125;
+		// this.colb = 125;
+	}
+	else {
+		this.hardness = 3;
+		this.sprite.shapeColor = color(100, 75, 40);
+		//this.colg = this.colr = this.colb = 0;
+	}
+
+}
