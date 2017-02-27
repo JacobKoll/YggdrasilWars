@@ -9,6 +9,9 @@ Fri Feb 24 11:10:37 CST 2017	- Jake - Created the code for the login screen and 
 Mon Feb 20 13:42:06 CST 2017	- Jake - Put the Space game on the web server and now we have a true multiplayer game.
 
 
+Mon Feb 20 13:42:06 CST 2017	- Jake _ Put the Space game on the web server and now we have a true multiplayer game.
+
+
 Sun Feb 19 05:34:22 CST 2017	- Jake - Made a simple multyplayer game in p5.js, node.js/ express and socket.io. It works on localhost:3000. The next step is to put it on the webserver.
 
 

@@ -1,11 +1,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Proj 309 Login</title>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+
+    <script src="js_modules/p5.js"></script>
     <script src="js_modules/p5.play.js"></script>
-    <!-- <script src="Login.html" type="text/javascript"></script>
-    <script src="SpaceShip.js" type="text/javascript"></script> -->
   <!-- this line removes any default padding and style. you might only need one of these values set. -->
   <style> body {padding: 0; margin: 0;} </style>
 
@@ -22,8 +22,8 @@
   </form>
   <script language="javascript">
     function check(form){
-      socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
-      // var socket = io.connect('http://localhost:3000');
+      var socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
+      //var socket = io.connect('http://localhost:3000');
       var data = {
         UserName: form.userid.value,
         Pass: form.pswrd.value
@@ -36,16 +36,10 @@
           location.reload();
         }
         else {
-          window.open('spaceship.html','_self')/*opens the target page while Id & password matches*/
+          window.open('experiment_selection.html','_self')/*opens the target page while Id & password matches*/
         }
       });
     }
   </script>
-
-
-  <!-- <form action = "spaceship.html">
-  	<input type = "submit" value = "Go to the SpaceShip Example"/><br>
-  	Note: You have to be running server.js
-  </form> -->
 </body>
 </html>
