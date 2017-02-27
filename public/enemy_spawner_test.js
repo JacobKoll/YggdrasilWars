@@ -22,6 +22,11 @@ function draw()
 {
 	background(134, 178, 78);
 
+	if(newSpawner)
+	{
+		newSpawner.spawn();
+	}
+
 	drawSprites();
 
 }
@@ -31,23 +36,25 @@ function placeSpawner()
 {
 	document.getElementById('spawnerButton').innerHTML = "Place Another Spawner";
 
-	var randX = random( 30, width - 30);
-	var randY = random( 30, height - 30);
+	var randX = random( 75, width - 75);
+	var randY = random( 75, height - 75);
 
 	// This sprite is just for testing!
 	var fauxMonster = function()
 	{
 		this.sprite;
-		this.create = function(x, y)
-		{
-			this.sprite = createSprite(x, y);
-			this.sprite.addImage(gokuPic);
-			this.sprite.scale = .017;
-
-		}
 	}
 
-	newSpawner = new EnemySpawner(randX, randY, new fauxMonster(), 5, dragonBallPic);
+	fauxMonster.prototype.create = function(x,y)
+	{
+		this.sprite = createSprite(x, y);
+		this.sprite.addImage(gokuPic);
+		this.sprite.scale = .017;
+		this.sprite.debug = true;
+		this.sprite.life = 105;
+	};
+
+	newSpawner = new EnemySpawner(randX, randY, fauxMonster, 1, dragonBallPic);
 	
 
 }

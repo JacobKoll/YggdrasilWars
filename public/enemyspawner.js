@@ -18,15 +18,18 @@ function EnemySpawner(x, y, enemyType, rate, image)
 	this.sprite.scale =.08;
 	this.sprite.debug = true;
 	this.spawn;
-
-	setInterval(this.spawn, 1000);
-	this.spawn = function()
-	{
-		console.log("help");
-		this.enemyType.create(10,10);
-		this.enemyType.sprite.setSpeed(.5, random(0, 360));
-
-	}
-
-
+	this.timer = 0;
 }
+
+EnemySpawner.prototype.spawn = function() 
+{
+	this.timer++;
+
+	if((this.timer % (100/this.rate)) == 0)
+	{
+		console.log("Spawned monsters");
+		var enemy = new this.enemyType();
+		enemy.create(this.x, this.y);
+		enemy.sprite.setSpeed(2, random(0, 360));
+	}
+};
