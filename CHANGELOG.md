@@ -3,6 +3,11 @@
 COM S 309 Semester Project
 
 
+Fri Feb 24 11:10:37 CST 2017	- Jake - Created the code for the login screen and the database and connected them together and to the server. Now the user must create an account and sign in before they are able to play.
+
+
+Mon Feb 20 13:42:06 CST 2017	- Jake - Put the Space game on the web server and now we have a true multiplayer game.
+
 
 Mon Feb 20 13:42:06 CST 2017	- Jake _ Put the Space game on the web server and now we have a true multiplayer game.
 
