@@ -1,6 +1,6 @@
 var gokuPic;
 var dragonBallPic;
-
+var fighter;
 var newSpawner;
 
 function preload()
@@ -13,9 +13,9 @@ function setup()
 {
 	var canvas = createCanvas(500, 500);
 	canvas.parent('canvasLocation');
-	var fov = 60 / 180 * PI;
-  var cameraZ = (height/2.0) / tan(fov/2.0);
-  perspective(60 / 180 * PI, width/height, cameraZ * 0.1, cameraZ * 10);
+
+	fighter = new Fighter();
+
 }
 
 function draw()
@@ -54,7 +54,7 @@ function placeSpawner()
 		this.sprite.life = 105;
 	};
 
-	newSpawner = new EnemySpawner(randX, randY, fauxMonster, 1, dragonBallPic);
+	newSpawner = new EnemySpawner(randX, randY, Enemy, 1, 10, dragonBallPic);
 	
 
 }

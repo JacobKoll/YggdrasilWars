@@ -45,58 +45,58 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 45);
 
-	// Move forward
-	this.walk = function(direction)
+}
+
+// Move forward
+Fighter.prototype.walk = function(direction)
+{
+	if(this.alive && this.sword.visible == false)
 	{
-		if(this.alive && this.sword.visible == false)
+		if( Math.round(this.sprite.position.x) < Math.round(mouseX) + 4 &&
+			Math.round(this.sprite.position.x) > Math.round(mouseX) - 4 &&
+		 	Math.round(this.sprite.position.y) < Math.round(mouseY) + 4 &&
+			Math.round(this.sprite.position.y) > Math.round(mouseY) - 4)
 		{
-			if( Math.round(this.sprite.position.x) < Math.round(mouseX) + 4 &&
-				Math.round(this.sprite.position.x) > Math.round(mouseX) - 4 &&
-			 	Math.round(this.sprite.position.y) < Math.round(mouseY) + 4 &&
-				Math.round(this.sprite.position.y) > Math.round(mouseY) - 4)
-			{
-				this.sprite.changeAnimation('idle');
-			}
-			else
-			{
-				this.sprite.attractionPoint(100, mouseX, mouseY);
-				this.sword.attractionPoint(50, mouseX, mouseY);
-				this.sprite.addSpeed(acceleration, this.sprite.getDirection());
-				this.sprite.changeAnimation('walk');
+			this.sprite.changeAnimation('idle');
+		}
+		else
+		{
+			this.sprite.attractionPoint(100, mouseX, mouseY);
+			this.sword.attractionPoint(50, mouseX, mouseY);
+			this.sprite.addSpeed(acceleration, this.sprite.getDirection());
+			this.sprite.changeAnimation('walk');
 
-				/* Trying to make the bounding box for the sword follow the rotation */
-				this.sword.setCollider("circle", 
-					60 * cos(radians(this.sprite.getDirection() - 16)), 
-					60 * sin(radians(this.sprite.getDirection() - 16)), 
-					46);		
-			}
-		}			
-	}
+			/* Trying to make the bounding box for the sword follow the rotation */
+			this.sword.setCollider("circle", 
+				60 * cos(radians(this.sprite.getDirection() - 16)), 
+				60 * sin(radians(this.sprite.getDirection() - 16)), 
+				46);		
+		}
+	}			
+}
 
-	this.swing = function()
-	{
-		this.sword.visible = true;
-		this.sprite.setSpeed(0);
-	}
+Fighter.prototype.swing = function()
+{
+	this.sword.visible = true;
+	this.sprite.setSpeed(0);
+}
 
-	this.die = function()
-	{	
-		this.alive = false;
-		this.sprite.remove();
-		this.sword.remove();
-	}
+Fighter.prototype.die = function()
+{	
+	this.alive = false;
+	this.sprite.remove();
+	this.sword.remove();
+}
 
-	this.remove = function()
-	{
-		this.sprite.remove();
-		this.sword.remove();
-	}
+Fighter.prototype.remove = function()
+{
+	this.sprite.remove();
+	this.sword.remove();
+}
 
-	/* This method is used to draw all the related sprites in one function */
-	this.draw = function()
-	{
-		drawSprite(this.sprite);
-		drawSprite(this.sword);
-	}
-
+/* This method is used to draw all the related sprites in one function */
+Fighter.prototype.draw = function()
+{
+	drawSprite(this.sprite);
+	drawSprite(this.sword);
 }

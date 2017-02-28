@@ -5,13 +5,15 @@ enemyType = What enemy will this thing spawn?
 rate = How often should this thing spawn the enemy? (per second)
 animation = Currently just a still image, but I'll possibly add an animation later?
  */ 
-function EnemySpawner(x, y, enemyType, rate, image) 
+function EnemySpawner(x, y, enemyType, rate, limit, image) 
 {
 	this.x = x;
 	this.y = y;
 	console.log(this.x + ", " + this.y);
 	this.enemyType = enemyType;
 	this.rate = rate;
+	this.limit = limit;
+	this.spawnCount = 0;
 
 	this.sprite = createSprite(x, y, 16, 16);
 	this.sprite.addImage(image);
@@ -23,13 +25,14 @@ function EnemySpawner(x, y, enemyType, rate, image)
 
 EnemySpawner.prototype.spawn = function() 
 {
-	this.timer++;
 
-	if((this.timer % (100/this.rate)) == 0)
+	if((this.timer % (100/this.rate)) == 0 && this.spawnCount < this.limit)
 	{
 		console.log("Spawned monsters");
-		var enemy = new this.enemyType();
-		enemy.create(this.x, this.y);
+		this.spawnCount++;
+		var enemy = new this.enemyType(100, this.x, this.y, );
 		enemy.sprite.setSpeed(2, random(0, 360));
 	}
+
+	this.timer++;
 };

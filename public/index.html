@@ -8,7 +8,6 @@
     <script src="js_modules/p5.play.js"></script>
   <!-- this line removes any default padding and style. you might only need one of these values set. -->
   <style> body {padding: 0; margin: 0;} </style>
-
 </head>
 
 <body>
@@ -20,6 +19,7 @@
       <input type="reset" value="Cancel"/>
       <input type="button" onclick="window.open('signup.html', '_self')" value="Sign Up"/>
   </form>
+
   <script language="javascript">
     function check(form){
       var socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
@@ -41,5 +41,6 @@
       });
     }
   </script>
+
 </body>
 </html>
