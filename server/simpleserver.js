@@ -3,7 +3,7 @@ var socket = require('socket.io');
 var express = require('express');
 
 var app = express();
-var server = app.listen(3000);
+var server = app.listen(3000, '127.0.0.1');
 var io = socket(server);
 
 app.use(express.static('../public'));
