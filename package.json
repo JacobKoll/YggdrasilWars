@@ -11,5 +11,8 @@
     "url": "https://git.linux.iastate.edu/309Spring2017/LA_1_ArmyFighter"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.13.0"
+  }
 }
