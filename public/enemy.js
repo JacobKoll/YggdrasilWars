@@ -1,3 +1,23 @@
+/**
+ * @author Chandler Davis
+ */
+
+
+/**
+ * 
+ * 
+ * This is the constructor for the most general type of enemy.
+ * All future enemies will have the properties and methods that are declared here.
+ *
+ * @constructor
+ * 
+ * @param {Number} health          The amount of damage the monster can take before dying
+ * @param {Number} x               The initial x-position of the enemy
+ * @param {Number} y               The initial y-position of the enemy
+ * @param {Number} speed           How fast the enemy is going to move
+ * @param {Number} damage          How much damage the enemy does per attack
+ * @param {Number} detectionRadius The "view distance" of the enemy. When a fighter is within this radius, the enemy will chase them
+ */
 function Enemy(health, x, y, speed, damage, detectionRadius)
 {
 	this.health = health;
@@ -22,6 +42,14 @@ function Enemy(health, x, y, speed, damage, detectionRadius)
 	this.playerToChase;
 }
 
+/**
+ * Assigns animations to the enemy's sprite.
+ * @function
+ * 
+ * @param  {Animation} idleAnimation   Animation that plays when the enemy is standing still.
+ * @param  {Animation} walkAnimation   Animation that plays when the enemy is walking
+ * @param  {Animation} attackAnimation Animation that plays when the enemy is attacking
+ */
 Enemy.prototype.assignAnimations = function(idleAnimation, walkAnimation, attackAnimation)
 {
 	this.sprite.addAnimation('idle', idleAnimation);
@@ -29,8 +57,14 @@ Enemy.prototype.assignAnimations = function(idleAnimation, walkAnimation, attack
 	this.sprite.addAnimation('attack', attackAnimation);
 };
 
-/* Makes the enemy chase the closest player to it at any given time.
-There is a certain range that if the player is outside, the monster just walks around. */
+/**
+ * Makes the enemy chase the closest player to it at any given time.
+ * There is a certain range that if the player is outside, the monster just walks around randomly.
+ *
+ * @function
+ * 
+ * @param  {Group} playerGroup A Group object that contains all of fighter's sprites in the server
+ */
 Enemy.prototype.update = function(playerGroup) 
 {
 
@@ -80,6 +114,15 @@ Enemy.prototype.update = function(playerGroup)
 
 };
 
+/**
+ * Called when a player collides with the enemy.
+ * Enemy's attack Animation is played and the player that is colliding takes an amount of damage defined in the constructor.
+ *
+ * @function
+ * 
+ * @param  {Sprite} enemy  The enemy that is one half of the collision.
+ * @param  {Sprite} player The player that is the other half of the collision
+ */
 Enemy.prototype.attack = function(enemy, player) 
 {
 

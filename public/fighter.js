@@ -1,7 +1,8 @@
 
-// This is the Fighter class that allows for multiple instances of a "Fighter" sprite with custom properties
+/**
+ * @author Jake Koll and Chandler Davis
+ */
 
-// These values are defined here for ease of access
 /**
  * [turnSpeed How fast the character turns]
  * @type {Number}

@@ -1,3 +1,6 @@
+/**
+ * @author Ashley Young
+ */
 
 /**
  * Creates an immutable Obstacle object, represented by the image of a bush
