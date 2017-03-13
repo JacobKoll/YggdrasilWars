@@ -10,8 +10,11 @@ var customCursor;
 var localFighter;
 
 var fighterGroup; // Fighter sprites group
-var enemySpriteGroup; // Enemy sprites group
+var enemyGroup; // Enemy sprites group
 var swordGroup;
+var obstacleGroup;
+var chestGroup;
+var spawnerGroup;
 
 var enemyArray = [];
 
@@ -37,8 +40,11 @@ function setup()
 	createCanvas(2000, 1450);
 
 	fighterGroup = new Group();
-	enemySpriteGroup = new Group();
+	enemyGroup = new Group();
 	swordGroup = new Group();
+	obstacleGroup = new Group();
+	chestGroup = new Group();
+	spawnerGroup = new Group();
 
 	var tempEnemy;
 
@@ -48,7 +54,7 @@ function setup()
 		tempEnemy = new Enemy(100, random(0, width), random(0, height), random(1.8, 2.3), random(.5, 2.5), random(240, 365));
 		tempEnemy.assignAnimations(enemyIdleAnimation, enemyWalkAnimation, enemyAttackAnimation);
 		enemyArray.push(tempEnemy);
-		enemySpriteGroup.push(tempEnemy.sprite);
+		enemyGroup.push(tempEnemy.sprite);
 	}
 
 	localFighter = new Fighter(100, width/2, height/2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
@@ -101,11 +107,11 @@ function draw()
 
 	for(var i = 0; i < enemyArray.length; i++)
 	{
-		enemyArray[i].update();
+		//enemyArray[i].update();
 	}
 
 	// drawSprite(fighterGroup.get(0));
-	drawSprites(enemySpriteGroup);
+	drawSprites(enemyGroup);
 
 	localFighter.draw();
 	drawSprite(cursorSprite);
