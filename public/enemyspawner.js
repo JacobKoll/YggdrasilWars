@@ -17,15 +17,16 @@ function EnemySpawner(x, y, enemyType, rate, limit, image)
 {
 	this.x = x;
 	this.y = y;
-	console.log(this.x + ", " + this.y);
 	this.enemyType = enemyType;
 	this.rate = rate;
 	this.limit = limit;
 	this.spawnCount = 0;
 
-	this.sprite = createSprite(x, y, 16, 16);
+	this.enemyArr = [];
+
+	this.sprite = createSprite(x, y);
 	this.sprite.addImage(image);
-	this.sprite.scale =.08;
+	this.sprite.scale = 2;
 	this.sprite.debug = true;
 	this.spawn;
 	this.timer = 0;
@@ -42,11 +43,15 @@ EnemySpawner.prototype.spawn = function()
 	{
 		this.spawnCount++;
 
-		console.log(this.x + ", " + this.y);
+		this.enemyArr.push(new Enemy(this.enemyType.health, this.x, this.y, this.enemyType.speed, this.enemyType.damage, this.enemyType.detectionRadius, this.enemyType.idleAnimation, this.enemyType.walkAnimation, this.enemyType.attackAnimation));
 
-		var toSpawn = new this.enemyType(100, this.x, this.y, this.enemyType.speed, 10);
-		toSpawn.assignAnimations(loadAnimation("/assets/enemyspawn/goku.png"), loadAnimation("/assets/enemyspawn/goku.png"));
 	}
 
 	this.timer++;
+};
+
+EnemySpawner.prototype.updateAll = function(fighterGroup) {
+	for (var i = 0; i < this.enemyArr.length; i++) {
+		this.enemyArr[i].update(fighterGroup);
+	}
 };

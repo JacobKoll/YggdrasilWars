@@ -6,6 +6,7 @@ var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
 var customCursor;
+var spawnerImage;
 
 var localFighter;
 
@@ -20,6 +21,10 @@ var enemyArray = [];
 
 var cursorSprite;
 
+//var socket;asdsd 
+
+/* TODO: delete this after testing. */
+var testSpawner;
 
 function preload() 
 {
@@ -33,11 +38,15 @@ function preload()
 	fighterIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
 
 	customCursor = loadImage("assets/fighter/cursor.png");
+	spawnerImage = loadImage("assets/spawner.png");
 }
 
 function setup()
 {
 	createCanvas(2000, 1450);
+	
+	/* Connect to the server */
+	socket = io.connect('localhost:3000');
 
 	fighterGroup = new Group();
 	enemyGroup = new Group();
@@ -46,30 +55,54 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	var tempEnemy;
+	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
+	fighterGroup.push(localFighter.sprite);
 
-	/* Create 10 enemies with random position, speed, damage, and detection radius. The health is a constant 100 */
-	for (var i = 0; i < 10; i++) 
-	{	
-		tempEnemy = new Enemy(100, random(0, width), random(0, height), random(1.8, 2.3), random(.5, 2.5), random(240, 365));
-		tempEnemy.assignAnimations(enemyIdleAnimation, enemyWalkAnimation, enemyAttackAnimation);
-		enemyArray.push(tempEnemy);
-		enemyGroup.push(tempEnemy.sprite);
-	}
-
-	localFighter = new Fighter(100, width/2, height/2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
-
-	swordGroup.push(localFighter.sword);
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
 
-
-
 	noCursor(); // Hides the system's cursor when inside the canvas
 
+
+	/* This is how we will create custom enemy and fighter types. */
+	var testEnemyType = {
+		walkAnimation: enemyWalkAnimation,
+		idleAnimation: enemyIdleAnimation,
+		attackAnimation: enemyAttackAnimation,
+		damage: 10,
+		speed: 10,
+		detectionRadius: 250
+	}
+
+	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage, enemyArray);
+
+
+	/* SERVER SIDE */
+
+	// socket.emit('start', localFighter);
+	// socket.on('connect', function()
+	// {
+	// 	console.log("\nConnected to Server\nSocket ID: " + socket.id.substring(0,3));
+	// })
+
+	//  Updates the sprites for the Fighters sent by the server. 
+	// socket.on('updateFighters' , function(data)
+	// {
+	// 	fighterGroup.removeSprites();
+	// 	fighterGroup.clear();
+
+	// 	for (var i = 0; i < data.length; i++) {
+	// 		fighterGroup.add(data[i].sprite);
+	// 	}
+
+	// });
+
 }
+
+
+
 
 function draw() 
 {
@@ -105,15 +138,16 @@ function draw()
 		localFighter.sword.visible = false;
 	}
 
-	for(var i = 0; i < enemyArray.length; i++)
-	{
-		//enemyArray[i].update();
-	}
+	localFighter.update();
+	
+	testSpawner.spawn();
+	testSpawner.updateAll(fighterGroup);
 
-	// drawSprite(fighterGroup.get(0));
-	drawSprites(enemyGroup);
+	//drawSprites(fighterGroup);
 
-	localFighter.draw();
-	drawSprite(cursorSprite);
+//	localFighter.draw();
+	//drawSprite(cursorSprite);
+	//
 
+	drawSprites();
 }

@@ -142,23 +142,18 @@ Fighter.prototype.remove = function()
 }
 
 /**
- * [draw Draws all the related sprites in one function]
+ * Updates the rotation of the player and the bounding box for the sword.
  * @function
  */
-Fighter.prototype.draw = function()
+Fighter.prototype.update = function()
 {
 	this.sprite.rotation = degrees(atan2(mouseY-this.sprite.position.y, mouseX-this.sprite.position.x));
 	this.sword.rotation = degrees(atan2(mouseY-this.sword.position.y, mouseX-this.sword.position.x));
 
-	/**
-	 * Trying to make the bounding box for the sword follow the rotation
-	 */
 	this.sword.setCollider(
 		"circle",
 		60 * cos(radians(this.sprite.rotation - 16)),
 		60 * sin(radians(this.sprite.rotation - 16)),
 		46
 	);
-	drawSprite(this.sprite);
-	drawSprite(this.sword);
 }
