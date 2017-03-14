@@ -10,6 +10,13 @@ var spawnerImage;
 
 var localFighter;
 
+var chestArr = [];
+var openChest;
+var closedChest;
+
+var obstaclesArr = [];
+var bush;
+
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
 var swordGroup;
@@ -21,6 +28,9 @@ var enemyArray = [];
 var fighterArray = [];
 
 var cursorSprite;
+
+var SCENE_H = 1450;
+var SCENE_W = 2000;
 
 //var socket;asdsd 
 
@@ -40,14 +50,19 @@ function preload()
 
 	customCursor = loadImage("assets/fighter/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
+
+	openChest = loadImage("assets/fighter/chest_open.png");
+	closedChest = loadImage("assets/fighter/chest_closed.png");
+
+	bush = loadImage("assets/fighter/bush.png");
 }
 
 function setup()
 {
-	createCanvas(2000, 1450);
+	createCanvas(1000, 725);
 	
 	/* Connect to the server */
-	socket = io.connect('localhost:3000');
+	socket = io.connect('http://localhost:3000');
 
 	fighterGroup = new Group();
 	enemyGroup = new Group();
@@ -59,6 +74,7 @@ function setup()
 	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
 	fighterArray.push(localFighter);
 
+	createHud();
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -66,7 +82,7 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-
+	
 	/* This is how we will create custom enemy and fighter types. */
 	var testEnemyType = {
 		walkAnimation: enemyWalkAnimation,
@@ -79,6 +95,23 @@ function setup()
 
 	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage);
 
+	socket.on('generateObstacles', function(data) {
+		for (var i=0; i<data.length; i++) {
+			var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
+			obstaclesArr.push(obstacle);
+			bg.add(obstacle.sprite);
+		}
+	});
+
+	socket.on('generateChests', function(chestData) {
+		for (i=0; i<chestData.length; i++) {
+			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
+			chestArr.push(chest);
+			bg.add(chest.sprite);
+		}
+	});
+
 }
 
 
@@ -87,11 +120,24 @@ function setup()
 function draw() 
 {
 	background(105, 200, 54); 
-	
+
+	drawHud();
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
+	for (var i = 0; i<obstaclesArr.length; i++) {
+		obstaclesArr[i].update;
+	}
+	for (var i = 0; i<chestArr.length; i++) {
+		chestArr[i].update;
+	}
+
+	cursorSprite.position.x = camera.mouseX;
+	cursorSprite.position.y = camera.mouseY;
+
+	camera.position.x = localFighter.sprite.position.x;
+	camera.position.y = localFighter.sprite.position.y;
 
 	if(keyDown('w'))
 	{
@@ -109,6 +155,21 @@ function draw()
 	{
 		localFighter.walk("right");
 	}
+
+	/* Invisible border around map */
+	if(localFighter.sprite.position.x < 0) {
+		localFighter.sprite.position.x = 0;
+	}
+	if(localFighter.sprite.position.y < 0) {
+	    localFighter.sprite.position.y = 0;
+	}
+	if(localFighter.sprite.position.x > SCENE_W) {
+	    localFighter.sprite.position.x = SCENE_W;
+	}
+	if(localFighter.sprite.position.y > SCENE_H) {
+	    localFighter.sprite.position.y = SCENE_H;
+	}
+
 	if(mouseDown())
 	{
 		localFighter.sword.visible = true;
