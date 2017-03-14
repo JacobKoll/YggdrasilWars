@@ -73,7 +73,7 @@ function setup()
 			console.log("\nConnected to Server\nSocket ID: " + (socket.id).substring(0,3));
 		});
 
-	socket.on('obstacles', function(data) {
+	socket.on('generateObstacles', function(data) {
 		for (var i=0; i<data.length; i++) {
 			var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
 			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
@@ -81,7 +81,7 @@ function setup()
 			bg.add(obstacle.sprite);
 		}
 	});
-	socket.on('chests', function(chestData) {
+	socket.on('generateChests', function(chestData) {
 		for (i=0; i<chestData.length; i++) {
 			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
 			chestArr.push(chest);
@@ -134,7 +134,6 @@ function setup()
 
 }
 
-/
 function draw()
 {
 	background(91, 70, 39);
