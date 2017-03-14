@@ -17,71 +17,93 @@ var obstacleArr;
 var chestArr;
 
 
-// /**
-//  * Initializes everything that the server will need.
-//  */
-// function init()
-// {
-// 	fighterArr = [];
+/**
+ * Initializes everything that the server will need.
+ */
+function init()
+{
+	fighterArr = [];
 
-// 	spawnerArr = [];
-// 	enemyArr = [];
+	spawnerArr = [];
+	enemyArr = [];
 
-// 	obstacleArr = [];
-// 	chestArr = [];
+	obstacleArr = [];
+	chestArr = [];
 
-// 	console.log("The Yygdrasill Wars server is open and running... \n");
-// }
+	/**
+	 * Initialize obstacles
+	 */
+	for (var i=0; i<100; i++) {
+		var a = Math.floor((Math.random())*1600/45)*(45);
+		var b = Math.floor((Math.random())*800/45)*(45);
+		var obsData = {x: a, y: b};
+		obstacleArr.push(obsData);
+		io.sockets.emit('generateObstacles', obstacleArr);
+	}
 
-// /**
-//  * This handles the events that occur whenever someone joins the server.
-//  * @param  {socket} client [The socket that the client uses to connect to the server]
-//  */
+	/**
+	 * Initialize chests
+	 */
+	 for (var i=0; i<100; i++) {
+		var a = Math.floor((Math.random())*1600/45)*(45);
+		var b = Math.floor((Math.random())*800/45)*(45);
+		var chestData = {x: a, y: b};
+		obstacleArr.push(chestData);
+		io.sockets.emit('generateChests', chestArr);
+	}
 
-// 
-// function onSocketConnect(client)
-// {
+	console.log("The Yygdrasill Wars server is open and running... \n");
+}
 
-// 	setInterval(heartbeat, 1000/FPS);
+/**
+ * This handles the events that occur whenever someone joins the server.
+ * @param  {socket} client [The socket that the client uses to connect to the server]
+ */
 
-// 	/**
-// 	 * Update all of the sprites to be rendered client-side for all clients.
-// 	 */
-// 	function heartbeat()
-// 	{
-// 		io.sockets.emit('updateFighters' , fighterArr);
-// 		io.sockets.emit('updateSpawners' , spawnerArr);
-// 		io.sockets.emit('updateEnemies'  , enemyArr);
-// 		io.sockets.emit('updateObstacles', obstacleArr);
-// 		io.sockets.emit('updateChests'   , chestArr);
-// 	}
 
-// 	console.log(client.id + " has connected to the server.\n");
+function onSocketConnect(client)
+{
 
-// 	/* When connected, add the client's fighter to te array. */
-// 	client.on('start', function(newFighter)
-// 	{
-// 		fighterArr.push(newFighter);
-// 		console.log(client.id + " added it's fighter\n")
-// 	});
+	setInterval(heartbeat, 1000/FPS);
+
+	/**
+	 * Update all of the sprites to be rendered client-side for all clients.
+	 */
+	function heartbeat()
+	{
+		io.sockets.emit('updateFighters' , fighterArr);
+		io.sockets.emit('updateSpawners' , spawnerArr);
+		io.sockets.emit('updateEnemies'  , enemyArr);
+		io.sockets.emit('updateObstacles', obstacleArr);
+		io.sockets.emit('updateChests'   , chestArr);
+	}
+
+	console.log(client.id + " has connected to the server.\n");
+
+	/* When connected, add the client's fighter to te array. */
+	client.on('start', function(newFighter)
+	{
+		fighterArr.push(newFighter);
+		console.log(client.id + " added it's fighter\n")
+	});
 	
-// 	io.on('disconnect', function()
-// 	{
-// 		console.log(client.id + " has disconnected from the server.\n");
+	io.on('disconnect', function()
+	{
+		console.log(client.id + " has disconnected from the server.\n");
 
-// 	});
-// }
+	});
+}
 
-// function update()
-// {
+function update()
+{
 
-// }
+}
 
-// io.on('connection', onSocketConnect);
+io.on('connection', onSocketConnect);
 
 
-// /* Activate the initialization of the server. */
-// init();
+/* Activate the initialization of the server. */
+init();
 
 
 
