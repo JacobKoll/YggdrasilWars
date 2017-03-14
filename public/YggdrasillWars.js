@@ -18,6 +18,7 @@ var chestGroup;
 var spawnerGroup;
 
 var enemyArray = [];
+var fighterArray = [];
 
 var cursorSprite;
 
@@ -56,7 +57,7 @@ function setup()
 	spawnerGroup = new Group();
 
 	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
-	fighterGroup.push(localFighter.sprite);
+	fighterArray.push(localFighter);
 
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
@@ -76,28 +77,7 @@ function setup()
 		detectionRadius: 250
 	}
 
-	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage, enemyArray);
-
-
-	/* SERVER SIDE */
-
-	// socket.emit('start', localFighter);
-	// socket.on('connect', function()
-	// {
-	// 	console.log("\nConnected to Server\nSocket ID: " + socket.id.substring(0,3));
-	// })
-
-	//  Updates the sprites for the Fighters sent by the server. 
-	// socket.on('updateFighters' , function(data)
-	// {
-	// 	fighterGroup.removeSprites();
-	// 	fighterGroup.clear();
-
-	// 	for (var i = 0; i < data.length; i++) {
-	// 		fighterGroup.add(data[i].sprite);
-	// 	}
-
-	// });
+	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage);
 
 }
 
@@ -139,15 +119,10 @@ function draw()
 	}
 
 	localFighter.update();
-	
 	testSpawner.spawn();
-	testSpawner.updateAll(fighterGroup);
-
-	//drawSprites(fighterGroup);
-
-//	localFighter.draw();
-	//drawSprite(cursorSprite);
-	//
+	testSpawner.updateAll(fighterArray);
 
 	drawSprites();
+	
+	drawSprite(cursorSprite);
 }
