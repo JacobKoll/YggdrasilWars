@@ -48,6 +48,8 @@ function setup()
 
 	bg = new Group();
 
+	createHud();
+
 	noCursor(); // Hides the cursor when in the canvas
 
 	fighter = new Fighter(100, random(0 + 20, width - 20), random(0 + 20, height - 20), walkAnimation, swingAnimation, deathAnimation, idleAnimation);
@@ -138,6 +140,8 @@ function setup()
 function draw()
 {
 	background(91, 70, 39);
+
+	drawHud();
 
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;

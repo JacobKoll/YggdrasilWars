@@ -58,6 +58,7 @@ function setup()
 	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
 	fighterGroup.push(localFighter.sprite);
 
+	createHud();
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -65,7 +66,7 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-
+	
 	/* This is how we will create custom enemy and fighter types. */
 	var testEnemyType = {
 		walkAnimation: enemyWalkAnimation,
@@ -107,11 +108,12 @@ function setup()
 function draw() 
 {
 	background(105, 200, 54); 
-	
+
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
+	drawHud();
 
 	if(keyDown('w'))
 	{
