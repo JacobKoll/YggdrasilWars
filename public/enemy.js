@@ -18,13 +18,12 @@
  * @param {Number} damage          How much damage the enemy does per attack
  * @param {Number} detectionRadius The "view distance" of the enemy. When a fighter is within this radius, the enemy will chase them
  */
-function Enemy(health, x, y, speed, damage, detectionRadius)
+function Enemy(health, x, y, speed, damage, detectionRadius, idleAnimation, walkAnimation, attackAnimation)
 {
 	this.health = health;
 	this.x = x;
 	this.y = y;
 	this.speed = speed;
-	this.damage = damage;
 	this.detectionRadius = detectionRadius;
 
 	this.sprite = createSprite(this.x, this.y, 32, 32);
@@ -35,27 +34,16 @@ function Enemy(health, x, y, speed, damage, detectionRadius)
 	this.sprite.gravity = .5;
 	this.sprite.maxSpeed = 2.6;
 
-	this.sprite.damage = 10;
+	this.sprite.addAnimation('idle', idleAnimation);
+	this.sprite.addAnimation('walk', walkAnimation);
+	this.sprite.addAnimation('attack', attackAnimation);
+	
+	this.sprite.damage = damage;
 
 	this.turnCounter = 0;
 
 	this.playerToChase;
 }
-
-/**
- * Assigns animations to the enemy's sprite.
- * @function
- * 
- * @param  {Animation} idleAnimation   Animation that plays when the enemy is standing still.
- * @param  {Animation} walkAnimation   Animation that plays when the enemy is walking
- * @param  {Animation} attackAnimation Animation that plays when the enemy is attacking
- */
-Enemy.prototype.assignAnimations = function(idleAnimation, walkAnimation, attackAnimation)
-{
-	this.sprite.addAnimation('idle', idleAnimation);
-	this.sprite.addAnimation('walk', walkAnimation);
-	this.sprite.addAnimation('attack', attackAnimation);
-};
 
 /**
  * Makes the enemy chase the closest player to it at any given time.
@@ -92,7 +80,7 @@ Enemy.prototype.update = function(playerGroup)
 		if((chasedDist < this.detectionRadius))
 		{
 			this.playerToChase = playerGroup.get(i);
-			this.sprite.attractionPoint(2, playerGroup.get(i).position.x, playerGroup.get(i).position.y);
+			this.sprite.attractionPoint(this.speed, playerGroup.get(i).position.x, playerGroup.get(i).position.y);
 		}
 		else
 		{
