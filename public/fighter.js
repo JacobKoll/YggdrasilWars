@@ -147,8 +147,8 @@ Fighter.prototype.remove = function()
  */
 Fighter.prototype.update = function()
 {
-	this.sprite.rotation = degrees(atan2(mouseY-this.sprite.position.y, mouseX-this.sprite.position.x));
-	this.sword.rotation = degrees(atan2(mouseY-this.sword.position.y, mouseX-this.sword.position.x));
+	this.sprite.rotation = degrees(atan2(camera.mouseY-this.sprite.position.y, camera.mouseX-this.sprite.position.x));
+	this.sword.rotation = degrees(atan2(camera.mouseY-this.sword.position.y, camera.mouseX-this.sword.position.x));
 
 	this.sword.setCollider(
 		"circle",

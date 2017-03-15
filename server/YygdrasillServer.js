@@ -10,6 +10,7 @@ var server = app.listen(3000);
 var socket = require("socket.io");
 var io = socket(server);
 
+
 // var fighterArr;
 // var spawnerArr;
 // var enemyArr;
@@ -227,3 +228,20 @@ var io = socket(server);
 
 // /* Activate the initialization of the server. */
 // init();
+
+
+var fighterArr = [];
+var spawnerArr = [];
+var enemyArr = [];
+var obstacleArr = [];
+var chestArr = [];
+
+console.log("Server is runnning...");
+
+function updateAll()
+{
+	for (var i = 0; i < spawnerArr.length; i++) {
+		spawnerArr[i].spawn();
+		spawnerArr[i].updateAll(fighterArr);
+	}
+}

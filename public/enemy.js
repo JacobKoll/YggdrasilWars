@@ -53,7 +53,7 @@ function Enemy(health, x, y, speed, damage, detectionRadius, idleAnimation, walk
  * 
  * @param  {Group} playerGroup A Group object that contains all of fighter's sprites in the server
  */
-Enemy.prototype.update = function(playerGroup) 
+Enemy.prototype.update = function(playerArr) 
 {
 
 	var currDist;
@@ -61,26 +61,27 @@ Enemy.prototype.update = function(playerGroup)
 
 	if(!this.playerToChase)
 	{
-		this.playerToChase = playerGroup.get(0);
+		this.playerToChase = playerArr[0].sprite;
 	}
+	
 	chasedDist = dist(this.playerToChase.position.x, this.playerToChase.position.y, this.sprite.position.x, this.sprite.position.y);
 
 	// The monster will chase the player that is closest to it, in its view-range.
-	for(var i = 0; i < playerGroup.size(); i++)
+	for(var i = 0; i < playerArr.length; i++)
 	{
 
-		//currPlayerDist = sqrt(pow((playerGroup.get(i).position.x - this.sprite.position.x), 2) + pow((playerGroup.get(i).position.y - this.sprite.position.y), 2));
-		currDist = dist(playerGroup.get(i).position.x, playerGroup.get(i).position.y, this.sprite.position.x, this.sprite.position.y);
+		//currPlayerDist = sqrt(pow((playerArr[i].position.x - this.sprite.position.x), 2) + pow((playerArr[i].position.y - this.sprite.position.y), 2));
+		currDist = dist(playerArr[i].sprite.position.x, playerArr[i].sprite.position.y, this.sprite.position.x, this.sprite.position.y);
 
 		if(currDist < chasedDist)
 		{
-			this.playerToChase = playerGroup.get(i);
+			this.playerToChase = playerArr[i].sprite;
 		}
 
 		if((chasedDist < this.detectionRadius))
 		{
-			this.playerToChase = playerGroup.get(i);
-			this.sprite.attractionPoint(this.speed, playerGroup.get(i).position.x, playerGroup.get(i).position.y);
+			this.playerToChase = playerArr[i].sprite;
+			this.sprite.attractionPoint(this.speed, playerArr[i].sprite.position.x, playerArr[i].sprite.position.y);
 		}
 		else
 		{
@@ -127,6 +128,8 @@ Enemy.prototype.attack = function(enemy, player)
 		player.position.x = random(50, width - 50);
 		player.position.y = random(50, height - 50);
 		player.health = 100;
+		player.alive = true;
+		player.changeAnimation('idle');
 	}
 
 };
