@@ -21,12 +21,12 @@ var enemyArray = [];
 
 var cursorSprite;
 
-//var socket;asdsd 
+//var socket;asdsd
 
 /* TODO: delete this after testing. */
 var testSpawner;
 
-function preload() 
+function preload()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
@@ -44,7 +44,7 @@ function preload()
 function setup()
 {
 	createCanvas(2000, 1450);
-	
+
 	/* Connect to the server */
 	socket = io.connect('localhost:3000');
 
@@ -87,7 +87,7 @@ function setup()
 	// 	console.log("\nConnected to Server\nSocket ID: " + socket.id.substring(0,3));
 	// })
 
-	//  Updates the sprites for the Fighters sent by the server. 
+	//  Updates the sprites for the Fighters sent by the server.
 	// socket.on('updateFighters' , function(data)
 	// {
 	// 	fighterGroup.removeSprites();
@@ -104,10 +104,10 @@ function setup()
 
 
 
-function draw() 
+function draw()
 {
-	background(105, 200, 54); 
-	
+	background(105, 200, 54);
+
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
@@ -139,7 +139,7 @@ function draw()
 	}
 
 	localFighter.update();
-	
+
 	testSpawner.spawn();
 	testSpawner.updateAll(fighterGroup);
 
