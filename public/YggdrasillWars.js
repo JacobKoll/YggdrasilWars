@@ -34,19 +34,19 @@ var SCENE_W = 2000;
 
 var score = 10; 
 
-
-
 //var socket;asdsd
 var SCENE_H = 1450;
 var SCENE_W = 2000;
 
-
-
 /* TODO: delete this after testing. */
 var testSpawner;
 
-/* This is how we will create custom enemy and fighter types. */
-var testEnemyType;
+/* Enemy Types */
+var goblin;
+
+/* Player Types */
+var knight;
+
 
 function preload()
 {
@@ -54,10 +54,10 @@ function preload()
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
 	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
 
-	fighterWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
-	fighterSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
-	fighterDeathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
-	fighterIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
+	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
+	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
+	knightDeathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
+	knightIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
 
 	customCursor = loadImage("assets/fighter/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
@@ -68,10 +68,36 @@ function preload()
 	bush = loadImage("assets/fighter/bush.png");
 }
 
+/* Assigns values to the various types of Enemies and Fighters that we have. */
+function assignTypes()
+{
+	goblin = {
+		walkAnimation: enemyWalkAnimation,
+		idleAnimation: enemyIdleAnimation,
+		attackAnimation: enemyAttackAnimation,
+		health: 100,
+		damage: .7,
+		speed: 10,
+		detectionRadius: 250
+	};
+
+	knight = {
+		walkAnimation: knightWalkAnimation,
+		idleAnimation: knightIdleAnimation,
+		deathAnimation: knightDeathAnimation,
+		swingAnimation: knightSwingAnimation,
+		health: 100,
+		speed: 5
+	};
+
+}
+
 function setup()
 {
 
 	createCanvas(1000, 725);
+
+	assignTypes();
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -83,9 +109,9 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
-		
-	console.log(localFighter);
+
+	localFighter = new Fighter(width / 2, height /2, knight);
+	
 
 	fighterArray.push(localFighter);
 
@@ -98,20 +124,8 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-	testEnemyType = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-<<<<<<< HEAD
-		damage: .7,
-=======
-		damage: .1,
->>>>>>> 5474446dac499ed980e829b02bb56df0a6f509be
-		speed: 10,
-		detectionRadius: 250
-	};
 
-	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage);
+	testSpawner = new EnemySpawner(35, 60, goblin, .5, 5, spawnerImage);
 
 	socket.on('generateObstacles', function(data) {
 		for (var i=0; i<data.length; i++) {
@@ -129,13 +143,6 @@ function setup()
 			bg.add(chest.sprite);
 		}
 	});
-
-}
-
-function mouseReleased(){
-
-			interval = setInterval(function(){
-				if(staminaBar.width>100){staminaBar.width = 100;}staminaBar.width += 10;},2000);
 
 }
 
@@ -183,25 +190,21 @@ function draw()
 
 	if(keyDown('w'))
 	{
-
 		localFighter.walk("up");
-	
 	}
 	if(keyDown('s'))
 	{
 		localFighter.walk("down");
-	
 	}
 	if(keyDown('a'))
 	{
 		localFighter.walk("left");
-		
 	}
 	if(keyDown('d'))
 	{
 		localFighter.walk("right");
-
 	}
+
 	/* Invisible border around map */
 	if(localFighter.sprite.position.x < 0) {
 		localFighter.sprite.position.x = 0;
@@ -216,32 +219,21 @@ function draw()
 	    localFighter.sprite.position.y = SCENE_H;
 	}
 
-	if(mouseDown())
+	if(mouseWentDown())
 	{
-
-		localFighter.sprite.sword.visible = true;
-
-
-		clearInterval(interval);
-		localFighter.sword.visible = true;
 		staminaBar.width -= 1;
 		if(staminaBar.width < 0){
 			staminaBar.width = 0;
-			localFighter.sword.visible = false;
+			localFighter.sprite.sword.visible = false;
 		}
 
 		score += 1;
-
-	}
-	else
-	{
-		localFighter.sprite.sword.visible = true;
 	}
 	
 
 	localFighter.update();
 
-	localFighter.sprite.sword.collide()
+	localFighter.sprite.sword.collide(enemyGroup);
 
 	testSpawner.spawn();
 	testSpawner.updateAll(fighterArray);

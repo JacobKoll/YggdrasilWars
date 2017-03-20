@@ -4,16 +4,6 @@
  */
 
 /**
- * [turnSpeed How fast the character turns]
- * @type {Number}
- */
-var turnSpeed = 1.57;
-/**
- * [acceleration How fast the character moves]
- * @type {Number}
- */
-var acceleration = 1.953;
-/**
  * [maxSpeed The maximum speed the character can move]
  * @type {Number}
  */
@@ -38,42 +28,31 @@ var friction = .5;
  * @param {Animation} deathAnimation [The death animation of the character]
  * @param {Animation} idleAnimation  [The idle animation of the character]
  */
-function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, idleAnimation)
+function Fighter(x, y, type)
 {
-	/* Properties of this fighter */
-
-	this.health = health; //Amount of health.
-
-	this.alive = true;
-
-	/* Initialize the animations */
-	this.walkAnimation = walkAnimation;// Walk animations
-	this.swingAnimation = swingAnimation; // Attack animation
-	this.deathAnimation = deathAnimation; // Death animation
-	this.idleAnimation = idleAnimation; // Animation for when the player is not moving
+	this.x = x;
+	this.y = y;
+	this.speed = type.speed;
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 72, 96);
-	this.sprite.maxSpeed = maxSpeed;
 	this.sprite.friction = friction;
 	this.sprite.debug = true;
 
-	this.sprite.health = health; //Amount of health.
+	this.sprite.health = type.health; //Amount of health.
 
-	this.sprite.addAnimation('walk', walkAnimation);
-	this.sprite.addAnimation('death', deathAnimation);
-	this.sprite.addAnimation('idle', idleAnimation);
+	this.sprite.addAnimation('walk', type.walkAnimation);
+	this.sprite.addAnimation('death', type.deathAnimation);
+	this.sprite.addAnimation('idle', type.idleAnimation);
 
 	this.sprite.sword = createSprite(x, y, 138, 96);
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
 	this.sprite.sword.debug = true;
-	this.sprite.sword.visible = false;
 
-	this.sprite.sword.addAnimation('swing', swingAnimation);
+	this.sprite.sword.addAnimation('swing', type.swingAnimation);
 
 	this.sprite.sword.position = this.sprite.position;
-
 
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 45);
@@ -89,25 +68,23 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
  */
 Fighter.prototype.walk = function(direction)
 {
-	if(this.alive) // && this.sprite.sword.visible == false)
-	{
-		if(direction == "up"){
-			this.sprite.velocity.y = -5;
-			this.sprite.sword.velocity.y = -5;
-		}
-		else if(direction == "down"){
-			this.sprite.velocity.y = 5;
-			this.sprite.sword.velocity.y = 5;
-		}
-		else if(direction == "right"){
-			this.sprite.velocity.x = 5;
-			this.sprite.sword.velocity.x = 5;
-		}
-		else if(direction == "left"){
-			this.sprite.velocity.x = -5;
-			this.sprite.sword.velocity.x = -5;
-		}
+	if(direction == "up"){
+		this.sprite.velocity.y = -this.speed;
+		this.sprite.sword.velocity.y = -this.speed;
 	}
+	else if(direction == "down"){
+		this.sprite.velocity.y = this.speed;
+		this.sprite.sword.velocity.y = this.speed;
+	}
+	else if(direction == "right"){
+		this.sprite.velocity.x = this.speed;
+		this.sprite.sword.velocity.x = this.speed;
+	}
+	else if(direction == "left"){
+		this.sprite.velocity.x = -this.speed;
+		this.sprite.sword.velocity.x = -this.speed;
+	}
+
 }
 
 /**
@@ -126,7 +103,6 @@ Fighter.prototype.swing = function()
  */
 Fighter.prototype.die = function()
 {
-	this.alive = false;
 	this.sprite.remove();
 	this.sprite.sword.remove();
 }
