@@ -26,21 +26,25 @@ var chestGroup;
 var spawnerGroup;
 
 var enemyArray = [];
+var fighterArray = [];
 
 var cursorSprite;
-
-
 var SCENE_H = 1450;
 var SCENE_W = 2000;
 
 var score = 10; 
 
-//var socket;asdsd 
+
+//var socket;asdsd
+var SCENE_H = 1450;
+var SCENE_W = 2000;
+
+
 
 /* TODO: delete this after testing. */
 var testSpawner;
 
-function preload() 
+function preload()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
@@ -62,8 +66,9 @@ function preload()
 
 function setup()
 {
+
 	createCanvas(1000, 725);
-	
+
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
 
@@ -75,7 +80,7 @@ function setup()
 	spawnerGroup = new Group();
 
 	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
-	fighterGroup.push(localFighter.sprite);
+	fighterArray.push(localFighter);
 
 	createHud();
 
@@ -86,7 +91,7 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-	
+
 	/* This is how we will create custom enemy and fighter types. */
 	var testEnemyType = {
 		walkAnimation: enemyWalkAnimation,
@@ -97,7 +102,29 @@ function setup()
 		detectionRadius: 250
 	}
 
-	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage, enemyArray);
+	// testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage, enemyArray);
+
+
+	/* SERVER SIDE */
+
+	// socket.emit('start', localFighter);
+	// socket.on('connect', function()
+	// {
+	// 	console.log("\nConnected to Server\nSocket ID: " + socket.id.substring(0,3));
+	// })
+
+	//  Updates the sprites for the Fighters sent by the server.
+	// socket.on('updateFighters' , function(data)
+	// {
+	// 	fighterGroup.removeSprites();
+	// 	fighterGroup.clear();
+
+	// 	for (var i = 0; i < data.length; i++) {
+	// 		fighterGroup.add(data[i].sprite);
+	// 	}
+
+	// });
+	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage);
 
 	socket.on('generateObstacles', function(data) {
 		for (var i=0; i<data.length; i++) {
@@ -116,26 +143,6 @@ function setup()
 		}
 	});
 
-	/* SERVER SIDE */
-
-	// socket.emit('start', localFighter);
-	// socket.on('connect', function()
-	// {
-	// 	console.log("\nConnected to Server\nSocket ID: " + socket.id.substring(0,3));
-	// })
-
-	//  Updates the sprites for the Fighters sent by the server. 
-	// socket.on('updateFighters' , function(data)
-	// {
-	// 	fighterGroup.removeSprites();
-	// 	fighterGroup.clear();
-
-	// 	for (var i = 0; i < data.length; i++) {
-	// 		fighterGroup.add(data[i].sprite);
-	// 	}
-
-	// });
-
 }
 
 function mouseReleased(){
@@ -145,9 +152,8 @@ function mouseReleased(){
 
 }
 
-function draw() 
+function draw()
 {
-
 
 	var hudPosX = localFighter.sprite.position.x-450;
 	var hudPosY = localFighter.sprite.position.y-340;
@@ -160,11 +166,13 @@ function draw()
 
 	background(105, 200, 54); 
 
+	background(105, 200, 54);
+
+	drawHud();
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
-	drawHud();
 
 
 	changeFullPosition(hudPosX, hudPosY);
@@ -241,15 +249,10 @@ function draw()
 	
 
 	localFighter.update();
-	
+
 	testSpawner.spawn();
-	testSpawner.updateAll(fighterGroup);
-
-	//drawSprites(fighterGroup);
-
-//	localFighter.draw();
-	//drawSprite(cursorSprite);
-	//
+	testSpawner.updateAll(fighterArray);
 
 	drawSprites();
+	drawSprite(cursorSprite);
 }

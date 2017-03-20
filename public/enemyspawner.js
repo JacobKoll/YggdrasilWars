@@ -50,8 +50,8 @@ EnemySpawner.prototype.spawn = function()
 	this.timer++;
 };
 
-EnemySpawner.prototype.updateAll = function(fighterGroup) {
+EnemySpawner.prototype.updateAll = function(fighterArr) {
 	for (var i = 0; i < this.enemyArr.length; i++) {
-		this.enemyArr[i].update(fighterGroup);
+		this.enemyArr[i].update(fighterArr);
 	}
 };
