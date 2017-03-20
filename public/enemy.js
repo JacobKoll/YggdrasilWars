@@ -18,13 +18,13 @@
  * @param {Number} damage          How much damage the enemy does per attack
  * @param {Number} detectionRadius The "view distance" of the enemy. When a fighter is within this radius, the enemy will chase them
  */
-function Enemy(health, x, y, speed, damage, detectionRadius, idleAnimation, walkAnimation, attackAnimation)
+function Enemy(x, y, type)
 {
-	this.health = health;
+	this.health = type.health;
 	this.x = x;
 	this.y = y;
-	this.speed = speed;
-	this.detectionRadius = detectionRadius;
+	this.speed = type.speed;
+	this.detectionRadius = type.detectionRadius;
 
 	this.sprite = createSprite(this.x, this.y, 32, 32);
 	//this.sprite.scale = .018;
@@ -34,11 +34,11 @@ function Enemy(health, x, y, speed, damage, detectionRadius, idleAnimation, walk
 	this.sprite.gravity = .5;
 	this.sprite.maxSpeed = 2.6;
 
-	this.sprite.addAnimation('idle', idleAnimation);
-	this.sprite.addAnimation('walk', walkAnimation);
-	this.sprite.addAnimation('attack', attackAnimation);
+	this.sprite.addAnimation('idle', type.idleAnimation);
+	this.sprite.addAnimation('walk', type.walkAnimation);
+	this.sprite.addAnimation('attack', type.attackAnimation);
 	
-	this.sprite.damage = damage;
+	this.sprite.damage = type.damage;
 
 	this.turnCounter = 0;
 

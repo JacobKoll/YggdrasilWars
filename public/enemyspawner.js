@@ -43,7 +43,7 @@ EnemySpawner.prototype.spawn = function()
 	{
 		this.spawnCount++;
 
-		this.enemyArr.push(new Enemy(this.enemyType.health, this.x, this.y, this.enemyType.speed, this.enemyType.damage, this.enemyType.detectionRadius, this.enemyType.idleAnimation, this.enemyType.walkAnimation, this.enemyType.attackAnimation));
+		this.enemyArr.push(new Enemy(this.x, this.y, this.enemyType));
 
 	}
 
