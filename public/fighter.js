@@ -64,15 +64,15 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 	this.sprite.addAnimation('death', deathAnimation);
 	this.sprite.addAnimation('idle', idleAnimation);
 
-	this.sword = createSprite(x, y, 138, 96);
-	this.sword.maxSpeed = maxSpeed;
-	this.sword.friction = friction;
-	this.sword.debug = true;
-	this.sword.visible = false;
+	this.sprite.sword = createSprite(x, y, 138, 96);
+	this.sprite.sword.maxSpeed = maxSpeed;
+	this.sprite.sword.friction = friction;
+	this.sprite.sword.debug = true;
+	this.sprite.sword.visible = false;
 
-	this.sword.addAnimation('swing', swingAnimation);
+	this.sprite.sword.addAnimation('swing', swingAnimation);
 
-	this.sword.position = this.sprite.position;
+	this.sprite.sword.position = this.sprite.position;
 
 
 	/* Bounding boxes */
@@ -89,23 +89,23 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
  */
 Fighter.prototype.walk = function(direction)
 {
-	if(this.alive && this.sword.visible == false)
+	if(this.alive) // && this.sprite.sword.visible == false)
 	{
 		if(direction == "up"){
 			this.sprite.velocity.y = -5;
-			this.sword.velocity.y = -5;
+			this.sprite.sword.velocity.y = -5;
 		}
 		else if(direction == "down"){
 			this.sprite.velocity.y = 5;
-			this.sword.velocity.y = 5;
+			this.sprite.sword.velocity.y = 5;
 		}
 		else if(direction == "right"){
 			this.sprite.velocity.x = 5;
-			this.sword.velocity.x = 5;
+			this.sprite.sword.velocity.x = 5;
 		}
 		else if(direction == "left"){
 			this.sprite.velocity.x = -5;
-			this.sword.velocity.x = -5;
+			this.sprite.sword.velocity.x = -5;
 		}
 	}
 }
@@ -117,7 +117,7 @@ Fighter.prototype.walk = function(direction)
  */
 Fighter.prototype.swing = function()
 {
-	this.sword.visible = true;
+	this.sprite.sword.visible = true;
 }
 
 /**
@@ -128,7 +128,7 @@ Fighter.prototype.die = function()
 {
 	this.alive = false;
 	this.sprite.remove();
-	this.sword.remove();
+	this.sprite.sword.remove();
 }
 
 /**
@@ -138,7 +138,7 @@ Fighter.prototype.die = function()
 Fighter.prototype.remove = function()
 {
 	this.sprite.remove();
-	this.sword.remove();
+	this.sprite.sword.remove();
 }
 
 /**
@@ -148,9 +148,9 @@ Fighter.prototype.remove = function()
 Fighter.prototype.update = function()
 {
 	this.sprite.rotation = degrees(atan2(camera.mouseY-this.sprite.position.y, camera.mouseX-this.sprite.position.x));
-	this.sword.rotation = degrees(atan2(camera.mouseY-this.sword.position.y, camera.mouseX-this.sword.position.x));
+	this.sprite.sword.rotation = degrees(atan2(camera.mouseY-this.sprite.sword.position.y, camera.mouseX-this.sprite.sword.position.x));
 
-	this.sword.setCollider(
+	this.sprite.sword.setCollider(
 		"circle",
 		60 * cos(radians(this.sprite.rotation - 16)),
 		60 * sin(radians(this.sprite.rotation - 16)),

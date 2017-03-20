@@ -29,6 +29,7 @@ var fighterArray = [];
 
 var cursorSprite;
 
+
 //var socket;asdsd
 var SCENE_H = 1450;
 var SCENE_W = 2000;
@@ -37,6 +38,9 @@ var SCENE_W = 2000;
 
 /* TODO: delete this after testing. */
 var testSpawner;
+
+/* This is how we will create custom enemy and fighter types. */
+var testEnemyType;
 
 function preload()
 {
@@ -74,6 +78,9 @@ function setup()
 	spawnerGroup = new Group();
 
 	localFighter = new Fighter(100, width / 2, height /2, fighterWalkAnimation, fighterSwingAnimation, fighterDeathAnimation, fighterIdleAnimation);
+		
+	console.log(localFighter);
+
 	fighterArray.push(localFighter);
 
 	createHud();
@@ -84,39 +91,15 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-
-	/* This is how we will create custom enemy and fighter types. */
-	var testEnemyType = {
+	testEnemyType = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
-		damage: 10,
+		damage: .7,
 		speed: 10,
 		detectionRadius: 250
-	}
+	};
 
-	// testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage, enemyArray);
-
-
-	/* SERVER SIDE */
-
-	// socket.emit('start', localFighter);
-	// socket.on('connect', function()
-	// {
-	// 	console.log("\nConnected to Server\nSocket ID: " + socket.id.substring(0,3));
-	// })
-
-	//  Updates the sprites for the Fighters sent by the server.
-	// socket.on('updateFighters' , function(data)
-	// {
-	// 	fighterGroup.removeSprites();
-	// 	fighterGroup.clear();
-
-	// 	for (var i = 0; i < data.length; i++) {
-	// 		fighterGroup.add(data[i].sprite);
-	// 	}
-
-	// });
 	testSpawner = new EnemySpawner(300, 450, testEnemyType, .5, 5, spawnerImage);
 
 	socket.on('generateObstacles', function(data) {
@@ -197,18 +180,22 @@ function draw()
 
 	if(mouseDown())
 	{
-		localFighter.sword.visible = true;
+		localFighter.sprite.sword.visible = true;
 	}
 	else
 	{
-		localFighter.sword.visible = false;
+		localFighter.sprite.sword.visible = true;
 	}
 
 	localFighter.update();
 
+	localFighter.sprite.sword.collide()
+
 	testSpawner.spawn();
 	testSpawner.updateAll(fighterArray);
 
+	
 	drawSprites();
 	drawSprite(cursorSprite);
+	
 }
