@@ -37,6 +37,9 @@ var SCENE_W = 2000;
 
 var score = 10; 
 
+var footsteps;
+var swordSound;
+
 /* TODO: delete this after testing. */
 var testSpawner;
 
@@ -67,6 +70,9 @@ function preload()
 	landscape = loadImage("assets/map.png")
 
 	bush = loadImage("assets/obstacles/bush.png");
+
+	footsteps = loadSound("assets/sounds/Marching.wav");
+	swordSound = loadSound("assets/sounds/Woosh.wav");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
