@@ -99,6 +99,10 @@ function changeStaminaPosition(xPos,yPos){
 function reduceFullWidth(newWidth){
 
   fullBar.width -= newWidth;
+  if(fullBar.width <= 0){
+    fullBar.width = 0;
+
+  }
 
 }
 

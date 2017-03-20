@@ -34,6 +34,9 @@ var SCENE_W = 2000;
 
 var score = 10; 
 
+var footsteps;
+var swordSound;
+
 
 //var socket;asdsd
 var SCENE_H = 1450;
@@ -62,6 +65,10 @@ function preload()
 	closedChest = loadImage("assets/fighter/chest_closed.png");
 
 	bush = loadImage("assets/fighter/bush.png");
+
+	footsteps = loadSound("assets/sounds/Marching.wav");
+	swordSound = loadSound("assets/sounds/Woosh.wav");
+
 }
 
 function setup()
