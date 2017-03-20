@@ -116,6 +116,7 @@ Enemy.prototype.attack = function(enemy, player)
 
 	enemy.changeAnimation('attack');
 	player.health -= enemy.damage;
+	reduceFullWidth(enemy.damage);
 	player.setSpeed(3, enemy.getDirection());
 	
 	if(player.health <= 0 && player.life < 0)

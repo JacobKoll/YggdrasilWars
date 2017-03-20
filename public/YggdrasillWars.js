@@ -8,6 +8,7 @@ var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
 
+var interval;
 var localFighter;
 
 var chestArr = [];
@@ -28,8 +29,11 @@ var enemyArray = [];
 
 var cursorSprite;
 
+
 var SCENE_H = 1450;
 var SCENE_W = 2000;
+
+var score = 10; 
 
 //var socket;asdsd 
 
@@ -75,6 +79,7 @@ function setup()
 
 	createHud();
 
+
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
@@ -87,7 +92,7 @@ function setup()
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
-		damage: 10,
+		damage: .1,
 		speed: 10,
 		detectionRadius: 250
 	}
@@ -133,20 +138,41 @@ function setup()
 
 }
 
+function mouseReleased(){
 
+			interval = setInterval(function(){
+				if(staminaBar.width>100){staminaBar.width = 100;}staminaBar.width += 10;},2000);
 
+}
 
 function draw() 
 {
+
+
+	var hudPosX = localFighter.sprite.position.x-450;
+	var hudPosY = localFighter.sprite.position.y-340;
+
+	var scorePosX = localFighter.sprite.position.x+450;
+	var scorePosY = localFighter.sprite.position.y-340;
+
+	var staminaPosX = localFighter.sprite.position.x-300;
+	var staminaPosY = localFighter.sprite.position.y-340;
+
 	background(105, 200, 54); 
 
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
-<<<<<<< HEAD
 	drawHud();
-=======
+
+
+	changeFullPosition(hudPosX, hudPosY);
+	changeEmptyPosition(hudPosX, hudPosY);
+	changeStaminaPosition(staminaPosX,staminaPosY);
+
+	text("Your current score" + score, scorePosX - 100, scorePosY);
+
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
 	}
@@ -159,25 +185,28 @@ function draw()
 
 	camera.position.x = localFighter.sprite.position.x;
 	camera.position.y = localFighter.sprite.position.y;
->>>>>>> 6f97112cdbdaa7e7f43a5450f596003fec537aef
 
 	if(keyDown('w'))
 	{
+
 		localFighter.walk("up");
+	
 	}
 	if(keyDown('s'))
 	{
 		localFighter.walk("down");
+	
 	}
 	if(keyDown('a'))
 	{
 		localFighter.walk("left");
+		
 	}
 	if(keyDown('d'))
 	{
 		localFighter.walk("right");
-	}
 
+	}
 	/* Invisible border around map */
 	if(localFighter.sprite.position.x < 0) {
 		localFighter.sprite.position.x = 0;
@@ -194,12 +223,22 @@ function draw()
 
 	if(mouseDown())
 	{
+
+		clearInterval(interval);
 		localFighter.sword.visible = true;
+		staminaBar.width -= 1;
+		if(staminaBar.width < 0){
+			staminaBar.width = 0;
+			localFighter.sword.visible = false;
+		}
+
+		score += 1;
 	}
 	else
 	{
 		localFighter.sword.visible = false;
 	}
+	
 
 	localFighter.update();
 	
