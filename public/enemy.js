@@ -40,6 +40,9 @@ function Enemy(x, y, type)
 	
 	this.sprite.damage = type.damage;
 
+	this.sprite.bar = createSprite(this.x, this.y + 10, this.sprite.health,10);
+	this.sprite.bar.color = "yellow";
+
 	this.turnCounter = 0;
 
 	this.playerToChase;
@@ -94,6 +97,10 @@ Enemy.prototype.update = function(playerArr)
 			this.turnCounter++;
 
 		}
+
+		this.sprite.bar.position.x = this.sprite.position.x;
+		this.sprite.bar.position.y = this.sprite.position.y-40;
+		this.sprite.bar.color = "yellow";
 	}
 
 	if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
@@ -120,9 +127,6 @@ Enemy.prototype.attack = function(enemy, player)
 
 	reduceFullWidth(enemy.damage);
 
-	if(fullBar.width <= 0){
-		fullBar.width = 0;
-	}
 	player.setSpeed(3, enemy.getDirection());
 	
 	if(player.health <= 0 && player.life < 0)
@@ -136,6 +140,9 @@ Enemy.prototype.attack = function(enemy, player)
 		player.health = 100;
 		player.alive = true;
 		player.changeAnimation('idle');
+		fullBar.width = 100;
+
+
 	}
 
 };

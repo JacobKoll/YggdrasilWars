@@ -101,6 +101,20 @@ function assignTypes()
 
 }
 
+// function mousePressed(){
+
+// 		swordSound.setVolume(0.3);
+
+// 		swordSound.loop();
+// }
+
+// function mouseReleased(){
+
+// 	swordSound.stop();
+// }
+// 
+
+
 function setup()
 {
 
@@ -169,14 +183,8 @@ function draw()
 
 	background(105, 200, 54); 
 
-	background(105, 200, 54);
-
-	drawHud();
-
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
-
-
 
 	changeFullPosition(hudPosX, hudPosY);
 	changeEmptyPosition(hudPosX, hudPosY);
@@ -200,18 +208,34 @@ function draw()
 	if(keyDown('w'))
 	{
 		localFighter.walk("up");
+		// if(!footsteps.isPlaying()){
+		// 	footsteps.loop();
+
+		// }
 	}
 	if(keyDown('s'))
 	{
 		localFighter.walk("down");
+		// if(!footsteps.isPlaying()){
+		// 	footsteps.loop();
+
+		// }
 	}
 	if(keyDown('a'))
 	{
 		localFighter.walk("left");
+		// if(!footsteps.isPlaying()){
+		// 	footsteps.loop();
+
+		// }
 	}
 	if(keyDown('d'))
 	{
 		localFighter.walk("right");
+		// if(!footsteps.isPlaying()){
+		// 	footsteps.loop();
+
+		// }
 	}
 
 	/* Invisible border around map */
@@ -244,10 +268,14 @@ function draw()
 
 	localFighter.sprite.sword.collide(enemyGroup);
 
+	
 	testSpawner.spawn();
 	testSpawner.updateAll(fighterArray);
 
-	
+	if(localFighter.health == 0){
+		restoreFullWidth();
+	}	
+
 	drawSprites();
 	drawSprite(cursorSprite);
 	
