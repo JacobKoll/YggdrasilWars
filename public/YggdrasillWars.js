@@ -69,10 +69,10 @@ function preload()
 
 	landscape = loadImage("assets/map.png")
 
-	bush = loadImage("assets/obstacles/bush.png");
+	//bush = loadImage("assets/obstacles/bush.png");
 
-	footsteps = loadSound("assets/sounds/Marching.wav");
-	swordSound = loadSound("assets/sounds/Woosh.wav");
+	//footsteps = loadSound("assets/sounds/Marching.wav");
+	//swordSound = loadSound("assets/sounds/Woosh.wav");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
