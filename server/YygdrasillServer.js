@@ -1,3 +1,4 @@
+
 var mysql = require('mysql');
 
 var express = require("express");
@@ -21,5 +22,4 @@ var chestArr = [];
 app.use(express.static("../public"));
 
 console.log("The server is running...\n");
-
 

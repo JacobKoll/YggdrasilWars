@@ -7,8 +7,9 @@ var fighterDeathAnimation;
 var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
+var landscape;
 
-var interval;
+
 var localFighter;
 
 var chestArr = [];
@@ -17,6 +18,8 @@ var closedChest;
 
 var obstaclesArr = [];
 var bush;
+
+var landscapeSprite;
 
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
@@ -36,12 +39,6 @@ var score = 10;
 
 var footsteps;
 var swordSound;
-
-
-
-//var socket;asdsd
-var SCENE_H = 1450;
-var SCENE_W = 2000;
 
 /* TODO: delete this after testing. */
 var testSpawner;
@@ -64,17 +61,18 @@ function preload()
 	knightDeathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
 	knightIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
 
-	customCursor = loadImage("assets/fighter/cursor.png");
+	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
 
-	openChest = loadImage("assets/fighter/chest_open.png");
-	closedChest = loadImage("assets/fighter/chest_closed.png");
+	openChest = loadImage("assets/obstacles/chest_open.png");
+	closedChest = loadImage("assets/obstacles/chest_closed.png");
 
-	bush = loadImage("assets/fighter/bush.png");
+	landscape = loadImage("assets/map.png")
 
-	footsteps = loadSound("assets/sounds/Marching.wav");
-	swordSound = loadSound("assets/sounds/Woosh.wav");
+	//bush = loadImage("assets/obstacles/bush.png");
 
+	//footsteps = loadSound("assets/sounds/Marching.wav");
+	//swordSound = loadSound("assets/sounds/Woosh.wav");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -98,7 +96,6 @@ function assignTypes()
 		health: 100,
 		speed: 5
 	};
-
 }
 
 // function mousePressed(){
@@ -120,6 +117,9 @@ function setup()
 
 	createCanvas(1000, 725);
 
+	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
+	landscapeSprite.addImage(landscape);
+
 	assignTypes();
 
 	/* Connect to the server */
@@ -132,14 +132,11 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-
 	localFighter = new Fighter(width / 2, height /2, knight);
-	
 
 	fighterArray.push(localFighter);
 
 	createHud();
-
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -171,6 +168,7 @@ function setup()
 
 function draw()
 {
+	background(55,75,30);
 
 	var hudPosX = localFighter.sprite.position.x-450;
 	var hudPosY = localFighter.sprite.position.y-340;
@@ -181,7 +179,11 @@ function draw()
 	var staminaPosX = localFighter.sprite.position.x-300;
 	var staminaPosY = localFighter.sprite.position.y-340;
 
+
 	background(105, 200, 54); 
+
+	drawHud();
+
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
@@ -238,7 +240,7 @@ function draw()
 		// }
 	}
 
-	/* Invisible border around map */
+	/* Invisible landscapeSprite around landscape */
 	if(localFighter.sprite.position.x < 0) {
 		localFighter.sprite.position.x = 0;
 	}
@@ -266,10 +268,16 @@ function draw()
 
 	localFighter.update();
 
-	localFighter.sprite.sword.collide(enemyGroup);
+	localFighter.sprite.sword.overlap(enemyGroup, function(sword, enemy)
+		{
+			
+		});
 
-	
+
 	testSpawner.spawn();
+
+	testSpawner.spawn(enemyGroup);
+
 	testSpawner.updateAll(fighterArray);
 
 	if(localFighter.health == 0){

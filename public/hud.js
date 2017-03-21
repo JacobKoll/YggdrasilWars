@@ -39,8 +39,6 @@ function createHud(){
   emptyBar.shapeColor = color(0,0,0);
   staminaBar.shapeColor = color("blue");
 
-
-
 }	
 
 /**

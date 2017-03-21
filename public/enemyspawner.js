@@ -37,13 +37,16 @@ function EnemySpawner(x, y, enemyType, rate, limit, image)
  * @function
  * 
  */
-EnemySpawner.prototype.spawn = function() 
+EnemySpawner.prototype.spawn = function(enemyGroup) 
 {
 	if((this.timer % (100/this.rate)) == 0 && this.spawnCount < this.limit)
 	{
 		this.spawnCount++;
 
-		this.enemyArr.push(new Enemy(this.x, this.y, this.enemyType));
+		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
+
+		this.enemyArr.push(tempEnemy);
+		enemyGroup.push(tempEnemy.sprite);
 
 	}
 

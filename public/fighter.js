@@ -56,6 +56,10 @@ function Fighter(x, y, type)
 
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 45);
+	//this.sprite.sword.setCollider("circle", 0, 0, 110);
+	
+	
+
 
 }
 
@@ -68,19 +72,23 @@ function Fighter(x, y, type)
  */
 Fighter.prototype.walk = function(direction)
 {
-	if(direction == "up"){
+	if(direction == "up")
+	{
 		this.sprite.velocity.y = -this.speed;
 		this.sprite.sword.velocity.y = -this.speed;
 	}
-	else if(direction == "down"){
+	else if(direction == "down")
+	{
 		this.sprite.velocity.y = this.speed;
 		this.sprite.sword.velocity.y = this.speed;
 	}
-	else if(direction == "right"){
+	else if(direction == "right")
+	{
 		this.sprite.velocity.x = this.speed;
 		this.sprite.sword.velocity.x = this.speed;
 	}
-	else if(direction == "left"){
+	else if(direction == "left")
+	{
 		this.sprite.velocity.x = -this.speed;
 		this.sprite.sword.velocity.x = -this.speed;
 	}
@@ -88,30 +96,10 @@ Fighter.prototype.walk = function(direction)
 }
 
 /**
- * [swing Swings the characters sword]
- * @function
- * 
- */
-Fighter.prototype.swing = function()
-{
-	this.sprite.sword.visible = true;
-}
-
-/**
  * [die Runs the characters death animation]
  * @function
  */
 Fighter.prototype.die = function()
-{
-	this.sprite.remove();
-	this.sprite.sword.remove();
-}
-
-/**
- * [remove Removes the characters from the game]
- * @function
- */
-Fighter.prototype.remove = function()
 {
 	this.sprite.remove();
 	this.sprite.sword.remove();
@@ -126,10 +114,10 @@ Fighter.prototype.update = function()
 	this.sprite.rotation = degrees(atan2(camera.mouseY-this.sprite.position.y, camera.mouseX-this.sprite.position.x));
 	this.sprite.sword.rotation = degrees(atan2(camera.mouseY-this.sprite.sword.position.y, camera.mouseX-this.sprite.sword.position.x));
 
-	this.sprite.sword.setCollider(
-		"circle",
-		60 * cos(radians(this.sprite.rotation - 16)),
-		60 * sin(radians(this.sprite.rotation - 16)),
-		46
-	);
+	// this.sprite.setCollider(
+	// 	"circle",
+	// 	60 * cos(radians(this.sprite.rotation - 16)),
+	// 	60 * sin(radians(this.sprite.rotation - 16)),
+	// 	150
+	// );
 }
