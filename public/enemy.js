@@ -98,7 +98,7 @@ Enemy.prototype.update = function(playerArr)
 		}
 
 		this.sprite.bar.position.x = this.sprite.position.x;
-		this.sprite.bar.position.y = this.sprite.position.y - 50; 
+		this.sprite.bar.position.y = this.sprite.position.y - 50;
 		this.sprite.bar.shapeColor = "yellow";
 
 	}
@@ -130,8 +130,8 @@ Enemy.prototype.attack = function(enemy, player)
 	//player.health -= enemy.damage;
 	// reduceFullWidth(enemy.damage);
 
-	if(fullBar.width <= 0){
-		fullBar.width = 0;
+	if(fullHealthBar.width <= 0){
+		fullHealthBar.width = 0;
 	}
 	player.setSpeed(3, enemy.getDirection());
 
@@ -141,7 +141,7 @@ Enemy.prototype.attack = function(enemy, player)
 		player.position.x = random(50, width - 50);
 		player.position.y = random(50, height - 50);
 		player.health = 100;
-		fullBar.width = 100;
+		fullHealthBar.width = 100;
 		player.alive = true;
 
 

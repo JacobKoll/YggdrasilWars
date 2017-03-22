@@ -176,7 +176,7 @@ function draw()
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
-	
+
 
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
@@ -212,8 +212,8 @@ function draw()
 	{
 		localFighter.walk("right");
 	}
-	
-	
+
+
 	/* Invisible landscapeSprite around landscape */
 	if(localFighter.sprite.position.x < 0) {
 		localFighter.sprite.position.x = 0;
@@ -230,13 +230,7 @@ function draw()
 
 	if(mouseWentDown())
 	{
-		staminaBar.width -= 1;
-		if(staminaBar.width < 0){
-			staminaBar.width = 0;
-			localFighter.sprite.sword.visible = false;
-		}
-
-		score += 1;
+		reduceStaminaWidth();
 	}
 
 
