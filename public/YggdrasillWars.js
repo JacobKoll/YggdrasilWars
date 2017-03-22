@@ -207,6 +207,9 @@ function draw()
 	camera.position.x = localFighter.sprite.position.x;
 	camera.position.y = localFighter.sprite.position.y;
 
+ 	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
+	borderCamera();
+
 	if(keyDown('w'))
 	{
 		localFighter.walk("up");
@@ -287,4 +290,30 @@ function draw()
 	drawSprites();
 	drawSprite(cursorSprite);
 	
+}
+
+function borderCamera()
+{
+	var top = camera.position.y - (height / 2);
+	var bottom = camera.position.y + (height / 2);
+
+	var left = camera.position.x - (width / 2);
+	var right = camera.position.x + (width / 2);
+
+	if(top < 0)
+	{
+		camera.position.y = height/2;
+	}
+	if(bottom > SCENE_H)
+	{
+		camera.position.y = SCENE_H - height/2;
+	}
+	if(left < 0)
+	{
+		camera.position.x = width/2;
+	}
+	if(right > SCENE_W)
+	{
+		camera.position.x = SCENE_W	- width/2;
+	}
 }
