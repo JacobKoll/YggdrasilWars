@@ -69,10 +69,10 @@ function preload()
 
 	landscape = loadImage("assets/map.png")
 
-	//bush = loadImage("assets/obstacles/bush.png");
+	bush = loadImage("assets/obstacles/bush.png");
 
-	//footsteps = loadSound("assets/sounds/Marching.wav");
-	//swordSound = loadSound("assets/sounds/Woosh.wav");
+	footsteps = loadSound("assets/sounds/Marching.wav");
+	swordSound = loadSound("assets/sounds/Woosh.wav");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -97,20 +97,6 @@ function assignTypes()
 		speed: 5
 	};
 }
-
-// function mousePressed(){
-
-// 		swordSound.setVolume(0.3);
-
-// 		swordSound.loop();
-// }
-
-// function mouseReleased(){
-
-// 	swordSound.stop();
-// }
-// 
-
 
 function setup()
 {
@@ -179,11 +165,7 @@ function draw()
 	var staminaPosX = localFighter.sprite.position.x-300;
 	var staminaPosY = localFighter.sprite.position.y-340;
 
-
-	background(105, 200, 54); 
-
 	drawHud();
-
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
@@ -213,34 +195,18 @@ function draw()
 	if(keyDown('w'))
 	{
 		localFighter.walk("up");
-		// if(!footsteps.isPlaying()){
-		// 	footsteps.loop();
-
-		// }
 	}
 	if(keyDown('s'))
 	{
 		localFighter.walk("down");
-		// if(!footsteps.isPlaying()){
-		// 	footsteps.loop();
-
-		// }
 	}
 	if(keyDown('a'))
 	{
 		localFighter.walk("left");
-		// if(!footsteps.isPlaying()){
-		// 	footsteps.loop();
-
-		// }
 	}
 	if(keyDown('d'))
 	{
 		localFighter.walk("right");
-		// if(!footsteps.isPlaying()){
-		// 	footsteps.loop();
-
-		// }
 	}
 
 	/* Invisible landscapeSprite around landscape */
@@ -276,17 +242,10 @@ function draw()
 			
 		});
 
-
-	testSpawner.spawn();
-
 	testSpawner.spawn(enemyGroup);
-
 	testSpawner.updateAll(fighterArray);
 
-	if(localFighter.health == 0){
-		restoreFullWidth();
-	}	
-
+	
 	drawSprites();
 	drawSprite(cursorSprite);
 	
