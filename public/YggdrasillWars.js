@@ -153,6 +153,21 @@ function setup()
 
 }
 
+function keyReleased(){
+	if(keyCode == 80){
+		deleteMap();
+		console.log(":)");
+	}
+}
+
+function keyPressed(){
+	if(keyCode == 80){
+		console.log(">:)");
+		buildMap();
+		drawMap();
+	}
+}
+
 function draw()
 {
 	background(55,75,30);
@@ -197,16 +212,8 @@ function draw()
 	{
 		localFighter.walk("right");
 	}
-	if(keyDown('p')){
-		buildMap();
-		drawMap();
-
-	}
-	if(keyReleased(80)){
-		deleteMap();
-	}
-
-
+	
+	
 	/* Invisible landscapeSprite around landscape */
 	if(localFighter.sprite.position.x < 0) {
 		localFighter.sprite.position.x = 0;

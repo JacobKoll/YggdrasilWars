@@ -40,6 +40,8 @@ function Enemy(x, y, type)
 
 	this.sprite.damage = type.damage;
 
+	this.sprite.bar = createSprite(this.x, this.y, this.health, 10);
+
 	this.turnCounter = 0;
 
 	this.playerToChase;
@@ -94,6 +96,11 @@ Enemy.prototype.update = function(playerArr)
 			this.turnCounter++;
 
 		}
+
+		this.sprite.bar.position.x = this.sprite.position.x;
+		this.sprite.bar.position.y = this.sprite.position.y - 50; 
+		this.sprite.bar.shapeColor = "yellow";
+
 	}
 
 	if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
@@ -134,7 +141,9 @@ Enemy.prototype.attack = function(enemy, player)
 		player.position.x = random(50, width - 50);
 		player.position.y = random(50, height - 50);
 		player.health = 100;
+		fullBar.width = 100;
 		player.alive = true;
+
 
 		console.log("You died!");
 
