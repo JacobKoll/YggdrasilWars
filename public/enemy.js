@@ -4,13 +4,13 @@
 
 
 /**
- * 
- * 
+ *
+ *
  * This is the constructor for the most general type of enemy.
  * All future enemies will have the properties and methods that are declared here.
  *
  * @constructor
- * 
+ *
  * @param {Number} health          The amount of damage the monster can take before dying
  * @param {Number} x               The initial x-position of the enemy
  * @param {Number} y               The initial y-position of the enemy
@@ -37,7 +37,7 @@ function Enemy(x, y, type)
 	this.sprite.addAnimation('idle', type.idleAnimation);
 	this.sprite.addAnimation('walk', type.walkAnimation);
 	this.sprite.addAnimation('attack', type.attackAnimation);
-	
+
 	this.sprite.damage = type.damage;
 
 	this.turnCounter = 0;
@@ -50,10 +50,10 @@ function Enemy(x, y, type)
  * There is a certain range that if the player is outside, the monster just walks around randomly.
  *
  * @function
- * 
+ *
  * @param  {Group} playerGroup A Group object that contains all of fighter's sprites in the server
  */
-Enemy.prototype.update = function(playerArr) 
+Enemy.prototype.update = function(playerArr)
 {
 
 	var currDist;
@@ -63,7 +63,7 @@ Enemy.prototype.update = function(playerArr)
 	{
 		this.playerToChase = playerArr[0].sprite;
 	}
-	
+
 	chasedDist = dist(this.playerToChase.position.x, this.playerToChase.position.y, this.sprite.position.x, this.sprite.position.y);
 
 	// The monster will chase the player that is closest to it, in its view-range.
@@ -108,27 +108,27 @@ Enemy.prototype.update = function(playerArr)
  * Enemy's attack Animation is played and the player that is colliding takes an amount of damage defined in the constructor.
  *
  * @function
- * 
+ *
  * @param  {Sprite} enemy  The enemy that is one half of the collision.
  * @param  {Sprite} player The player that is the other half of the collision
  */
-Enemy.prototype.attack = function(enemy, player) 
+Enemy.prototype.attack = function(enemy, player)
 {
 
 	enemy.changeAnimation('attack');
 	player.health -= enemy.damage;
 
-	reduceFullWidth(enemy.damage);
+	reduceHealthWidth(enemy.damage);
 
 	if(fullBar.width <= 0){
 		fullBar.width = 0;
 	}
 	player.setSpeed(3, enemy.getDirection());
-	
+
 	if(player.health <= 0 && player.life < 0)
 	{
 		player.changeAnimation('death');
-	
+
 		//alert("You died. Score -5 (This will not pop up in the actual game)/");
 		console.log("You died!");
 		player.position.x = random(50, width - 50);

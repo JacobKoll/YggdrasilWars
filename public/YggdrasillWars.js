@@ -32,7 +32,7 @@ var cursorSprite;
 var SCENE_H = 1450;
 var SCENE_W = 2000;
 
-var score = 10; 
+var score = 10;
 
 var footsteps;
 var swordSound;
@@ -120,7 +120,7 @@ function setup()
 
 
 	localFighter = new Fighter(width / 2, height /2, knight);
-	
+
 
 	fighterArray.push(localFighter);
 
@@ -158,16 +158,7 @@ function setup()
 function draw()
 {
 
-	var hudPosX = localFighter.sprite.position.x-450;
-	var hudPosY = localFighter.sprite.position.y-340;
-
-	var scorePosX = localFighter.sprite.position.x+450;
-	var scorePosY = localFighter.sprite.position.y-340;
-
-	var staminaPosX = localFighter.sprite.position.x-300;
-	var staminaPosY = localFighter.sprite.position.y-340;
-
-	background(105, 200, 54); 
+	background(105, 200, 54);
 
 	background(105, 200, 54);
 
@@ -177,12 +168,11 @@ function draw()
 	cursorSprite.position.y = mouseY;
 
 
+	changeItemPosition(localFighter.sprite.position.x-150, localFighter.sprite.position.y+310);
+	changeHealthPosition(localFighter.sprite.position.x-440, localFighter.sprite.position.y-335);
+	changeStaminaPosition(localFighter.sprite.position.x-300, localFighter.sprite.position.y-335);
 
-	changeFullPosition(hudPosX, hudPosY);
-	changeEmptyPosition(hudPosX, hudPosY);
-	changeStaminaPosition(staminaPosX,staminaPosY);
-
-	text("Your current score" + score, scorePosX - 100, scorePosY);
+	text("Your current score" + score, localFighter.sprite.position.x+350, localFighter.sprite.position.y-340);
 
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
@@ -238,7 +228,7 @@ function draw()
 
 		score += 1;
 	}
-	
+
 
 	localFighter.update();
 
@@ -247,8 +237,8 @@ function draw()
 	testSpawner.spawn();
 	testSpawner.updateAll(fighterArray);
 
-	
+
 	drawSprites();
 	drawSprite(cursorSprite);
-	
+
 }
