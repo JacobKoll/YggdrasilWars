@@ -35,7 +35,7 @@ var cursorSprite;
 var SCENE_H = 1450;
 var SCENE_W = 2000;
 
-var score = 10; 
+var score = 10;
 
 var footsteps;
 var swordSound;
@@ -120,6 +120,7 @@ function setup()
 
 	localFighter = new Fighter(width / 2, height /2, knight);
 
+
 	fighterArray.push(localFighter);
 
 	createHud();
@@ -156,10 +157,12 @@ function draw()
 {
 	background(55,75,30);
 
+
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
 	
+
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
 	}
@@ -228,23 +231,24 @@ function draw()
 
 		score += 1;
 	}
-	
+
 
 	localFighter.update();
 
 	localFighter.sprite.sword.overlap(enemyGroup, function(sword, enemy)
 		{
-			
+
 		});
 
 	testSpawner.spawn(enemyGroup);
 	testSpawner.updateAll(fighterArray);
 
-	
+
 	drawSprites();
 	drawSprite(cursorSprite);
 
 	drawHud();
+
 
 
 
