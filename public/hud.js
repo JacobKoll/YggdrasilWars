@@ -20,9 +20,7 @@ function createHud(){
     items.add(item);
   }
 
-
-
-}
+}	
 
 function drawHud(){
 
