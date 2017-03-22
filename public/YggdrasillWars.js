@@ -156,26 +156,10 @@ function draw()
 {
 	background(55,75,30);
 
-	var hudPosX = localFighter.sprite.position.x-450;
-	var hudPosY = localFighter.sprite.position.y-340;
-
-	var scorePosX = localFighter.sprite.position.x+450;
-	var scorePosY = localFighter.sprite.position.y-340;
-
-	var staminaPosX = localFighter.sprite.position.x-300;
-	var staminaPosY = localFighter.sprite.position.y-340;
-
-	drawHud();
-
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
-	changeFullPosition(hudPosX, hudPosY);
-	changeEmptyPosition(hudPosX, hudPosY);
-	changeStaminaPosition(staminaPosX,staminaPosY);
-
-	text("Your current score" + score, scorePosX - 100, scorePosY);
-
+	
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
 	}
@@ -188,6 +172,8 @@ function draw()
 
 	camera.position.x = localFighter.sprite.position.x;
 	camera.position.y = localFighter.sprite.position.y;
+
+
 
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
@@ -208,6 +194,15 @@ function draw()
 	{
 		localFighter.walk("right");
 	}
+	if(keyDown('p')){
+		buildMap();
+		drawMap();
+
+	}
+	if(keyReleased(80)){
+		deleteMap();
+	}
+
 
 	/* Invisible landscapeSprite around landscape */
 	if(localFighter.sprite.position.x < 0) {
@@ -248,7 +243,11 @@ function draw()
 	
 	drawSprites();
 	drawSprite(cursorSprite);
-	
+
+	drawHud();
+
+
+
 }
 
 function borderCamera()

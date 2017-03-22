@@ -33,45 +33,8 @@ function createHud(){
 
 }	
 
-function drawHud(){
-	
-	//stamina.innerHTML = "Your health: " + health.value;
 
 
-}
-
-function moveHud(x){
-  fullBar.maxSpeed = 1;
-  emptyBar.maxSpeed = 1; 
-//move left
-  if(x == 1){
-    fullBar.velocity.x = -5;
-    emptyBar.velocity.x = -5;
-  }
-  //move right
-  else if(x == 2){
-    fullBar.velocity.x = 5;
-    emptyBar.velocity.x = 5;
-
-  }
-  //move up
-  else if(x == 3){
-        fullBar.velocity.y = -5;
-    emptyBar.velocity.y = -5;
-
-  }
-  //move down
-  else if(x == 4){
-    fullBar.velocity.x = 5;
-    emptyBar.velocity.x = 5; 
-
-  }
-else{
-
-return;
-}
-
-}
 
 function changeFullPosition(xPos, yPos){
 
@@ -105,11 +68,26 @@ function reduceFullWidth(newWidth){
 }
 
 
-function stopHud(){
 
-   fullBar.velocity.x = 0;
-    emptyBar.velocity.x = 0; 
-     fullBar.velocity.y = 0;
-    emptyBar.velocity.y = 0; 
+
+
+function drawHud(){
+  
+  var hudPosX = camera.position.x-450;
+  var hudPosY = camera.position.y-340;
+
+  var scorePosX = camera.position.x+450;
+  var scorePosY = camera.position.y-340;
+
+  var staminaPosX = camera.position.x-300;
+  var staminaPosY = camera.position.y-340;
+
+  changeFullPosition(hudPosX, hudPosY);
+  changeEmptyPosition(hudPosX, hudPosY);
+  changeStaminaPosition(staminaPosX,staminaPosY);
+  
+  text("Your current score" + score, scorePosX - 100, scorePosY);
+
+
 }
 //NOTE: CHECK IF SOLDIER IS AT THE BORDER. IF HE IS, SET IT TO SOMETHING.
