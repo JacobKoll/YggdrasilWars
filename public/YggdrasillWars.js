@@ -8,6 +8,8 @@ var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
 var landscape;
+var emptyInventoryImage;
+var basicSwordImage;
 
 
 var localFighter;
@@ -66,8 +68,9 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
-
 	landscape = loadImage("assets/map.png")
+	emptyInventoryImage = loadImage("assets/emptyInventory.png")
+	basicSwordImage = loadImage("assets/basicSword.png")
 
 	bush = loadImage("assets/obstacles/bush.png");
 
@@ -122,7 +125,7 @@ function setup()
 
 
 	fighterArray.push(localFighter);
-
+	// initStartItems();
 	createHud();
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */

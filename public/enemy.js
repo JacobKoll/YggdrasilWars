@@ -142,6 +142,7 @@ Enemy.prototype.attack = function(enemy, player)
 		player.position.y = random(50, height - 50);
 		player.health = 100;
 		fullHealthBar.width = 100;
+		fullStaminaBar.width = 100;
 		player.alive = true;
 
 
