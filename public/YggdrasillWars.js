@@ -204,11 +204,11 @@ function draw()
 
 	socket.on('updateFighters', function(data)
 	{	
-		if(data.length > fightersArr.length)
+		if(data.length > fighterArray.length)
 		{
 			for(var i = 0; i<data.length; i++)
 			{	
-				fightersArr[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+				fighterArray[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
 			}
 		}
 		for(var i = 0; i < data.length; i++)
@@ -236,6 +236,7 @@ function draw()
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
+
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
