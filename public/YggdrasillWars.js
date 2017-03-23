@@ -180,26 +180,26 @@ function setup()
 
 	socket.on('updateFighters', function(data)
 	{	
-		if(data.length > fightersArr.length)
+		if(data.length > fighterArray.length)
 		{
 			for(var i = 0; i<data.length; i++)
 			{	
-				fightersArr[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+				fighterArray[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
 			}
 		}
 		for(var i = 0; i < data.length; i++)
 		{
-			fightersArr[i].health = data[i].health;
-			fightersArr[i].alive = data[i].alive;
-			fightersArr[i].sprite.position.x = data[i].x;
-			fightersArr[i].sprite.position.y = data[i].y;
-			fightersArr[i].sword.visible = data[i].swinging;
-			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
-			fightersArr[i].sprite.debug = data[i].spriteDebug;
-			fightersArr[i].sword.debug = data[i].swordDebug;
-			fightersArr[i].sprite.rotation = data[i].rot;
+			fighterArray[i].health = data[i].health;
+			fighterArray[i].alive = data[i].alive;
+			fighterArray[i].sprite.position.x = data[i].x;
+			fighterArray[i].sprite.position.y = data[i].y;
+			fighterArray[i].sword.visible = data[i].swinging;
+			fighterArray[i].sprite.changeAnimation(data[i].currAnimation);
+			fighterArray[i].sprite.debug = data[i].spriteDebug;
+			fighterArray[i].sword.debug = data[i].swordDebug;
+			fighterArray[i].sprite.rotation = data[i].rot;
 		}
-	}
+	});
 
 	createHud();
 }
@@ -211,6 +211,7 @@ function draw()
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
+
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
