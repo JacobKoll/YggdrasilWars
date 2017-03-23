@@ -6,19 +6,26 @@ function createHud(){
   items = new Group();
 
   emptyHealthBar = createSprite(0,100,100,40);
+  emptyHealthBar.depth = 1500;
   fullHealthBar = createSprite(0,10,100,40);
+  fullHealthBar.depth = 1501;
   emptyStaminaBar = createSprite(0,200,100,40);
+  emptyStaminaBar.depth = 1502;
   fullStaminaBar = createSprite(0,200,100,40);
+  fullStaminaBar.depth = 1503;
 
   fullHealthBar.shapeColor = color("red");
   emptyHealthBar.shapeColor = color("black");
   fullStaminaBar.shapeColor = color("blue");
   emptyStaminaBar.shapeColor = color("black");
 
+  var itemDepth = 1504;
   for(i = 0; i < 4; i++){
     var item  = createSprite(0,0,90,90);
     item.shapeColor = color("black");
+    item.depth = itemDepth;
     items.add(item);
+    itemDepth++;
   }
 
 }

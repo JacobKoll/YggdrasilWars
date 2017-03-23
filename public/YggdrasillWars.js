@@ -148,29 +148,58 @@ function setup()
 
 
 	socket.on('updateObstacles', function(data) {
+		var obsDepth = 500;
 		if (initializedObs == 0) {
 			console.log("Recieved Obstacles");
 			for (var i=0; i < data.length; i++) {
 				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+				obstacle.sprite.depth = obsDepth;
 				obstacle.sprite.setCollider('circle',0,0,bush.width/3);
 				obstaclesArr.push(obstacle);
 				obstacleGroup.add(obstacle.sprite);
+				obsDepth++;
 			}
 			initializedObs = 1;
 		}
 	});
 
 	socket.on('updateChests', function(chestData) {
+		var cheDepth = 1000;
 		if (initializedChe == 0){
 			console.log("Recieved Chests");
 			for (i=0; i<chestData.length; i++) {
 				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
+				chest.sprite.depth = cheDepth;
 				chestArr.push(chest);
 				chestGroup.add(chest.sprite);
+				cheDepth++;
 			}
 			initializedChe = 1;
 		}
 	});
+
+	socket.on('updateFighters', function(data)
+	{	
+		if(data.length > fightersArr.length)
+		{
+			for(var i = 0; i<data.length; i++)
+			{	
+				fightersArr[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+			}
+		}
+		for(var i = 0; i < data.length; i++)
+		{
+			fightersArr[i].health = data[i].health;
+			fightersArr[i].alive = data[i].alive;
+			fightersArr[i].sprite.position.x = data[i].x;
+			fightersArr[i].sprite.position.y = data[i].y;
+			fightersArr[i].sword.visible = data[i].swinging;
+			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
+			fightersArr[i].sprite.debug = data[i].spriteDebug;
+			fightersArr[i].sword.debug = data[i].swordDebug;
+			fightersArr[i].sprite.rotation = data[i].rot;
+		}
+	}
 
 	createHud();
 }
@@ -182,13 +211,6 @@ function draw()
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
-
-	for (var i = 0; i<obstaclesArr.length; i++) {
-		obstaclesArr[i].update;
-	}
-	for (var i = 0; i<chestArr.length; i++) {
-		chestArr[i].update;
-	}
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
@@ -210,6 +232,7 @@ function draw()
 		if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
 			if (keyDown('e')) {
 				chestArr[i].open();
+				chestArr[i].update;
 			}
 		}
 	}
@@ -270,6 +293,7 @@ function draw()
 	drawSprites();
 	drawSprite(cursorSprite);
 
+	
 	drawHud();
 
 }

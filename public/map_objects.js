@@ -53,6 +53,7 @@ function Chest(x, y, openImage, closedImage) {
 	this.y = y;
 	this.image = closedImage;
 
+
 	this.update = function() {
 		this.sprite.changeAnimation('image');
 	};
