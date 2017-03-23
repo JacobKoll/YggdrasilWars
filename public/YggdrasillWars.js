@@ -8,7 +8,8 @@ var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
 var landscape;
-
+var initializedObs;
+var initializedChe;
 
 var localFighter;
 
@@ -30,18 +31,20 @@ var spawnerGroup;
 
 var enemyArray = [];
 var fighterArray = [];
+var spawnerArray = [];
 
 var cursorSprite;
 var SCENE_H = 1450;
 var SCENE_W = 2000;
 
-var score = 10; 
+var score = 10;
 
 var footsteps;
 var swordSound;
 
 /* TODO: delete this after testing. */
 var testSpawner;
+var testSpawner2;
 
 /* Enemy Types */
 var goblin;
@@ -69,7 +72,7 @@ function preload()
 
 	landscape = loadImage("assets/map.png")
 
-	//bush = loadImage("assets/obstacles/bush.png");
+	bush = loadImage("assets/obstacles/bush.png");
 
 	//footsteps = loadSound("assets/sounds/Marching.wav");
 	//swordSound = loadSound("assets/sounds/Woosh.wav");
@@ -94,7 +97,8 @@ function assignTypes()
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
 		health: 100,
-		speed: 3
+		speed: 3,
+		damage: 2.53
 	};
 }
 
@@ -102,12 +106,14 @@ function setup()
 {
 
 	createCanvas(1000, 725);
-	camera.zoom = .672;
-	// landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
-	// landscapeSprite.addImage(landscape);
-	// landscapeSprite.depth = 1;
+
+	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
+	landscapeSprite.addImage(landscape);
+	landscapeSprite.depth = 1;
 
 	assignTypes();
+	initializedObs = 0;
+	initializedChe = 0;
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -119,15 +125,12 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	localFighter = new Fighter(450, 160, knight);
+	localFighter = new Fighter(1450, 960, knight);
 
 	localFighter.depth = 10;
 
 	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
-
-
-	createHud();
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -135,54 +138,50 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-	testSpawner = new EnemySpawner(400, 163, goblin, .5, 1, spawnerImage);
+	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
 	testSpawner.sprite.depth = 1;
+	spawnerArray.push(testSpawner);
+	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 18, spawnerImage);
+	testSpawner2.sprite.depth = 1;
+	spawnerArray.push(testSpawner2);
 
-	socket.on('generateObstacles', function(data) {
-		for (var i=0; i<data.length; i++) 
-		{
-			var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
-			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
-			obstaclesArr.push(obstacle);
-			bg.add(obstacle.sprite);
+
+
+	socket.on('updateObstacles', function(data) {
+		if (initializedObs == 0) {
+			console.log("Recieved Obstacles");
+			for (var i=0; i < data.length; i++) {
+				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+				obstacle.sprite.setCollider('circle',0,0,bush.width/3);
+				obstaclesArr.push(obstacle);
+				obstacleGroup.add(obstacle.sprite);
+			}
+			initializedObs = 1;
 		}
 	});
 
-	socket.on('generateChests', function(chestData) 
-	{
-		for (i=0; i<chestData.length; i++) {
-			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
-			chestArr.push(chest);
-			bg.add(chest.sprite);
+	socket.on('updateChests', function(chestData) {
+		if (initializedChe == 0){
+			console.log("Recieved Chests");
+			for (i=0; i<chestData.length; i++) {
+				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
+				chestArr.push(chest);
+				chestGroup.add(chest.sprite);
+			}
+			initializedChe = 1;
 		}
 	});
 
-
-
+	createHud();
 }
 
 function draw()
 {
 	background(55,75,30);
 
-	var hudPosX = localFighter.sprite.position.x-450;
-	var hudPosY = localFighter.sprite.position.y-340;
-
-	var scorePosX = localFighter.sprite.position.x+450;
-	var scorePosY = localFighter.sprite.position.y-340;
-
-	var staminaPosX = localFighter.sprite.position.x-300;
-	var staminaPosY = localFighter.sprite.position.y-340;
-
-	drawHud();
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
-
-	changeFullPosition(hudPosX, hudPosY);
-	changeEmptyPosition(hudPosX, hudPosY);
-	changeStaminaPosition(staminaPosX,staminaPosY);
-
 
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
@@ -196,6 +195,24 @@ function draw()
 
 	camera.position.x = localFighter.sprite.position.x;
 	camera.position.y = localFighter.sprite.position.y;
+
+ 	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
+	borderCamera();
+
+	if (localFighter.sprite.overlap(obstacleGroup)) {
+		localFighter.sprite.bounce(obstacleGroup);
+	};
+	for (var i=0; i<chestArr.length; i++) {
+		if (localFighter.sprite.overlap(chestArr[i].sprite)) {
+			localFighter.sprite.bounce(chestArr[i].sprite);
+		}
+
+		if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
+			if (keyDown('e')) {
+				chestArr[i].open();
+			}
+		}
+	}
 
 	if(keyDown('w'))
 	{
@@ -239,29 +256,46 @@ function draw()
 
 	if(mouseWentDown())
 	{
-		staminaBar.width -= 1;
-
-		if(staminaBar.width < 0){
-			staminaBar.width = 0;
-			localFighter.sprite.sword.visible = false;
-		}
-
-		score += 1;
+		reduceStaminaWidth();
 	}
-	
+
 
 	localFighter.update(enemyGroup);
 
+	for (var i = 0; i < spawnerArray.length; i++) {
+		spawnerArray[i].spawn(enemyGroup);
+		spawnerArray[i].updateAll(fighterArray);
+	}
 
-	testSpawner.spawn(enemyGroup);
-	testSpawner.updateAll(fighterArray);
-
-	
 	drawSprites();
 	drawSprite(cursorSprite);
-	
-	stroke('black');
-	textSize(32.5);
-	fill('white');
-	text("Score: " + score, scorePosX - 65, scorePosY);
+
+	drawHud();
+
+}
+
+function borderCamera()
+{
+	var top = camera.position.y - (height / 2);
+	var bottom = camera.position.y + (height / 2);
+
+	var left = camera.position.x - (width / 2);
+	var right = camera.position.x + (width / 2);
+
+	if(top < 0)
+	{
+		camera.position.y = height/2;
+	}
+	if(bottom > SCENE_H)
+	{
+		camera.position.y = SCENE_H - height/2;
+	}
+	if(left < 0)
+	{
+		camera.position.x = width/2;
+	}
+	if(right > SCENE_W)
+	{
+		camera.position.x = SCENE_W	- width/2;
+	}
 }

@@ -49,6 +49,7 @@ function Fighter(x, y, type)
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
 	this.sprite.sword.debug = true;
+	this.sprite.sword.damage = type.damage;
 
 	this.sprite.sword.addAnimation('swing', type.swingAnimation);
 
