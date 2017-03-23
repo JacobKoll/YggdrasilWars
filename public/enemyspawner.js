@@ -26,7 +26,7 @@ function EnemySpawner(x, y, enemyType, rate, limit, image)
 
 	this.sprite = createSprite(x, y);
 	this.sprite.addImage(image);
-	this.sprite.scale = 2;
+	this.sprite.scale = 2.63;
 	this.sprite.debug = true;
 	this.spawn;
 	this.timer = 0;
@@ -44,17 +44,18 @@ EnemySpawner.prototype.spawn = function(enemyGroup)
 		this.spawnCount++;
 
 		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
-
 		this.enemyArr.push(tempEnemy);
 		enemyGroup.push(tempEnemy.sprite);
 
 	}
-
+	
 	this.timer++;
 };
 
-EnemySpawner.prototype.updateAll = function(fighterArr) {
-	for (var i = 0; i < this.enemyArr.length; i++) {
+EnemySpawner.prototype.updateAll = function(fighterArr) 
+{
+	for (var i = 0; i < this.enemyArr.length; i++) 
+	{
 		this.enemyArr[i].update(fighterArr);
 	}
 };

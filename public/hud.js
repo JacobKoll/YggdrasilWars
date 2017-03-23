@@ -1,115 +1,95 @@
-var health;
-var stamina;
-var score; 
-var hud; 
+var items;
 
 
 function createHud(){
-	// health = document.createElement("PROGRESS");
- //    health.setAttribute("value", "100");
- //    health.setAttribute("max", "100");
 
- //    health.style.left = 0;
- //    health.style.up = 0; 
- //    health.style.position = "fixed";
+  items = new Group();
 
- //    stamina = document.createElement("CODE");
-  
- //  	stamina.style.left = 0;
- //  	stamina.style.up = 0; 
-    
- //    stamina.style.position = "fixed";
+  emptyHealthBar = createSprite(0,100,100,40);
+  emptyHealthBar.depth = 1500;
+  fullHealthBar = createSprite(0,10,100,40);
+  fullHealthBar.depth = 1501;
+  emptyStaminaBar = createSprite(0,200,100,40);
+  emptyStaminaBar.depth = 1502;
+  fullStaminaBar = createSprite(0,200,100,40);
+  fullStaminaBar.depth = 1503;
 
- //    document.body.appendChild(health);
- //    document.body.appendChild(stamina);
+  fullHealthBar.shapeColor = color("red");
+  emptyHealthBar.shapeColor = color("black");
+  fullStaminaBar.shapeColor = color("blue");
+  emptyStaminaBar.shapeColor = color("black");
 
-  emptyBar = createSprite(0,100,100,40);
-  staminaBar = createSprite(0,200,100,40);
-  fullBar = createSprite(0,10,100,40);  
-
-  fullBar.shapeColor = color("red");
-  emptyBar.shapeColor = color(0,0,0);
-  staminaBar.shapeColor = color("blue");
-
-}	
-
-function drawHud(){
-	
-	//stamina.innerHTML = "Your health: " + health.value;
-
+  var itemDepth = 1504;
+  for(i = 0; i < 4; i++){
+    var item  = createSprite(0,0,90,90);
+    item.shapeColor = color("black");
+    item.depth = itemDepth;
+    items.add(item);
+    itemDepth++;
+  }
 
 }
 
-function moveHud(x){
-  fullBar.maxSpeed = 1;
-  emptyBar.maxSpeed = 1; 
-//move left
-  if(x == 1){
-    fullBar.velocity.x = -5;
-    emptyBar.velocity.x = -5;
-  }
-  //move right
-  else if(x == 2){
-    fullBar.velocity.x = 5;
-    emptyBar.velocity.x = 5;
 
-  }
-  //move up
-  else if(x == 3){
-        fullBar.velocity.y = -5;
-    emptyBar.velocity.y = -5;
 
-  }
-  //move down
-  else if(x == 4){
-    fullBar.velocity.x = 5;
-    emptyBar.velocity.x = 5; 
 
-  }
-else{
+function changeHealthPosition(xPos, yPos){
 
-return;
-}
+  fullHealthBar.position.x = xPos;
+  fullHealthBar.position.y = yPos;
+  emptyHealthBar.position.x = xPos;
+  emptyHealthBar.position.y = yPos;
 
-}
-
-function changeFullPosition(xPos, yPos){
-
-  fullBar.position.x = xPos;
-  
-  fullBar.position.y = yPos;
-
-}
-
-function changeEmptyPosition(xPos, yPos){
-
-  emptyBar.position.x = xPos;
-  emptyBar.position.y = yPos;
 }
 
 function changeStaminaPosition(xPos,yPos){
 
+  fullStaminaBar.position.x = xPos;
+  fullStaminaBar.position.y = yPos;
+  emptyStaminaBar.position.x = xPos;
+  emptyStaminaBar.position.y = yPos;
 
-  staminaBar.position.x = xPos;
-  staminaBar.position.y = yPos;
 }
 
-function reduceFullWidth(newWidth){
+function changeItemPosition(xPos,yPos){
+  var xPosShift = xPos;
+  for(i = 0; i < 4; i++){
+    items[i].position.x = xPosShift;
+    items[i].position.y = yPos;
+    xPosShift += 100;
+  }
+}
 
-  fullBar.width -= newWidth;
-  if(fullBar.width <= 0){
-    fullBar.width = 0;
+function reduceHealthWidth(newWidth){
+
+  fullHealthBar.width -= newWidth;
+  if(fullHealthBar.width <= 0){
+    fullHealthBar.width = 0;
 
   }
 
 }
 
+function reduceStaminaWidth(){
 
-function stopHud(){
+  fullStaminaBar.width -= 5;
+  if(fullStaminaBar.width < 0){
+    fullStaminaBar.width = 0;
 
-   fullBar.velocity.x = 0;
-    emptyBar.velocity.x = 0; 
-     fullBar.velocity.y = 0;
-    emptyBar.velocity.y = 0; 
+  }
+  score ++;
+
 }
-//NOTE: CHECK IF SOLDIER IS AT THE BORDER. IF HE IS, SET IT TO SOMETHING.
+
+function drawHud(){
+
+  changeItemPosition(camera.position.x-150, camera.position.y+310);
+  changeHealthPosition(camera.position.x-440, camera.position.y-335);
+  changeStaminaPosition(camera.position.x-300, camera.position.y-335);
+  
+  stroke('black');
+  textSize(24);
+  fill('white');
+  text("Score: " + score, camera.position.x+350, camera.position.y-340);
+
+}
