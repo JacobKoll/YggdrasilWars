@@ -214,6 +214,15 @@ function draw()
 		localFighter.walk("right");
 	}
 
+	if(mouseDown())
+	{
+		localFighter.sprite.sword.visible = true;
+	}
+	else
+	{
+		localFighter.sprite.sword.visible = false;
+	}
+
 	/* Invisible landscapeSprite around landscape */
 	if(localFighter.sprite.position.x < 0) {
 		localFighter.sprite.position.x = 0;
@@ -254,5 +263,5 @@ function draw()
 	stroke('black');
 	textSize(32.5);
 	fill('white');
-	text("Your current score: " + score, scorePosX - 65, scorePosY);
+	text("Score: " + score, scorePosX - 65, scorePosY);
 }

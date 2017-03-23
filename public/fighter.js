@@ -56,7 +56,7 @@ function Fighter(x, y, type)
 
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 30);
-	this.sprite.sword.setCollider("circle", 0, 0, 115);
+	this.sprite.sword.setCollider("circle", 0, 0, 107);
 	
 	this.sprite.scale = .8;
 	this.sprite.sword.scale = .8;
@@ -121,8 +121,9 @@ Fighter.prototype.attack = function(sword, enemy)
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
-	if(diffAngle <= 28 && diffAngle >= -32)
+	if(diffAngle <= 28 && diffAngle >= -32 && mouseDown())
 	{
 		enemy.health -= sword.damage;
+		console.log("Enemy was hit");
 	}	
 };

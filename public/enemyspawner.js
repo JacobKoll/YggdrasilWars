@@ -43,7 +43,7 @@ EnemySpawner.prototype.spawn = function(enemyGroup)
 	{
 		this.spawnCount++;
 
-		tempEnemy = new Enemy(this.x + 150, this.y  + 250, this.enemyType);
+		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
 		this.enemyArr.push(tempEnemy);
 		enemyGroup.push(tempEnemy.sprite);
 
