@@ -123,6 +123,17 @@ function setup()
 
 	localFighter = new Fighter(width / 2, height /2, knight);
 
+	var localFighterData = {
+		health: localFighter.health,
+		alive: localFighter.alive,
+		x: localFighter.sprite.position.x,
+		y: localFighter.sprite.position.y,
+		currAnimation: localFighter.sprite.getAnimationLabel(),
+		spriteDebug: localFighter.sprite.debug,
+		swordDebug: localFighter.sprite.sword.debug,
+		rot: localFighter.sprite.rotation
+	}
+	socket.emit('start', localFighterData);
 
 	fighterArray.push(localFighter);
 
@@ -166,6 +177,22 @@ function setup()
 		}
 	});
 
+	createHud();
+}
+
+function draw()
+{
+	background(55,75,30);
+
+	cursorSprite.position.x = mouseX;
+	cursorSprite.position.y = mouseY;
+
+	cursorSprite.position.x = camera.mouseX;
+	cursorSprite.position.y = camera.mouseY;
+
+	camera.position.x = localFighter.sprite.position.x;
+	camera.position.y = localFighter.sprite.position.y;
+
 	socket.on('updateFighters', function(data)
 	{	
 		if(data.length > fightersArr.length)
@@ -181,6 +208,7 @@ function setup()
 			fightersArr[i].alive = data[i].alive;
 			fightersArr[i].sprite.position.x = data[i].x;
 			fightersArr[i].sprite.position.y = data[i].y;
+			fightersArr[i].sprite.depth = i + 50;
 			fightersArr[i].sword.visible = data[i].swinging;
 			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
 			fightersArr[i].sprite.debug = data[i].spriteDebug;
@@ -188,33 +216,6 @@ function setup()
 			fightersArr[i].sprite.rotation = data[i].rot;
 		}
 	}
-
-	createHud();
-}
-
-function draw()
-{
-	background(55,75,30);
-
-
-	cursorSprite.position.x = mouseX;
-	cursorSprite.position.y = mouseY;
-
-
-	// for (var i = 0; i<obstaclesArr.length; i++) {
-	// 	obstaclesArr[i].update;
-	// }
-	// for (var i = 0; i<chestArr.length; i++) {
-	// 	chestArr[i].update;
-	// }
-
-	cursorSprite.position.x = camera.mouseX;
-	cursorSprite.position.y = camera.mouseY;
-
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
-
-
 
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
