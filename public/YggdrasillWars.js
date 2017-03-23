@@ -31,6 +31,7 @@ var spawnerGroup;
 
 var enemyArray = [];
 var fighterArray = [];
+var spawnerArray = [];
 
 var cursorSprite;
 var SCENE_H = 1450;
@@ -43,6 +44,7 @@ var swordSound;
 
 /* TODO: delete this after testing. */
 var testSpawner;
+var testSpawner2;
 
 /* Enemy Types */
 var goblin;
@@ -85,8 +87,8 @@ function assignTypes()
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
 		damage: .7,
-		speed: 10,
-		detectionRadius: 250
+		speed: 1.8,
+		detectionRadius: 225
 	};
 
 	knight = {
@@ -95,7 +97,8 @@ function assignTypes()
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
 		health: 100,
-		speed: 5
+		speed: 3,
+		damage: 2.53
 	};
 }
 
@@ -106,6 +109,7 @@ function setup()
 
 	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
+	landscapeSprite.depth = 1;
 
 	assignTypes();
 	initializedObs = 0;
@@ -121,7 +125,7 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	localFighter = new Fighter(width / 2, height /2, knight);
+	localFighter = new Fighter(1450, 960, knight);
 
 	var localFighterData = {
 		health: localFighter.health,
@@ -136,6 +140,7 @@ function setup()
 	socket.emit('start', localFighterData);
 
 	fighterArray.push(localFighter);
+	fighterGroup.push(localFighter.sprite);
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -143,8 +148,14 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
+	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
+	testSpawner.sprite.depth = 1;
+	spawnerArray.push(testSpawner);
+	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 18, spawnerImage);
+	testSpawner2.sprite.depth = 1;
+	spawnerArray.push(testSpawner2);
 
-	testSpawner = new EnemySpawner(35, 60, goblin, .5, 5, spawnerImage);
+
 
 	socket.on('updateObstacles', function(data) {
 		var obsDepth = 500;
@@ -217,6 +228,26 @@ function draw()
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	createHud();
+}
+
+function draw()
+{
+	background(55,75,30);
+
+
+	cursorSprite.position.x = mouseX;
+	cursorSprite.position.y = mouseY;
+
+	cursorSprite.position.x = camera.mouseX;
+	cursorSprite.position.y = camera.mouseY;
+
+	camera.position.x = localFighter.sprite.position.x;
+	camera.position.y = localFighter.sprite.position.y;
+
+>>>>>>> e8880e2dbe2aba6056acde5fa1be1c7be7cfcf9b
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
 
@@ -253,6 +284,14 @@ function draw()
 		localFighter.walk("right");
 	}
 
+	if(mouseDown())
+	{
+		localFighter.sprite.sword.visible = true;
+	}
+	else
+	{
+		localFighter.sprite.sword.visible = false;
+	}
 
 	/* Invisible landscapeSprite around landscape */
 	if(localFighter.sprite.position.x < 0) {
@@ -274,16 +313,12 @@ function draw()
 	}
 
 
-	localFighter.update();
+	localFighter.update(enemyGroup);
 
-	localFighter.sprite.sword.overlap(enemyGroup, function(sword, enemy)
-		{
-
-		});
-
-	testSpawner.spawn(enemyGroup);
-	testSpawner.updateAll(fighterArray);
-
+	for (var i = 0; i < spawnerArray.length; i++) {
+		spawnerArray[i].spawn(enemyGroup);
+		spawnerArray[i].updateAll(fighterArray);
+	}
 
 	drawSprites();
 	drawSprite(cursorSprite);

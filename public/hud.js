@@ -86,7 +86,10 @@ function drawHud(){
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition(camera.position.x-440, camera.position.y-335);
   changeStaminaPosition(camera.position.x-300, camera.position.y-335);
-
-  text("Your current score" + score, camera.position.x+350, camera.position.y-340);
+  
+  stroke('black');
+  textSize(24);
+  fill('white');
+  text("Score: " + score, camera.position.x+350, camera.position.y-340);
 
 }
