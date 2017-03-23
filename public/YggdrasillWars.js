@@ -126,8 +126,6 @@ function setup()
 
 	fighterArray.push(localFighter);
 
-	createHud();
-
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
@@ -162,6 +160,7 @@ function setup()
 		}
 	});
 
+	createHud();
 }
 
 function draw()
@@ -171,7 +170,6 @@ function draw()
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
-
 
 
 	for (var i = 0; i<obstaclesArr.length; i++) {
@@ -191,6 +189,21 @@ function draw()
 
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
+
+	if (localFighter.sprite.overlap(obstacleGroup)) {
+		localFighter.sprite.bounce(obstacleGroup);
+	};
+	for (var i=0; i<chestArr.length; i++) {
+		if (localFighter.sprite.overlap(chestArr[i].sprite)) {
+			localFighter.sprite.bounce(chestArr[i].sprite);
+		}
+
+		if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
+			if (keyDown('e')) {
+				chestArr[i].open();
+			}
+		}
+	}
 
 	if(keyDown('w'))
 	{

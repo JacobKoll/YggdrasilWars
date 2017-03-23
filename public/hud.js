@@ -17,7 +17,7 @@ function createHud(){
 
   for(i = 0; i < 4; i++){
     var item  = createSprite(0,0,90,90);
-    item.shapeColor = color("white");
+    item.shapeColor = color("black");
     items.add(item);
   }
 

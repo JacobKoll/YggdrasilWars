@@ -93,6 +93,19 @@ Enemy.prototype.update = function(playerArr)
 				this.sprite.rotationSpeed = 0;
 			}
 
+			if(this.sprite.position.x < 0) {
+				this.sprite.position.x = 0;
+			}
+			if(this.sprite.position.y < 0) {
+			    this.sprite.position.y = 0;
+			}
+			if(this.sprite.position.x > SCENE_W) {
+			    this.sprite.position.x = SCENE_W;
+			}
+			if(this.sprite.position.y > SCENE_H) {
+			    this.sprite.position.y = SCENE_H;
+			}
+
 			this.turnCounter++;
 
 		}

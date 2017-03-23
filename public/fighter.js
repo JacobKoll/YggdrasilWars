@@ -56,7 +56,7 @@ function Fighter(x, y, type)
 
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 45);
-	//this.sprite.sword.setCollider("circle", 0, 0, 110);
+	this.sprite.sword.setCollider("circle", 0, 0, 110);
 	
 	
 
