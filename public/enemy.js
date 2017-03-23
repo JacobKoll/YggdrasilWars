@@ -21,18 +21,16 @@
 function Enemy(x, y, type)
 {
 	this.health = type.health;
-	this.x = x;
-	this.y = y;
 	this.speed = type.speed;
 	this.detectionRadius = type.detectionRadius;
 
-	this.sprite = createSprite(this.x, this.y, 32, 32);
-	//this.sprite.scale = .018;
-	this.sprite.setCollider('circle', 0, 0, 50);
+	this.sprite = createSprite(x, y, 32, 32);
+	this.sprite.setCollider('circle', 0, 0, 30);
 	this.sprite.debug = true;
 	this.sprite.rotateToDirection = true;
 	this.sprite.gravity = .5;
-	this.sprite.maxSpeed = 2.6;
+	this.sprite.maxSpeed = type.speed;
+	this.sprite.health = type.health;
 
 	this.sprite.addAnimation('idle', type.idleAnimation);
 	this.sprite.addAnimation('walk', type.walkAnimation);
@@ -41,6 +39,8 @@ function Enemy(x, y, type)
 	this.sprite.damage = type.damage;
 
 	this.turnCounter = 0;
+
+	this.sprite.scale = .62
 
 	this.playerToChase;
 }
@@ -75,15 +75,18 @@ Enemy.prototype.update = function(playerArr)
 		{
 			this.playerToChase = playerArr[i].sprite;
 		}
+		else
+		{
+			chasedDist = currDist;
+		}
 
-		if((chasedDist < this.detectionRadius))
+		if(chasedDist < this.detectionRadius)
 		{
 			this.playerToChase = playerArr[i].sprite;
 			this.sprite.attractionPoint(this.speed, playerArr[i].sprite.position.x, playerArr[i].sprite.position.y);
 		}
 		else
 		{
-			this.sprite.setSpeed(.82);
 			this.sprite.rotationSpeed += random(-3.6, 3);
 			
 			if((this.turnCounter % 9) == 0)
@@ -101,6 +104,11 @@ Enemy.prototype.update = function(playerArr)
 		this.sprite.changeAnimation('walk');
 	}
 
+	if(this.sprite.health <= 0)
+	{
+		this.sprite.remove();
+	}
+
 };
 
 /**
@@ -116,13 +124,13 @@ Enemy.prototype.attack = function(enemy, player)
 {
 
 	enemy.changeAnimation('attack');
-	//player.health -= enemy.damage;
+	player.health -= enemy.damage;
 	reduceFullWidth(enemy.damage);
 
 	if(fullBar.width <= 0){
 		fullBar.width = 0;
 	}
-	player.setSpeed(3, enemy.getDirection());
+
 	
 	if(player.health <= 0 && player.life < 0)
 	{

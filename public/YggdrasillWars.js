@@ -84,8 +84,8 @@ function assignTypes()
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
 		damage: .7,
-		speed: 10,
-		detectionRadius: 250
+		speed: 1.8,
+		detectionRadius: 225
 	};
 
 	knight = {
@@ -94,7 +94,7 @@ function assignTypes()
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
 		health: 100,
-		speed: 5
+		speed: 3
 	};
 }
 
@@ -102,9 +102,10 @@ function setup()
 {
 
 	createCanvas(1000, 725);
-
-	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
-	landscapeSprite.addImage(landscape);
+	camera.zoom = .672;
+	// landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
+	// landscapeSprite.addImage(landscape);
+	// landscapeSprite.depth = 1;
 
 	assignTypes();
 
@@ -118,9 +119,13 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	localFighter = new Fighter(width / 2, height /2, knight);
+	localFighter = new Fighter(450, 160, knight);
+
+	localFighter.depth = 10;
 
 	fighterArray.push(localFighter);
+	fighterGroup.push(localFighter.sprite);
+
 
 	createHud();
 
@@ -130,11 +135,12 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-
-	testSpawner = new EnemySpawner(35, 60, goblin, .5, 5, spawnerImage);
+	testSpawner = new EnemySpawner(400, 163, goblin, .5, 1, spawnerImage);
+	testSpawner.sprite.depth = 1;
 
 	socket.on('generateObstacles', function(data) {
-		for (var i=0; i<data.length; i++) {
+		for (var i=0; i<data.length; i++) 
+		{
 			var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
 			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
 			obstaclesArr.push(obstacle);
@@ -142,13 +148,16 @@ function setup()
 		}
 	});
 
-	socket.on('generateChests', function(chestData) {
+	socket.on('generateChests', function(chestData) 
+	{
 		for (i=0; i<chestData.length; i++) {
 			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
 			chestArr.push(chest);
 			bg.add(chest.sprite);
 		}
 	});
+
+
 
 }
 
@@ -174,7 +183,6 @@ function draw()
 	changeEmptyPosition(hudPosX, hudPosY);
 	changeStaminaPosition(staminaPosX,staminaPosY);
 
-	text("Your current score" + score, scorePosX - 100, scorePosY);
 
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
@@ -223,6 +231,7 @@ function draw()
 	if(mouseWentDown())
 	{
 		staminaBar.width -= 1;
+
 		if(staminaBar.width < 0){
 			staminaBar.width = 0;
 			localFighter.sprite.sword.visible = false;
@@ -232,12 +241,8 @@ function draw()
 	}
 	
 
-	localFighter.update();
+	localFighter.update(enemyGroup);
 
-	localFighter.sprite.sword.overlap(enemyGroup, function(sword, enemy)
-		{
-			
-		});
 
 	testSpawner.spawn(enemyGroup);
 	testSpawner.updateAll(fighterArray);
@@ -246,4 +251,8 @@ function draw()
 	drawSprites();
 	drawSprite(cursorSprite);
 	
+	stroke('black');
+	textSize(32.5);
+	fill('white');
+	text("Your current score: " + score, scorePosX - 65, scorePosY);
 }
