@@ -8,7 +8,8 @@ var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
 var landscape;
-
+var initializedObs;
+var initializedChe;
 
 var localFighter;
 
@@ -71,8 +72,8 @@ function preload()
 
 	bush = loadImage("assets/obstacles/bush.png");
 
-	footsteps = loadSound("assets/sounds/Marching.wav");
-	swordSound = loadSound("assets/sounds/Woosh.wav");
+	//footsteps = loadSound("assets/sounds/Marching.wav");
+	//swordSound = loadSound("assets/sounds/Woosh.wav");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -107,6 +108,8 @@ function setup()
 	landscapeSprite.addImage(landscape);
 
 	assignTypes();
+	initializedObs = 0;
+	initializedChe = 0;
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -134,38 +137,31 @@ function setup()
 
 	testSpawner = new EnemySpawner(35, 60, goblin, .5, 5, spawnerImage);
 
-	socket.on('generateObstacles', function(data) {
-		for (var i=0; i<data.length; i++) {
-			var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
-			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
-			obstaclesArr.push(obstacle);
-			bg.add(obstacle.sprite);
+	socket.on('updateObstacles', function(data) {
+		if (initializedObs == 0) {
+			console.log("Recieved Obstacles");
+			for (var i=0; i < data.length; i++) {
+				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+				obstacle.sprite.setCollider('circle',0,0,bush.width/3);
+				obstaclesArr.push(obstacle);
+				obstacleGroup.add(obstacle.sprite);
+			}
+			initializedObs = 1;
 		}
 	});
 
-	socket.on('generateChests', function(chestData) {
-		for (i=0; i<chestData.length; i++) {
-			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
-			chestArr.push(chest);
-			bg.add(chest.sprite);
+	socket.on('updateChests', function(chestData) {
+		if (initializedChe == 0){
+			console.log("Recieved Chests");
+			for (i=0; i<chestData.length; i++) {
+				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
+				chestArr.push(chest);
+				chestGroup.add(chest.sprite);
+			}
+			initializedChe = 1;
 		}
 	});
 
-}
-
-function keyReleased(){
-	if(keyCode == 80){
-		deleteMap();
-		console.log(":)");
-	}
-}
-
-function keyPressed(){
-	if(keyCode == 80){
-		console.log(">:)");
-		buildMap();
-		drawMap();
-	}
 }
 
 function draw()
