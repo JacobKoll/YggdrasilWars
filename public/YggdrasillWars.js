@@ -73,9 +73,6 @@ function preload()
 	landscape = loadImage("assets/map.png")
 
 	bush = loadImage("assets/obstacles/bush.png");
-
-	//footsteps = loadSound("assets/sounds/Marching.wav");
-	//swordSound = loadSound("assets/sounds/Woosh.wav");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -127,6 +124,7 @@ function setup()
 
 	localFighter = new Fighter(1450, 960, knight);
 
+	/* Send new local fighter data to the server */
 	var localFighterData = {
 		health: localFighter.health,
 		alive: localFighter.alive,
@@ -226,10 +224,8 @@ function draw()
 			fightersArr[i].sword.debug = data[i].swordDebug;
 			fightersArr[i].sprite.rotation = data[i].rot;
 		}
-	}
+	});
 
-<<<<<<< HEAD
-=======
 	createHud();
 }
 
@@ -247,7 +243,6 @@ function draw()
 	camera.position.x = localFighter.sprite.position.x;
 	camera.position.y = localFighter.sprite.position.y;
 
->>>>>>> e8880e2dbe2aba6056acde5fa1be1c7be7cfcf9b
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
 

@@ -82,6 +82,12 @@ Enemy.prototype.update = function(playerArr)
 			chasedDist = currDist;
 		}
 
+		if (this.sprite.overlap(obstacleGroup)) {
+			this.sprite.bounce(obstacleGroup);
+		};
+		if (this.sprite.overlap(chestGroup)) {
+			this.sprite.bounce(chestGroup);
+		}
 		if(chasedDist < this.detectionRadius)
 		{
 			this.playerToChase = playerArr[i].sprite;
