@@ -5,24 +5,34 @@ function createHud(){
 
 
   emptyHealthBar = createSprite(0,100,100,40);
+  emptyHealthBar.depth = 1500;
   fullHealthBar = createSprite(0,10,100,40);
+  fullHealthBar.depth = 1501;
   emptyStaminaBar = createSprite(0,200,100,40);
+  emptyStaminaBar.depth = 1502;
   fullStaminaBar = createSprite(0,200,100,40);
+  fullStaminaBar.depth = 1503;
 
   fullHealthBar.shapeColor = color("red");
   emptyHealthBar.shapeColor = color("black");
   fullStaminaBar.shapeColor = color("blue");
   emptyStaminaBar.shapeColor = color("black");
 
+  var itemDepth = 1504;
   itemsBar = new Group();
   var item  = createSprite(0,0,90,90);
   item.addImage(basicSwordImage);
+  item.depth = itemDepth;
   itemsBar.add(item);
+  itemDepth++;
 
   for(i = 0; i < 3; i++){
     var item  = createSprite(0,0,90,90);
     item.addImage(emptyInventoryImage);
+    item.depth = itemDepth;
     itemsBar.add(item);
+    itemDepth++;
+
   }
 
 }
@@ -80,6 +90,10 @@ function drawHud(){
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition(camera.position.x-440, camera.position.y-335);
   changeStaminaPosition(camera.position.x-300, camera.position.y-335);
-  text("Your current score" + score, camera.position.x+350, camera.position.y-340);
+
+  stroke('black');
+  textSize(24);
+  fill('white');
+  text("Score: " + score, camera.position.x+350, camera.position.y-340);
 
 }
