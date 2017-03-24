@@ -156,21 +156,11 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-<<<<<<< HEAD
 	localFighter = new Fighter(1450, 960, knight, socket.id);
 
-	/* Send new local fighter data to the server */
-	var newFighter = {
-		x: localFighter.sprite.position.x,
-		y: localFighter.sprite.position.y,
-		type: localFighter.type,
-		id: localFighter.id
-	}
-	socket.emit('start', newFighter);
-=======
-	//becomePlayer();
+	becomePlayer();
 	// becomeSpectator();
-	becomeMod();
+	//becomeMod();
 
 	if(isPlayer)
 	{
@@ -187,7 +177,6 @@ function setup()
 		}
 		socket.emit('start', localFighterData);
 	}
->>>>>>> 03b0bfc214efd5bc280fb7e518f7cc41329e2b98
 
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
@@ -257,11 +246,6 @@ function draw()
 
 		for (var i=0; i<chestArr.length; i++)
 		{
-<<<<<<< HEAD
-			for(var i = 0; i<data.length; i++)
-			{	
-				fighterArray[i] = new Fighter(data[i].x, data[i].y, data[i].type, data[i].id);
-=======
 			localFighter.sprite.collide(chestArr[i].sprite);
 
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
@@ -269,7 +253,6 @@ function draw()
 					chestArr[i].open();
 					chestArr[i].update;
 				}
->>>>>>> 03b0bfc214efd5bc280fb7e518f7cc41329e2b98
 			}
 		}
 
@@ -358,7 +341,6 @@ function draw()
 			camera.zoom = 1;
 		}
 
-<<<<<<< HEAD
 	localFighterData = {
 		x: 		localFighter.sprite.position.x,
 		y: 		localFighter.sprite.position.y,
@@ -373,7 +355,7 @@ function draw()
 
 	localFighter.update(enemyGroup);
 	socket.emit('updateFighter', localFighterData);
-=======
+
 		if(isMod)
 		{
 			if(keyWentDown('c'))
@@ -391,7 +373,6 @@ function draw()
 		}
 
 	}
->>>>>>> 03b0bfc214efd5bc280fb7e518f7cc41329e2b98
 
 	for (var i = 0; i < spawnerArray.length; i++)
 	{

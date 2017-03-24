@@ -99,6 +99,13 @@ Enemy.prototype.update = function(playerArr)
 				this.sprite.setSpeed(this.speed / 2.3);
 				this.sprite.rotationSpeed += random(-3.6, 3);
 
+				if (this.sprite.overlap(obstacleGroup)) {
+					this.sprite.bounce(obstacleGroup);
+				}
+				if (this.sprite.overlap(chestGroup)) {
+					this.sprite.bounce(chestGroup);
+				}
+
 				if((this.turnCounter % 9) == 0)
 				{
 					this.sprite.rotationSpeed = 0;
