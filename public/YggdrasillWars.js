@@ -112,7 +112,7 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,
-		damage: .5
+		damage: 1.2
 	};
 }
 
@@ -306,7 +306,7 @@ function draw()
 		}
 
 
-		if(localFighter.inventory[localFighter.itemSelected].name != "Empty" && mouseDown()){
+		if(localFighter.inventory[localFighter.itemSelected].name != "Empty" && (mouseDown() || keyDown(32))){
 			localFighter.sprite.sword.visible = true;
 			reduceStaminaWidth();
 		}
