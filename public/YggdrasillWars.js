@@ -10,6 +10,7 @@ var landscape;
 
 var emptyInventoryImage;
 var basicSwordImage;
+
 var bronzeSwordImage;
 var silverSwordImage;
 var goldSwordImage;
@@ -36,6 +37,7 @@ var swordGroup;
 var obstacleGroup;
 var chestGroup;
 var spawnerGroup;
+var enemySymbols;
 
 var enemyArray = [];
 var fighterArray = [];
@@ -60,6 +62,16 @@ var goblin;
 /* Player Types */
 var knight;
 
+var miniMap;
+
+
+var isMod;
+var isSpectator;
+var isPlayer;
+var paused = false;
+
+var footsteps;
+var swordSound;
 
 var isMod;
 var isSpectator;
@@ -82,12 +94,17 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
+
 	landscape = loadImage("assets/map.png");
 	emptyInventoryImage = loadImage("assets/emptyInventory.png");
 	basicSwordImage = loadImage("assets/basicSword.png");
 	bronzeSwordImage = loadImage("assets/bronzeSword.png");
 	silverSwordImage = loadImage("assets/silverSword.png");
 	goldSwordImage = loadImage("assets/goldSword.png");
+
+	footsteps = loadSound("assets/sounds/Marching.wav");
+	swordSound = loadSound("assets/sounds/Woosh.wav");
+
 
 	bush = loadImage("assets/obstacles/bush.png");
 }
@@ -111,12 +128,14 @@ function assignTypes()
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
 		health: 135,
-		speed: 3,
+		speed: 3,		
 		damage: 1.2
+
 	};
 }
 
 function becomePlayer()
+
 {
 	isPlayer = true;
 	localFighter = new Fighter(random()*1450, random()*960, knight);
@@ -140,13 +159,17 @@ function becomeMod()
 	isMod = true;
 }
 
+
 function setup()
 {
 	createCanvas(1000, 725);
 
+
 	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
+
+	footsteps.setVolume(0.15);
 
 	initGameItems();
 
@@ -164,6 +187,7 @@ function setup()
 	obstacleGroup = new Group();
 	chestGroup = new Group();
 	spawnerGroup = new Group();
+	enemySymbols = new Group();
 
 	becomePlayer();
 	//becomeSpectator();
@@ -192,6 +216,7 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
+
 	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
 	testSpawner.sprite.depth = 1;
 	spawnerArray.push(testSpawner);
@@ -214,6 +239,7 @@ function setup()
 				obsDepth++;
 			}
 			initializedObs = 1;
+
 		}
 	});
 
@@ -232,6 +258,17 @@ function setup()
 			initializedChe = 1;
 		}
 	});
+
+
+
+
+	miniMap = new miniMap(1000,1000);
+
+}
+
+function mouseReleased(){
+	swordSound.stop();
+
 }
 
 function draw()
@@ -243,6 +280,9 @@ function draw()
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
+
+	miniMap.sprite.position.x = camera.position.x;
+	miniMap.sprite.position.y = camera.position.y; 
 
 	if(isPlayer)
 	{
@@ -279,7 +319,24 @@ function draw()
 		{
 			localFighter.walk("right");
 		}
+		if(keyWentDown('p')){
 
+		miniMap.createDots(enemyGroup);
+	
+		}
+		if(keyDown('p')){
+			
+		miniMap.sprite.visible = true;
+		miniMap.update();
+		miniMap.show();
+
+		}
+		else{
+		
+		miniMap.sprite.visible = false;
+		miniMap.delete();
+	
+		}
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -404,6 +461,29 @@ function draw()
 			}
 		}
 
+	borderCamera();
+
+	if(isPlayer)
+	{
+		drawHud();
+	}
+
+		/* Invisible landscapeSprite around landscape */
+		if(localFighter.sprite.position.x < 0) {
+			localFighter.sprite.position.x = 0;
+		}
+		if(localFighter.sprite.position.y < 0) {
+		    localFighter.sprite.position.y = 0;
+		}
+		if(localFighter.sprite.position.x > SCENE_W) {
+		    localFighter.sprite.position.x = SCENE_W;
+		}
+		if(localFighter.sprite.position.y > SCENE_H) {
+		    localFighter.sprite.position.y = SCENE_H;
+		}
+
+		localFighter.update(enemyGroup);
+
 	}
 
 	for (var i = 0; i < spawnerArray.length; i++)
@@ -421,6 +501,7 @@ function draw()
 	{
 		drawHud();
 	}
+
 }
 
 

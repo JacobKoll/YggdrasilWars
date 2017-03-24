@@ -77,4 +77,5 @@ Chest.prototype.open = function() {
 	this.sprite.addImage('image', this.openImage);
 	this.image = openImage;
 	this.isOpen = true;
+
 };
