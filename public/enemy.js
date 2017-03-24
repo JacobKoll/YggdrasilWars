@@ -62,7 +62,7 @@ Enemy.prototype.update = function(playerArr)
 	var chasedDist;
 
 	if(playerArr.length > 0)
-	{	
+	{
 		if(!this.playerToChase)
 		{
 			this.playerToChase = playerArr[0].sprite;
@@ -99,6 +99,13 @@ Enemy.prototype.update = function(playerArr)
 				this.sprite.setSpeed(this.speed / 2.3);
 				this.sprite.rotationSpeed += random(-3.6, 3);
 
+				if (this.sprite.overlap(obstacleGroup)) {
+					this.sprite.bounce(obstacleGroup);
+				}
+				if (this.sprite.overlap(chestGroup)) {
+					this.sprite.bounce(chestGroup);
+				}
+
 				if((this.turnCounter % 9) == 0)
 				{
 					this.sprite.rotationSpeed = 0;
@@ -121,7 +128,7 @@ Enemy.prototype.update = function(playerArr)
 
 			}
 		}
-		
+
 		if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
 		{
 			this.sprite.changeAnimation('walk');
@@ -157,7 +164,7 @@ Enemy.prototype.update = function(playerArr)
 		}
 
 		this.turnCounter++;
-		
+
 	}
 
 
@@ -166,7 +173,7 @@ Enemy.prototype.update = function(playerArr)
 	this.sprite.bar.shapeColor = "yellow";
 	this.sprite.bar.width = this.sprite.health;
 
-	
+
 
 
 };

@@ -28,11 +28,16 @@ var friction = .5;
  * @param {Animation} deathAnimation [The death animation of the character]
  * @param {Animation} idleAnimation  [The idle animation of the character]
  */
-function Fighter(x, y, type)
+function Fighter(x, y, type, id)
 {
 	this.x = x;
 	this.y = y;
+	this.id = id;
 	this.speed = type.speed;
+	this.inventory = initPlayerItems();
+	this.baseDamage = type.damage;
+	this.itemSelected = 0;
+	this.type = type;
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 72, 96);
@@ -50,7 +55,7 @@ function Fighter(x, y, type)
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
 	this.sprite.sword.debug = true;
-	this.sprite.sword.damage = type.damage;
+	this.sprite.sword.damage = type.damage * this.inventory[0].dmg;
 
 	this.sprite.sword.addAnimation('swing', type.swingAnimation);
 

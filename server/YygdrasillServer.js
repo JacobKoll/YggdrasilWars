@@ -30,7 +30,7 @@ function init()
 	/**
 	 * Initialize obstacles
 	 */
-	for (var i=0; i<20; i++) {
+	for (var i=0; i<10; i++) {
 		var a = Math.floor((Math.random())*2000/45)*(45);
 		var b = Math.floor((Math.random())*1450/45)*(45);
 		var obsData = {x: a, y: b};
@@ -41,7 +41,7 @@ function init()
 	/**
 	 * Initialize chests
 	 */
-	 for (var i=0; i<4; i++) {
+	 for (var i=0; i<10; i++) {
 		var a = Math.floor((Math.random())*2000/45)*(45);
 		var b = Math.floor((Math.random())*1450/45)*(45);
 		var chestData = {x: a, y: b};
@@ -63,12 +63,16 @@ function onSocketConnect(client)
 
 	setInterval(heartbeat, 1000/FPS);
 
+	console.log(client.id + " has connected to the server.\n");
+
 	/* When connected, add the client's fighter to the array. */
 	client.on('start', function(newFighter)
 	{
+		var fighter = new Fighter(newFighter)
+		fighterArr.push(newFighter);
 		io.sockets.emit('generateObstacles', obstacleArr);
 		io.sockets.emit('generateChests', chestArr);
-		console.log(client.id + " added it's fighter\n");
+		console.log(client.id + " added it's fighter\n")
 	});
 
 	/**
@@ -81,32 +85,39 @@ function onSocketConnect(client)
 		io.sockets.emit('updateEnemies'  , enemyArr);
 		io.sockets.emit('updateObstacles', obstacleArr);
 		io.sockets.emit('updateChests'   , chestArr);
-
 	}
 
-	console.log(client.id + " has connected to the server.\n");
-
-	client.on('addChest', function(givenX, givenY)
-	{
-		var chestData = {x: givenX, y: givenY};
-		chestArr.push(chestData);
-		console.log(client.id + " added a chest at (" + givenX + ", " + givenY + ")\n");
-	});
-
-	client.on('addObstacle', function(givenX, givenY)
-	{
-		var obstacleData = {x: givenX, y: givenY};
-		obstacleArr.push(obstacleData);
-		console.log(client.id + " added an obstacle at (" + givenX + ", " + givenY + ")\n");
-	});
+	socket.on('updateFighter',
+        function(data){
+          for(var i = 0; i < fighterArr.length; i++){
+            if(socket.id == fighterArr[i].id){
+                fighterArr[i].position.x = data[i].x;
+	            fighterArr[i].position.y = data[i].y;
+	            fighterArr[i].health = data[i].health;
+				fighterArr[i].alive = data[i].alive;
+				fighterArr[i].sprite.position.x = data[i].x;
+				fighterArr[i].sprite.position.y = data[i].y;
+				fighterArr[i].sword.visible = data[i].swinging;
+				fighterArr[i].sprite.changeAnimation(data[i].currAnimation);
+				fighterArr[i].sprite.debug = data[i].spriteDebug;
+				fighterArr[i].sword.debug = data[i].swordDebug;
+				fighterArr[i].sprite.rotation = data[i].rot;
+            }
+          }
+        }
+      );
 
 	io.on('disconnect', function()
 	{
 		console.log(client.id + " has disconnected from the server.\n");
+		for(var i = 0; i < fighterArr.length; i++){
+              if(socket.id == fighterArr[i].id){
+                fighterArr.splice(i,1);
+              }
+            }
 	});
 }
 
 io.on('connection', onSocketConnect);
 
 init();
-

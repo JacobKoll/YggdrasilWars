@@ -27,8 +27,8 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 	this.sprite.debug = true;
 
 
-	this.sprite.addAnimation('walk', walkAnimation);
-	this.sprite.addAnimation('death', deathAnimation);
+	// this.sprite.addAnimation('walk', walkAnimation);
+	// this.sprite.addAnimation('death', deathAnimation);
 	this.sprite.addAnimation('idle', idleAnimation);
 
 	this.sword = createSprite(x, y, 138, 96);

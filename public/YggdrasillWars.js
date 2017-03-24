@@ -10,6 +10,10 @@ var landscape;
 
 var emptyInventoryImage;
 var basicSwordImage;
+var bronzeSwordImage;
+var silverSwordImage;
+var goldSwordImage;
+
 
 var initializedObs;
 var initializedChe;
@@ -78,9 +82,12 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
-	landscape = loadImage("assets/map.png")
-	emptyInventoryImage = loadImage("assets/emptyInventory.png")
-	basicSwordImage = loadImage("assets/basicSword.png")
+	landscape = loadImage("assets/map.png");
+	emptyInventoryImage = loadImage("assets/emptyInventory.png");
+	basicSwordImage = loadImage("assets/basicSword.png");
+	bronzeSwordImage = loadImage("assets/bronzeSword.png");
+	silverSwordImage = loadImage("assets/silverSword.png");
+	goldSwordImage = loadImage("assets/goldSword.png");
 
 	bush = loadImage("assets/obstacles/bush.png");
 }
@@ -105,7 +112,7 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,
-		damage: 2.53
+		damage: .5
 	};
 }
 
@@ -141,6 +148,8 @@ function setup()
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 
+	initGameItems();
+
 	assignTypes();
 	initializedObs = 0;
 	initializedChe = 0;
@@ -156,9 +165,12 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	//becomePlayer();
+
+	localFighter = new Fighter(1450, 960, knight, socket.id);
+
+	becomePlayer();
 	// becomeSpectator();
-	becomeMod();
+	//becomeMod();
 
 	if(isPlayer)
 	{
@@ -271,8 +283,33 @@ function draw()
 			localFighter.walk("right");
 		}
 
-		if(mouseDown())
+		if(keyWentDown(49))
 		{
+			localFighter.itemSelected = 0;
+			localFighter.sprite.sword.damage = localFighter.inventory[0].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = -150;
+		}
+		if(keyWentDown(50))
+		{
+			localFighter.itemSelected = 1;
+			localFighter.sprite.sword.damage = localFighter.inventory[1].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = -50;
+		}
+		if(keyWentDown(51))
+		{
+			localFighter.itemSelected = 2;
+			localFighter.sprite.sword.damage = localFighter.inventory[2].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = 50;
+		}
+		if(keyWentDown(52))
+		{
+			localFighter.itemSelected = 3;
+			localFighter.sprite.sword.damage = localFighter.inventory[3].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = 150;
+		}
+
+
+		if(localFighter.inventory[localFighter.itemSelected].name != "Empty" && mouseDown()){
 			localFighter.sprite.sword.visible = true;
 			reduceStaminaWidth();
 		}
@@ -339,6 +376,21 @@ function draw()
 			camera.zoom = 1;
 		}
 
+	localFighterData = {
+		x: 		localFighter.sprite.position.x,
+		y: 		localFighter.sprite.position.y,
+		type: 	localFighter.type,
+		id: 	localFighter.id,
+		health: localFighter.health,
+		alive: 	localFighter.alive,
+		swinging: localFighter.swinging,
+		curAnim:  localFighter.currAnimation,
+		rot: 	localFighter.rot
+	}
+
+	localFighter.update(enemyGroup);
+	socket.emit('updateFighter', localFighterData);
+
 		if(isMod)
 		{
 			if(keyWentDown('c'))
@@ -352,7 +404,7 @@ function draw()
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
 				initializedObs = false;
-			}			
+			}
 		}
 
 	}
