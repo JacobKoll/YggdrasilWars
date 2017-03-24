@@ -35,9 +35,11 @@ function Fighter(x, y, type, id)
 	this.id = id;
 	this.speed = type.speed;
 	this.maxSpeed = type.speed;
+
 	this.inventory = initPlayerItems();
 	this.baseDamage = type.damage;
 	this.itemSelected = 0;
+
 	this.type = type;
 
 	/* This is where we initialize the sprite and it's animations */
@@ -56,11 +58,17 @@ function Fighter(x, y, type, id)
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
 	this.sprite.sword.debug = true;
+
 	this.sprite.sword.damage = type.damage * this.inventory[0].dmg;
+
 
 	this.sprite.sword.addAnimation('swing', type.swingAnimation);
 
 	this.sprite.sword.position = this.sprite.position;
+
+	this.sprite.greenDot = createSprite(x,y,4,4);
+
+	this.sprite.greenDot.visible = false;
 
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 30);

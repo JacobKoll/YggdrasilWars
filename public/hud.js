@@ -1,5 +1,6 @@
 
 var itemsBar;
+
 var itemSelectedSprite;
 var itemSelectedSpriteX = -150;
 
@@ -22,6 +23,7 @@ function createHud(){
 
   var itemDepth = 1504;
   itemsBar = new Group();
+
   for(i = 0; i < 4; i++){
     var itemSprite  = createSprite(0,0,90,90);
     itemSprite.addImage(localFighter.inventory[i].img);
@@ -38,6 +40,7 @@ function createHud(){
 }
 
 function changeItemSelectedPosition(xPos, yPos){
+
 
   itemSelectedSprite.position.x = xPos;
   itemSelectedSprite.position.y = yPos;
@@ -80,13 +83,16 @@ function reduceHealthWidth(newWidth){
 
 function reduceStaminaWidth(){
 
+
   fullStaminaBar.width -= 2;
+
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
     localFighter.sprite.sword.visible = false;
   }
 
 }
+
 
 function restoreHealthWidth(){
 
@@ -118,6 +124,7 @@ function drawHud()
   textFont('Georgia');
 
   changeItemSelectedPosition(camera.position.x+itemSelectedSpriteX, camera.position.y+310);
+
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition(camera.position.x-420, camera.position.y-335);
   changeStaminaPosition(camera.position.x-270, camera.position.y-335);
