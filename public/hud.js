@@ -1,5 +1,7 @@
 
 var itemsBar;
+var itemSelectedSprite;
+var itemSelectedSpriteX = -150;
 
 function createHud(){
 
@@ -20,23 +22,26 @@ function createHud(){
 
   var itemDepth = 1504;
   itemsBar = new Group();
-  var item  = createSprite(0,0,90,90);
-  item.addImage(basicSwordImage);
-  item.depth = itemDepth;
-  itemsBar.add(item);
-  itemDepth++;
-
-  for(i = 0; i < 3; i++){
-    var item  = createSprite(0,0,90,90);
-    item.addImage(emptyInventoryImage);
-    item.depth = itemDepth;
-    itemsBar.add(item);
+  for(i = 0; i < 4; i++){
+    var itemSprite  = createSprite(0,0,90,90);
+    itemSprite.addImage(localFighter.inventory[i].img);
+    itemSprite.name = localFighter.inventory[i].name;
+    itemSprite.depth = itemDepth;
+    itemsBar.add(itemSprite);
     itemDepth++;
-
   }
+
+  itemSelectedSprite = createSprite(0,0,100,100);
+  itemSelectedSprite.depth = 1503;
+  itemSelectedSprite.shapeColor = color("cyan");
 
 }
 
+function changeItemSelectedPosition(xPos, yPos){
+
+  itemSelectedSprite.position.x = xPos;
+  itemSelectedSprite.position.y = yPos;
+}
 function changeHealthPosition(xPos, yPos){
 
   fullHealthBar.position.x = xPos;
@@ -75,7 +80,7 @@ function reduceHealthWidth(newWidth){
 
 function reduceStaminaWidth(){
 
-  fullStaminaBar.width -= .5;
+  fullStaminaBar.width -= 2;
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
     localFighter.sprite.sword.visible = false;
@@ -112,6 +117,7 @@ function drawHud()
   fill('white');
   textFont('Georgia');
 
+  changeItemSelectedPosition(camera.position.x+itemSelectedSpriteX, camera.position.y+310);
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition(camera.position.x-420, camera.position.y-335);
   changeStaminaPosition(camera.position.x-270, camera.position.y-335);

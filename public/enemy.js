@@ -62,7 +62,7 @@ Enemy.prototype.update = function(playerArr)
 	var chasedDist;
 
 	if(playerArr.length > 0)
-	{	
+	{
 		if(!this.playerToChase)
 		{
 			this.playerToChase = playerArr[0].sprite;
@@ -121,7 +121,7 @@ Enemy.prototype.update = function(playerArr)
 
 			}
 		}
-		
+
 		if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
 		{
 			this.sprite.changeAnimation('walk');
@@ -157,7 +157,7 @@ Enemy.prototype.update = function(playerArr)
 		}
 
 		this.turnCounter++;
-		
+
 	}
 
 
@@ -166,7 +166,7 @@ Enemy.prototype.update = function(playerArr)
 	this.sprite.bar.shapeColor = "yellow";
 	this.sprite.bar.width = this.sprite.health;
 
-	
+
 
 
 };

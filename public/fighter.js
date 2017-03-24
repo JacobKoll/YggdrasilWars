@@ -33,6 +33,9 @@ function Fighter(x, y, type)
 	this.x = x;
 	this.y = y;
 	this.speed = type.speed;
+	this.inventory = initPlayerItems();
+	this.baseDamage = type.damage;
+	this.itemSelected = 0;
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 72, 96);
@@ -50,7 +53,7 @@ function Fighter(x, y, type)
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
 	this.sprite.sword.debug = true;
-	this.sprite.sword.damage = type.damage;
+	this.sprite.sword.damage = type.damage * this.inventory[0].dmg;
 
 	this.sprite.sword.addAnimation('swing', type.swingAnimation);
 
