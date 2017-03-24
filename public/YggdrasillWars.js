@@ -57,6 +57,10 @@ var goblin;
 var knight;
 
 
+var isMod;
+var isSpectator;
+var isPlayer;
+
 function preload()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
@@ -104,9 +108,32 @@ function assignTypes()
 	};
 }
 
+function becomePlayer()
+{
+	isPlayer = true;
+	localFighter = new Fighter(1450, 960, knight);
+
+	fighterArray.push(localFighter);
+	fighterGroup.push(localFighter.sprite);
+
+	createHud();
+
+
+
+}
+
+function becomeSpectator()
+{
+	isSpectator = true;
+}
+
+function becomeMod()
+{
+	isMod = true;
+}
+
 function setup()
 {
-
 	createCanvas(1000, 725);
 
 	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
@@ -116,6 +143,7 @@ function setup()
 	assignTypes();
 	initializedObs = 0;
 	initializedChe = 0;
+
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -127,23 +155,26 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	localFighter = new Fighter(1450, 960, knight);
+	becomePlayer();
+	// becomeSpectator();
+	//becomeMod();
 
-	/* Send new local fighter data to the server */
-	var localFighterData = {
-		health: localFighter.health,
-		alive: localFighter.alive,
-		x: localFighter.sprite.position.x,
-		y: localFighter.sprite.position.y,
-		currAnimation: localFighter.sprite.getAnimationLabel(),
-		spriteDebug: localFighter.sprite.debug,
-		swordDebug: localFighter.sprite.sword.debug,
-		rot: localFighter.sprite.rotation
+	if(isPlayer)
+	{
+		/* Send new local fighter data to the server */
+		var localFighterData = {
+			health: localFighter.health,
+			alive: localFighter.alive,
+			x: localFighter.sprite.position.x,
+			y: localFighter.sprite.position.y,
+			currAnimation: localFighter.sprite.getAnimationLabel(),
+			spriteDebug: localFighter.sprite.debug,
+			swordDebug: localFighter.sprite.sword.debug,
+			rot: localFighter.sprite.rotation
+		}
+		socket.emit('start', localFighterData);
 	}
-	socket.emit('start', localFighterData);
 
-	fighterArray.push(localFighter);
-	fighterGroup.push(localFighter.sprite);
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -191,7 +222,7 @@ function setup()
 		}
 	});
 
-	createHud();
+
 }
 
 function draw()
@@ -202,90 +233,139 @@ function draw()
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
-
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
 
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
 
-	if (localFighter.sprite.overlap(obstacleGroup)) {
-		localFighter.sprite.bounce(obstacleGroup);
-	};
-	for (var i=0; i<chestArr.length; i++) {
-		if (localFighter.sprite.overlap(chestArr[i].sprite)) {
-			localFighter.sprite.bounce(chestArr[i].sprite);
-		}
+	if(isPlayer)
+	{
+		camera.position.x = localFighter.sprite.position.x;
+		camera.position.y = localFighter.sprite.position.y;
 
-		if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-			if (keyDown('e')) {
-				chestArr[i].open();
-				chestArr[i].update;
+		if (localFighter.sprite.overlap(obstacleGroup)) {
+			localFighter.sprite.bounce(obstacleGroup);
+		};
+		for (var i=0; i<chestArr.length; i++) {
+			if (localFighter.sprite.overlap(chestArr[i].sprite)) {
+				localFighter.sprite.bounce(chestArr[i].sprite);
+			}
+
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
+				if (keyDown('e')) {
+					chestArr[i].open();
+					chestArr[i].update;
+				}
 			}
 		}
+
+		if(keyDown('w'))
+		{
+			localFighter.walk("up");
+		}
+		if(keyDown('s'))
+		{
+			localFighter.walk("down");
+		}
+		if(keyDown('a'))
+		{
+			localFighter.walk("left");
+		}
+		if(keyDown('d'))
+		{
+			localFighter.walk("right");
+		}
+
+		if(mouseDown())
+		{
+			localFighter.sprite.sword.visible = true;
+			reduceStaminaWidth();
+		}
+		else
+		{
+			localFighter.sprite.sword.visible = false;
+			restoreStaminaWidth();
+		}
+		restoreHealthWidth();
+
+		/* Invisible landscapeSprite around landscape */
+		if(localFighter.sprite.position.x < 0) {
+			localFighter.sprite.position.x = 0;
+		}
+		if(localFighter.sprite.position.y < 0) {
+		    localFighter.sprite.position.y = 0;
+		}
+		if(localFighter.sprite.position.x > SCENE_W) {
+		    localFighter.sprite.position.x = SCENE_W;
+		}
+		if(localFighter.sprite.position.y > SCENE_H) {
+		    localFighter.sprite.position.y = SCENE_H;
+		}
+
+
+		for (var i = 0; i < spawnerArray.length; i++)
+		{
+			spawnerArray[i].spawn(enemyGroup);
+			spawnerArray[i].updateAll(fighterArray);
+		}
+
+		localFighter.update(enemyGroup);
+
+		drawHud();
+		drawSprite(cursorSprite);
+		}
+		else if(isSpectator)
+		{
+		var spectatorSpeed = 5.6;
+
+		if(keyDown(16))
+		{
+			spectatorSpeed = 9.81;
+		}
+
+		if(keyDown('w'))
+		{
+			camera.position.y -= spectatorSpeed;
+		}
+		if(keyDown('s'))
+		{
+			camera.position.y += spectatorSpeed;
+		}
+		if(keyDown('a'))
+		{
+			camera.position.x -= spectatorSpeed;
+		}
+		if(keyDown('d'))
+		{
+			camera.position.x += spectatorSpeed;
+		}
+		if(keyDown(188))
+		{
+			console.log("Zooming");
+			camera.zoom = 1.5;
+		}
+		else if(keyDown(190))
+		{
+			camera.zoom = 0.5;
+		}
+		else
+		{
+			camera.zoom = 1;
+		}
+	}
+	else if(isMod)
+	{
+
 	}
 
-	if(keyDown('w'))
-	{
-		localFighter.walk("up");
-	}
-	if(keyDown('s'))
-	{
-		localFighter.walk("down");
-	}
-	if(keyDown('a'))
-	{
-		localFighter.walk("left");
-	}
-	if(keyDown('d'))
-	{
-		localFighter.walk("right");
-	}
 
-	if(mouseDown())
-	{
-		localFighter.sprite.sword.visible = true;
-		reduceStaminaWidth();
-	}
-	else
-	{
-		localFighter.sprite.sword.visible = false;
-		restoreStaminaWidth();
-	}
-	restoreHealthWidth();
-
-	/* Invisible landscapeSprite around landscape */
-	if(localFighter.sprite.position.x < 0) {
-		localFighter.sprite.position.x = 0;
-	}
-	if(localFighter.sprite.position.y < 0) {
-	    localFighter.sprite.position.y = 0;
-	}
-	if(localFighter.sprite.position.x > SCENE_W) {
-	    localFighter.sprite.position.x = SCENE_W;
-	}
-	if(localFighter.sprite.position.y > SCENE_H) {
-	    localFighter.sprite.position.y = SCENE_H;
-	}
-
-
-	localFighter.update(enemyGroup);
-
-	for (var i = 0; i < spawnerArray.length; i++) {
-		spawnerArray[i].spawn(enemyGroup);
-		spawnerArray[i].updateAll(fighterArray);
-	}
 
 	drawSprites();
-	drawSprite(cursorSprite);
-
-
-	drawHud();
 
 }
+
 
 function borderCamera()
 {
