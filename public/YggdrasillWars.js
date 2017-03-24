@@ -156,9 +156,9 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	becomePlayer();
+	//becomePlayer();
 	// becomeSpectator();
-	//becomeMod();
+	becomeMod();
 
 	if(isPlayer)
 	{
@@ -217,6 +217,7 @@ function setup()
 				chest.sprite.depth = cheDepth;
 				chestArr.push(chest);
 				chestGroup.add(chest.sprite);
+				chest.sprite.scale = .5;
 				cheDepth++;
 			}
 			initializedChe = 1;
@@ -302,7 +303,7 @@ function draw()
 
 		
 	}
-	else if(isSpectator)
+	else
 	{
 		var spectatorSpeed = 5.6;
 
@@ -339,9 +340,20 @@ function draw()
 		{
 			camera.zoom = 1;
 		}
-	}
-	else if(isMod)
-	{
+
+		if(isMod)
+		{
+			if(keyWentDown('c'))
+			{
+				socket.emit('addChest', camera.mouseX, camera.mouseY);
+				console.log("Added Chest");
+			}
+			if(keyWentDown('o'))
+			{
+				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
+				console.log("Added Obstacle");
+			}			
+		}
 
 	}
 
