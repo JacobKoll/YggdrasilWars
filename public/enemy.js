@@ -156,11 +156,8 @@ Enemy.prototype.attack = function(enemy, player)
 	player.health -= enemy.damage;
 	reduceHealthWidth(enemy.damage);
 
-	if(fullHealthBar.width <= 0){
-		fullHealthBar.width = 0;
-	}
 
-	if(player.health <= 0 && player.life < 0)
+	if(player.health <= 0)
 	{
 		player.changeAnimation('death');
 		player.position.x = random(50, width - 50);
@@ -169,7 +166,6 @@ Enemy.prototype.attack = function(enemy, player)
 		fullHealthBar.width = 100;
 		fullStaminaBar.width = 100;
 		player.alive = true;
-
 
 		console.log("You died!");
 
