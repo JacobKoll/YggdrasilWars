@@ -135,18 +135,14 @@ function assignTypes()
 }
 
 function becomePlayer()
-
 {
 	isPlayer = true;
-	localFighter = new Fighter(random()*1450, random()*960, knight);
+	localFighter = new Fighter(random(1450), random(960), knight);
 
 	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
 
 	createHud();
-
-
-
 }
 
 function becomeSpectator()
@@ -332,11 +328,12 @@ function draw()
 		miniMap.createDots(enemyGroup);
 	
 		}
-		if(keyDown('p')){
-			
-		miniMap.sprite.visible = true;
-		miniMap.update();
-		miniMap.show();
+		if(keyDown('p'))
+		{
+			console.log("Showing map");	
+			miniMap.sprite.visible = true;
+			miniMap.update();
+			miniMap.show();
 
 		}
 		else{
@@ -427,31 +424,16 @@ function draw()
 		}
 		if(keyDown(188))
 		{
-			camera.zoom = 1.5;
+			camera.zoom = 1.3;
 		}
 		else if(keyDown(190))
 		{
-			camera.zoom = 0.5;
+			camera.zoom = 0.8;
 		}
 		else
 		{
 			camera.zoom = 1;
 		}
-
-	localFighterData = {
-		x: 		localFighter.sprite.position.x,
-		y: 		localFighter.sprite.position.y,
-		type: 	localFighter.type,
-		id: 	localFighter.id,
-		health: localFighter.health,
-		alive: 	localFighter.alive,
-		swinging: localFighter.swinging,
-		curAnim:  localFighter.currAnimation,
-		rot: 	localFighter.rot
-	}
-
-	localFighter.update(enemyGroup);
-	socket.emit('updateFighter', localFighterData);
 
 		if(isMod)
 		{
@@ -468,29 +450,6 @@ function draw()
 				initializedObs = false;
 			}
 		}
-
-	borderCamera();
-
-	if(isPlayer)
-	{
-		drawHud();
-	}
-
-		/* Invisible landscapeSprite around landscape */
-		if(localFighter.sprite.position.x < 0) {
-			localFighter.sprite.position.x = 0;
-		}
-		if(localFighter.sprite.position.y < 0) {
-		    localFighter.sprite.position.y = 0;
-		}
-		if(localFighter.sprite.position.x > SCENE_W) {
-		    localFighter.sprite.position.x = SCENE_W;
-		}
-		if(localFighter.sprite.position.y > SCENE_H) {
-		    localFighter.sprite.position.y = SCENE_H;
-		}
-
-		localFighter.update(enemyGroup);
 
 	}
 
