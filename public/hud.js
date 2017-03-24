@@ -85,11 +85,12 @@ function reduceStaminaWidth(){
 
 function restoreHealthWidth(){
 
-  fullHealthBar.width += .1;
-  localFighter.sprite.health += .1;
-  if(fullHealthBar.width >= 100){
-    fullHealthBar.width = 100;
-    localFighter.sprite.health = 100;
+  fullHealthBar.width += .2;
+  localFighter.sprite.health += .2;
+  if(fullHealthBar.width >= 135)
+  {
+    fullHealthBar.width = 135;
+    localFighter.sprite.health = localFighter.sprite.maxHealth;
   }
 
 }
@@ -97,22 +98,21 @@ function restoreHealthWidth(){
 function restoreStaminaWidth(){
 
   fullStaminaBar.width += .5;
-  if(fullStaminaBar.width > 100){
-    fullStaminaBar.width = 100;
+  if(fullStaminaBar.width > 135){
+    fullStaminaBar.width = 135;
 
   }
 
 }
 
-function drawHud(){
-
-  changeItemPosition(camera.position.x-150, camera.position.y+310);
-  changeHealthPosition(camera.position.x-420, camera.position.y-335);
-  changeStaminaPosition(camera.position.x-270, camera.position.y-335);
-
+function drawHud()
+{
   stroke('black');
   textSize(24);
   fill('white');
   text("Score: " + score, camera.position.x+350, camera.position.y-340);
 
+  changeItemPosition(camera.position.x-150, camera.position.y+310);
+  changeHealthPosition(camera.position.x-420, camera.position.y-335);
+  changeStaminaPosition(camera.position.x-270, camera.position.y-335);
 }

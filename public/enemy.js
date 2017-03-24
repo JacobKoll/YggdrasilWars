@@ -193,9 +193,9 @@ Enemy.prototype.attack = function(enemy, player)
 		player.changeAnimation('death');
 		player.position.x = random(50, width - 50);
 		player.position.y = random(50, height - 50);
-		player.health = 100;
-		fullHealthBar.width = 100;
-		fullStaminaBar.width = 100;
+		player.health = player.maxHealth;
+		fullHealthBar.width = 135;
+		fullStaminaBar.width = 135;
 		player.alive = true;
 
 		console.log("You died!");

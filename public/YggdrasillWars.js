@@ -60,7 +60,7 @@ var knight;
 var isMod;
 var isSpectator;
 var isPlayer;
-var paused;
+var paused = false;
 
 function preload()
 {
@@ -93,7 +93,7 @@ function assignTypes()
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
-		damage: .7,
+		damage: .83,
 		speed: 1.8,
 		detectionRadius: 225
 	};
@@ -103,7 +103,7 @@ function assignTypes()
 		idleAnimation: knightIdleAnimation,
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
-		health: 100,
+		health: 135,
 		speed: 3,
 		damage: 2.53
 	};
@@ -343,18 +343,6 @@ function draw()
 	else if(isMod)
 	{
 
-	}
-
-	if(keyDown('p'))
-	{
-		if(paused)
-		{
-			loop();
-		}
-		else
-		{
-			noLoop();
-		}
 	}
 
 	for (var i = 0; i < spawnerArray.length; i++)
