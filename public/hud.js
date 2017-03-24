@@ -108,11 +108,12 @@ function restoreStaminaWidth(){
 function drawHud()
 {
   stroke('black');
-  textSize(24);
+  textSize(32);
   fill('white');
-  text("Score: " + score, camera.position.x+350, camera.position.y-340);
+  textFont('Georgia');
 
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition(camera.position.x-420, camera.position.y-335);
   changeStaminaPosition(camera.position.x-270, camera.position.y-335);
+  text("Score: " + score, camera.position.x+343, camera.position.y-330);
 }
