@@ -160,7 +160,7 @@ Enemy.prototype.attack = function(enemy, player)
 		fullHealthBar.width = 0;
 	}
 
-	if(player.health <= 0 && player.life < 0)
+	if(player.health <= 0)
 	{
 		player.changeAnimation('death');
 		player.position.x = random(50, width - 50);
