@@ -22,11 +22,11 @@ function Obstacle(x, y, width, height, image) {
 	this.image = image;
 	this.sprite.debug = true;
 	this.sprite.addImage('image', image);
-
-	this.update = function() {
-		this.sprite.changeAnimation('image');
-	}
 }
+
+Obstacle.prototype.update = function() {
+	this.sprite.changeAnimation('image');
+};
 
 
 /**
@@ -53,6 +53,7 @@ function Chest(x, y, openImage, closedImage) {
 	this.y = y;
 	this.image = closedImage;
 
+
 	this.update = function() {
 		this.sprite.changeAnimation('image');
 	};
@@ -63,3 +64,13 @@ function Chest(x, y, openImage, closedImage) {
 		this.isOpen = true;
 	}
 }
+
+Chest.prototype.update = function() {
+	this.sprite.changeAnimation('image');
+};
+
+Chest.prototype.open = function() {
+	this.sprite.addImage('image', this.openImage);
+	this.image = openImage;
+	this.isOpen = true;
+};

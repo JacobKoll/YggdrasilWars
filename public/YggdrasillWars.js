@@ -1,7 +1,6 @@
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
-var fighterWalkAnimation;
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
@@ -9,12 +8,18 @@ var customCursor;
 var spawnerImage;
 var landscape;
 
+var emptyInventoryImage;
+var basicSwordImage;
+
+var initializedObs;
+var initializedChe;
 
 var localFighter;
 
 var chestArr = [];
 var openChest;
 var closedChest;
+
 
 var obstaclesArr = [];
 var bush;
@@ -27,9 +32,11 @@ var swordGroup;
 var obstacleGroup;
 var chestGroup;
 var spawnerGroup;
+var enemySymbols;
 
 var enemyArray = [];
 var fighterArray = [];
+var spawnerArray = [];
 
 var cursorSprite;
 var SCENE_H = 1450;
@@ -42,6 +49,7 @@ var swordSound;
 
 /* TODO: delete this after testing. */
 var testSpawner;
+var testSpawner2;
 
 /* Enemy Types */
 var goblin;
@@ -49,6 +57,16 @@ var goblin;
 /* Player Types */
 var knight;
 
+var miniMap;
+
+
+var isMod;
+var isSpectator;
+var isPlayer;
+var paused = false;
+
+var footsteps;
+var swordSound;
 
 function preload()
 {
@@ -66,8 +84,9 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
-
 	landscape = loadImage("assets/map.png")
+	emptyInventoryImage = loadImage("assets/emptyInventory.png")
+	basicSwordImage = loadImage("assets/basicSword.png")
 
 	bush = loadImage("assets/obstacles/bush.png");
 
@@ -83,9 +102,9 @@ function assignTypes()
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
-		damage: .7,
-		speed: 10,
-		detectionRadius: 250
+		damage: .83,
+		speed: 1.8,
+		detectionRadius: 225
 	};
 
 	knight = {
@@ -93,20 +112,52 @@ function assignTypes()
 		idleAnimation: knightIdleAnimation,
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
-		health: 100,
-		speed: 5
+		health: 135,
+		speed: 3,
+		damage: 2.53
 	};
+}
+
+function becomePlayer()
+{
+	isPlayer = true;
+	localFighter = new Fighter(1450, 960, knight);
+
+	fighterArray.push(localFighter);
+	fighterGroup.push(localFighter.sprite);
+
+	createHud();
+
+
+
+}
+
+function becomeSpectator()
+{
+	isSpectator = true;
+}
+
+function becomeMod()
+{
+	isMod = true;
 }
 
 function setup()
 {
-
 	createCanvas(1000, 725);
+
 
 	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
+	landscapeSprite.depth = 1;
+
+
+	footsteps.setVolume(0.15);
 
 	assignTypes();
+	initializedObs = 0;
+	initializedChe = 0;
+
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -117,20 +168,36 @@ function setup()
 	obstacleGroup = new Group();
 	chestGroup = new Group();
 	spawnerGroup = new Group();
+	enemySymbols = new Group();
 
-	localFighter = new Fighter(width / 2, height /2, knight);
+	localFighter = new Fighter(1450, 960, knight, socket.id);
 
+	becomePlayer();
+	// becomeSpectator();
+	//becomeMod();
 
-	fighterArray.push(localFighter);
+	if(isPlayer)
+	{
+		/* Send new local fighter data to the server */
+		var localFighterData = {
+			health: localFighter.health,
+			alive: localFighter.alive,
+			x: localFighter.sprite.position.x,
+			y: localFighter.sprite.position.y,
+			currAnimation: localFighter.sprite.getAnimationLabel(),
+			spriteDebug: localFighter.sprite.debug,
+			swordDebug: localFighter.sprite.sword.debug,
+			rot: localFighter.sprite.rotation
+		}
+		socket.emit('start', localFighterData);
+	}
 
-	createHud();
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
 
 	noCursor(); // Hides the system's cursor when inside the canvas
-
 
 	testSpawner = new EnemySpawner(35, 60, goblin, .5, 5, spawnerImage);
 
@@ -140,44 +207,68 @@ function setup()
 			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
 			obstaclesArr.push(obstacle);
 			bg.add(obstacle.sprite);
+}
+});
+
+	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
+	testSpawner.sprite.depth = 1;
+	spawnerArray.push(testSpawner);
+	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 18, spawnerImage);
+	testSpawner2.sprite.depth = 1;
+	spawnerArray.push(testSpawner2);
+
+
+
+	socket.on('updateObstacles', function(data) {
+		var obsDepth = 500;
+		if (initializedObs == 0) {
+			console.log("Recieved Obstacles");
+			for (var i=0; i < data.length; i++) {
+				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+				obstacle.sprite.depth = obsDepth;
+				obstacle.sprite.setCollider('circle',0,0,bush.width/3);
+				obstaclesArr.push(obstacle);
+				obstacleGroup.add(obstacle.sprite);
+				obsDepth++;
+			}
+			initializedObs = 1;
+
 		}
 	});
 
-	socket.on('generateChests', function(chestData) {
-		for (i=0; i<chestData.length; i++) {
-			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
-			chestArr.push(chest);
-			bg.add(chest.sprite);
+	socket.on('updateChests', function(chestData) {
+		var cheDepth = 1000;
+		if (initializedChe == 0){
+			console.log("Recieved Chests");
+			for (i=0; i<chestData.length; i++) {
+				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
+				chest.sprite.depth = cheDepth;
+				chestArr.push(chest);
+				chestGroup.add(chest.sprite);
+				chest.sprite.scale = .5;
+				cheDepth++;
+			}
+			initializedChe = 1;
 		}
 	});
 
+
+
+	miniMap = new miniMap(1000,1000);
+
 }
 
-function keyReleased(){
-	if(keyCode == 80){
-		deleteMap();
-		console.log(":)");
-	}
-}
+function mouseReleased(){
+	swordSound.stop();
 
-function keyPressed(){
-	if(keyCode == 80){
-		console.log(">:)");
-		buildMap();
-		drawMap();
-	}
 }
 
 function draw()
 {
 	background(55,75,30);
 
-
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
-
-	
-
 	for (var i = 0; i<obstaclesArr.length; i++) {
 		obstaclesArr[i].update;
 	}
@@ -185,33 +276,105 @@ function draw()
 		chestArr[i].update;
 	}
 
+
+	cursorSprite.position.x = mouseX;
+	cursorSprite.position.y = mouseY;
+
+
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
 	camera.position.x = localFighter.sprite.position.x;
 	camera.position.y = localFighter.sprite.position.y;
 
+	miniMap.sprite.position.x = camera.position.x;
+	miniMap.sprite.position.y = camera.position.y; 
 
+	if(isPlayer)
+	{
+		camera.position.x = localFighter.sprite.position.x;
+		camera.position.y = localFighter.sprite.position.y;
 
- 	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
-	borderCamera();
+		localFighter.sprite.collide(obstacleGroup);
+
+		for (var i=0; i<chestArr.length; i++)
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
+
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
+				if (keyDown('e')) {
+					chestArr[i].open();
+					chestArr[i].update;
+				}
+			}
+		}
 
 	if(keyDown('w'))
 	{
+		swordSound.stop();
 		localFighter.walk("up");
+
+		if(!footsteps.isPlaying())
+		{
+			footsteps.loop();
+		}
+		miniMap.move(0,-5);
+
 	}
 	if(keyDown('s'))
 	{
+		swordSound.stop();
 		localFighter.walk("down");
+		if(!footsteps.isPlaying())
+		{
+			footsteps.loop();
+		}
+		miniMap.move(0,5);
 	}
 	if(keyDown('a'))
 	{
-		localFighter.walk("left");
+		swordSound.stop();
+	localFighter.walk("left");
+	if(!footsteps.isPlaying())
+		{
+			footsteps.loop();
+		}	
+		miniMap.move(-5,0);
 	}
 	if(keyDown('d'))
 	{
-		localFighter.walk("right");
+		swordSound.stop();
+	localFighter.walk("right");
+	if(!footsteps.isPlaying())
+		{
+			footsteps.loop();
+		}
+		miniMap.move(5,0);
 	}
+
+	if(!keyIsDown(87) && !keyIsDown(65) && !keyIsDown(83) && !keyIsDown(68)){
+		footsteps.stop();
+	}
+
+	if(keyWentDown('p')){
+
+		miniMap.createDots(enemyGroup);
+	
+	}
+	if(keyDown('p')){
+
+			
+		miniMap.sprite.visible = true;
+		miniMap.update();
+		miniMap.show();
+	}
+	else{
+		
+		miniMap.sprite.visible = false;
+		miniMap.delete();
+	
+	}
+
 	
 	
 	/* Invisible landscapeSprite around landscape */
@@ -228,61 +391,154 @@ function draw()
 	    localFighter.sprite.position.y = SCENE_H;
 	}
 
-	if(mouseWentDown())
+	if(mouseDown())
 	{
-		staminaBar.width -= 1;
-		if(staminaBar.width < 0){
-			staminaBar.width = 0;
+			localFighter.sprite.sword.visible = true;
+			score += 1;
+			if(!swordSound.isPlaying())
+			{
+			swordSound.loop();
+			}reduceStaminaWidth();
+	}
+	else
+	{
+			swordSound.stop();
 			localFighter.sprite.sword.visible = false;
-		}
-
-		score += 1;
+			restoreStaminaWidth();
 	}
 
 
-	localFighter.update();
+		
+}
+	else
+	{
+		var spectatorSpeed = 5.6;
 
-	localFighter.sprite.sword.overlap(enemyGroup, function(sword, enemy)
+		if(keyDown(16))
 		{
+			spectatorSpeed = 9.81;
+		}
 
-		});
+		if(keyDown('w'))
+		{
+			camera.position.y -= spectatorSpeed;
+		}
+		if(keyDown('s'))
+		{
+			camera.position.y += spectatorSpeed;
+		}
+		if(keyDown('a'))
+		{
+			camera.position.x -= spectatorSpeed;
+		}
+		if(keyDown('d'))
+		{
+			camera.position.x += spectatorSpeed;
+		}
+		if(keyDown(188))
+		{
+			camera.zoom = 1.5;
+		}
+		else if(keyDown(190))
+		{
+			camera.zoom = 0.5;
+		}
+		else
+		{
+			camera.zoom = 1;
+		}
 
-	testSpawner.spawn(enemyGroup);
-	testSpawner.updateAll(fighterArray);
+	localFighterData = {
+		x: 		localFighter.sprite.position.x,
+		y: 		localFighter.sprite.position.y,
+		type: 	localFighter.type,
+		id: 	localFighter.id,
+		health: localFighter.health,
+		alive: 	localFighter.alive,
+		swinging: localFighter.swinging,
+		curAnim:  localFighter.currAnimation,
+		rot: 	localFighter.rot
+	}
 
+	localFighter.update(enemyGroup);
+	socket.emit('updateFighter', localFighterData);
+
+		if(isMod)
+		{
+			if(keyWentDown('c'))
+			{
+				socket.emit('addChest', camera.mouseX, camera.mouseY);
+				console.log("Added Chest");
+				initializedChe = false;
+			}
+			if(keyWentDown('o'))
+			{
+				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
+				console.log("Added Obstacle");
+				initializedObs = false;
+			}			
+		}
+
+
+	}
+
+	for (var i = 0; i < spawnerArray.length; i++)
+	{
+		spawnerArray[i].spawn(enemyGroup);
+		spawnerArray[i].updateAll(fighterArray);
+	}
 
 	drawSprites();
 	drawSprite(cursorSprite);
 
-	drawHud();
 
+	borderCamera();
 
+	if(isPlayer)
+	{
+		drawHud();
+	}
 
+		/* Invisible landscapeSprite around landscape */
+		if(localFighter.sprite.position.x < 0) {
+			localFighter.sprite.position.x = 0;
+		}
+		if(localFighter.sprite.position.y < 0) {
+		    localFighter.sprite.position.y = 0;
+		}
+		if(localFighter.sprite.position.x > SCENE_W) {
+		    localFighter.sprite.position.x = SCENE_W;
+		}
+		if(localFighter.sprite.position.y > SCENE_H) {
+		    localFighter.sprite.position.y = SCENE_H;
+		}
 
+		localFighter.update(enemyGroup);
 }
+
 
 function borderCamera()
 {
-	var top = camera.position.y - (height / 2);
-	var bottom = camera.position.y + (height / 2);
+	var top = camera.position.y - ((height * 1/camera.zoom)  / 2);
+	var bottom = camera.position.y + ((height * 1/camera.zoom)  / 2);
 
-	var left = camera.position.x - (width / 2);
-	var right = camera.position.x + (width / 2);
+	var left = camera.position.x - ((width * 1/camera.zoom) / 2);
+	var right = camera.position.x + ((width * 1/camera.zoom) / 2);
 
 	if(top < 0)
 	{
-		camera.position.y = height/2;
+		camera.position.y = (height * 1/camera.zoom) /2;
 	}
 	if(bottom > SCENE_H)
 	{
-		camera.position.y = SCENE_H - height/2;
+		camera.position.y = SCENE_H - (height * 1/camera.zoom) /2;
 	}
 	if(left < 0)
 	{
-		camera.position.x = width/2;
+		camera.position.x = (width * 1/camera.zoom)/2;
 	}
 	if(right > SCENE_W)
 	{
-		camera.position.x = SCENE_W	- width/2;
+		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
 }

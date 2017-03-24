@@ -1,70 +1,119 @@
-var items;
 
+var itemsBar;
 
 function createHud(){
 
-  items = new Group();
 
-  emptyBar = createSprite(0,100,100,40);
-  staminaBar = createSprite(0,200,100,40);
-  fullBar = createSprite(0,10,100,40);
- 
-  fullBar.shapeColor = color("red");
-  emptyBar.shapeColor = color(0,0,0);
-  staminaBar.shapeColor = color("blue");	
+  emptyHealthBar = createSprite(10,100,135,23);
+  emptyHealthBar.depth = 1500;
+  fullHealthBar = createSprite(10,10,135,23);
+  fullHealthBar.depth = 1501;
+  emptyStaminaBar = createSprite(10,200,135,23);
+  emptyStaminaBar.depth = 1502;
+  fullStaminaBar = createSprite(10,200,135,23);
+  fullStaminaBar.depth = 1503;
 
-  for(i = 0; i < 4; i++){
+  fullHealthBar.shapeColor = color("red");
+  emptyHealthBar.shapeColor = color("black");
+  fullStaminaBar.shapeColor = color("blue");
+  emptyStaminaBar.shapeColor = color("black");
+
+  var itemDepth = 1504;
+  itemsBar = new Group();
+  var item  = createSprite(0,0,90,90);
+  item.addImage(basicSwordImage);
+  item.depth = itemDepth;
+  itemsBar.add(item);
+  itemDepth++;
+
+  for(i = 0; i < 3; i++){
     var item  = createSprite(0,0,90,90);
-    item.shapeColor = color("white");
-    items.add(item);
+    item.addImage(emptyInventoryImage);
+    item.depth = itemDepth;
+    itemsBar.add(item);
+    itemDepth++;
+
   }
 
-}	
-
-
-
+}
 
 function changeHealthPosition(xPos, yPos){
 
-  fullBar.position.x = xPos;
-  fullBar.position.y = yPos;
-  emptyBar.position.x = xPos;
-  emptyBar.position.y = yPos;
-
+  fullHealthBar.position.x = xPos;
+  fullHealthBar.position.y = yPos;
+  emptyHealthBar.position.x = xPos;
+  emptyHealthBar.position.y = yPos;
 }
 
 function changeStaminaPosition(xPos,yPos){
 
-  staminaBar.position.x = xPos;
-  staminaBar.position.y = yPos;
+  fullStaminaBar.position.x = xPos;
+  fullStaminaBar.position.y = yPos;
+  emptyStaminaBar.position.x = xPos;
+  emptyStaminaBar.position.y = yPos;
 
 }
 
 function changeItemPosition(xPos,yPos){
   var xPosShift = xPos;
   for(i = 0; i < 4; i++){
-    items[i].position.x = xPosShift;
-    items[i].position.y = yPos;
+    itemsBar[i].position.x = xPosShift;
+    itemsBar[i].position.y = yPos;
     xPosShift += 100;
   }
 }
 
 function reduceHealthWidth(newWidth){
 
-  fullBar.width -= newWidth;
-  if(fullBar.width <= 0){
-    fullBar.width = 0;
+  fullHealthBar.width -= newWidth;
+  if(fullHealthBar.width <= 0){
+    fullHealthBar.width = 0;
 
   }
 
 }
 
-function drawHud(){
-  
+function reduceStaminaWidth(){
+
+  fullStaminaBar.width -= .5;
+  if(fullStaminaBar.width < 0){
+    fullStaminaBar.width = 0;
+    localFighter.sprite.sword.visible = false;
+  }
+
+}
+
+function restoreHealthWidth(){
+
+  fullHealthBar.width += .2;
+  localFighter.sprite.health += .2;
+  if(fullHealthBar.width >= 135)
+  {
+    fullHealthBar.width = 135;
+    localFighter.sprite.health = localFighter.sprite.maxHealth;
+  }
+
+}
+
+function restoreStaminaWidth(){
+
+  fullStaminaBar.width += .5;
+  if(fullStaminaBar.width > 135){
+    fullStaminaBar.width = 135;
+
+  }
+
+}
+
+function drawHud()
+{
+  stroke('black');
+  textSize(32);
+  fill('white');
+  textFont('Georgia');
+
   changeItemPosition(camera.position.x-150, camera.position.y+310);
-  changeHealthPosition(camera.position.x-440, camera.position.y-335);
-  changeStaminaPosition(camera.position.x-300, camera.position.y-335);
-
-  text("Your current score" + score, camera.position.x+350, camera.position.y-340);
-
+  changeHealthPosition(camera.position.x-420, camera.position.y-335);
+  changeStaminaPosition(camera.position.x-270, camera.position.y-335);
+  text("Score: " + score, camera.position.x+343, camera.position.y-330);
 }
