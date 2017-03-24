@@ -63,6 +63,14 @@ function onSocketConnect(client)
 
 	setInterval(heartbeat, 1000/FPS);
 
+	/* When connected, add the client's fighter to the array. */
+	client.on('start', function(newFighter)
+	{
+		io.sockets.emit('generateObstacles', obstacleArr);
+		io.sockets.emit('generateChests', chestArr);
+		console.log(client.id + " added it's fighter\n");
+	});
+
 	/**
 	 * Update all of the sprites to be rendered client-side for all clients.
 	 */
@@ -77,15 +85,6 @@ function onSocketConnect(client)
 	}
 
 	console.log(client.id + " has connected to the server.\n");
-
-	/* When connected, add the client's fighter to the array. */
-	client.on('start', function(newFighter)
-	{
-		fighterArr.push(newFighter);
-		io.sockets.emit('generateObstacles', obstacleArr);
-		io.sockets.emit('generateChests', chestArr);
-		console.log(client.id + " added it's fighter\n");
-	});
 
 	client.on('addChest', function(givenX, givenY)
 	{
