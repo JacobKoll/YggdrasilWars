@@ -68,7 +68,7 @@ function onSocketConnect(client)
 	{
 		io.sockets.emit('generateObstacles', obstacleArr);
 		io.sockets.emit('generateChests', chestArr);
-		console.log(client.id + " added it's fighter\n");
+		console.log(client.id + " added it[s fighter\n");
 	});
 
 	/**
@@ -90,7 +90,6 @@ function onSocketConnect(client)
 	{
 		var chestData = {x: givenX, y: givenY};
 		chestArr.push(chestData);
-		io.sockets.emit('updateChests'   , chestArr);
 		console.log(client.id + " added a chest at (" + givenX + ", " + givenY + ")\n");
 	});
 
@@ -98,7 +97,6 @@ function onSocketConnect(client)
 	{
 		var obstacleData = {x: givenX, y: givenY};
 		obstacleArr.push(obstacleData);
-		io.sockets.emit('updateObstacles', obstacleArr);
 		console.log(client.id + " added an obstacle at (" + givenX + ", " + givenY + ")\n");
 	});
 

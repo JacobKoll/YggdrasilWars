@@ -112,7 +112,7 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,
-		damage: .5
+		damage: 1.2
 	};
 }
 
