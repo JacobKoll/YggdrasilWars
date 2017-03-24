@@ -1,13 +1,16 @@
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
-var fighterWalkAnimation;
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
 var landscape;
+
+var emptyInventoryImage;
+var basicSwordImage;
+
 var initializedObs;
 var initializedChe;
 
@@ -16,6 +19,7 @@ var localFighter;
 var chestArr = [];
 var openChest;
 var closedChest;
+
 
 var obstaclesArr = [];
 var bush;
@@ -53,6 +57,11 @@ var goblin;
 var knight;
 
 
+var isMod;
+var isSpectator;
+var isPlayer;
+var paused = false;
+
 function preload()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
@@ -69,8 +78,9 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
-
 	landscape = loadImage("assets/map.png")
+	emptyInventoryImage = loadImage("assets/emptyInventory.png")
+	basicSwordImage = loadImage("assets/basicSword.png")
 
 	bush = loadImage("assets/obstacles/bush.png");
 }
@@ -83,7 +93,7 @@ function assignTypes()
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
-		damage: .7,
+		damage: .83,
 		speed: 1.8,
 		detectionRadius: 225
 	};
@@ -93,15 +103,38 @@ function assignTypes()
 		idleAnimation: knightIdleAnimation,
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
-		health: 100,
+		health: 135,
 		speed: 3,
 		damage: 2.53
 	};
 }
 
+function becomePlayer()
+{
+	isPlayer = true;
+	localFighter = new Fighter(1450, 960, knight);
+
+	fighterArray.push(localFighter);
+	fighterGroup.push(localFighter.sprite);
+
+	createHud();
+
+
+
+}
+
+function becomeSpectator()
+{
+	isSpectator = true;
+}
+
+function becomeMod()
+{
+	isMod = true;
+}
+
 function setup()
 {
-
 	createCanvas(1000, 725);
 
 	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
@@ -111,6 +144,7 @@ function setup()
 	assignTypes();
 	initializedObs = 0;
 	initializedChe = 0;
+
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -122,6 +156,7 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
+<<<<<<< HEAD
 	localFighter = new Fighter(1450, 960, knight, socket.id);
 
 	/* Send new local fighter data to the server */
@@ -132,9 +167,28 @@ function setup()
 		id: localFighter.id
 	}
 	socket.emit('start', newFighter);
+=======
+	//becomePlayer();
+	// becomeSpectator();
+	becomeMod();
 
-	fighterArray.push(localFighter);
-	fighterGroup.push(localFighter.sprite);
+	if(isPlayer)
+	{
+		/* Send new local fighter data to the server */
+		var localFighterData = {
+			health: localFighter.health,
+			alive: localFighter.alive,
+			x: localFighter.sprite.position.x,
+			y: localFighter.sprite.position.y,
+			currAnimation: localFighter.sprite.getAnimationLabel(),
+			spriteDebug: localFighter.sprite.debug,
+			swordDebug: localFighter.sprite.sword.debug,
+			rot: localFighter.sprite.rotation
+		}
+		socket.emit('start', localFighterData);
+	}
+>>>>>>> 03b0bfc214efd5bc280fb7e518f7cc41329e2b98
+
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
@@ -176,13 +230,12 @@ function setup()
 				chest.sprite.depth = cheDepth;
 				chestArr.push(chest);
 				chestGroup.add(chest.sprite);
+				chest.sprite.scale = .5;
 				cheDepth++;
 			}
 			initializedChe = 1;
 		}
 	});
-
-	createHud();
 }
 
 function draw()
@@ -195,115 +248,117 @@ function draw()
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
+	if(isPlayer)
+	{
+		camera.position.x = localFighter.sprite.position.x;
+		camera.position.y = localFighter.sprite.position.y;
 
-	socket.on('updateFighters', function(data)
-	{	
-		if(data.length > fighterArray.length)
+		localFighter.sprite.collide(obstacleGroup)
+
+		for (var i=0; i<chestArr.length; i++)
 		{
+<<<<<<< HEAD
 			for(var i = 0; i<data.length; i++)
 			{	
 				fighterArray[i] = new Fighter(data[i].x, data[i].y, data[i].type, data[i].id);
+=======
+			localFighter.sprite.collide(chestArr[i].sprite);
+
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
+				if (keyDown('e')) {
+					chestArr[i].open();
+					chestArr[i].update;
+				}
+>>>>>>> 03b0bfc214efd5bc280fb7e518f7cc41329e2b98
 			}
 		}
-		for(var i = 0; i < data.length; i++)
+
+		if(keyDown('w'))
 		{
-			fightersArr[i].health = data[i].health;
-			fightersArr[i].alive = data[i].alive;
-			fightersArr[i].sprite.position.x = data[i].x;
-			fightersArr[i].sprite.position.y = data[i].y;
-			fightersArr[i].sprite.depth = i + 50;
-			fightersArr[i].sword.visible = data[i].swinging;
-			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
-			fightersArr[i].sprite.debug = data[i].spriteDebug;
-			fightersArr[i].sword.debug = data[i].swordDebug;
-			fightersArr[i].sprite.rotation = data[i].rot;
+			localFighter.walk("up");
 		}
-	});
-
-	createHud();
-}
-
-function draw()
-{
-	background(55,75,30);
-
-
-	cursorSprite.position.x = mouseX;
-	cursorSprite.position.y = mouseY;
-
-
-	cursorSprite.position.x = camera.mouseX;
-	cursorSprite.position.y = camera.mouseY;
-
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
-
- 	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
-	borderCamera();
-
-	if (localFighter.sprite.overlap(obstacleGroup)) {
-		localFighter.sprite.bounce(obstacleGroup);
-	};
-	for (var i=0; i<chestArr.length; i++) {
-		if (localFighter.sprite.overlap(chestArr[i].sprite)) {
-			localFighter.sprite.bounce(chestArr[i].sprite);
+		if(keyDown('s'))
+		{
+			localFighter.walk("down");
+		}
+		if(keyDown('a'))
+		{
+			localFighter.walk("left");
+		}
+		if(keyDown('d'))
+		{
+			localFighter.walk("right");
 		}
 
-		if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-			if (keyDown('e')) {
-				chestArr[i].open();
-				chestArr[i].update;
-			}
+		if(mouseDown())
+		{
+			localFighter.sprite.sword.visible = true;
+			reduceStaminaWidth();
 		}
-	}
+		else
+		{
+			localFighter.sprite.sword.visible = false;
+			restoreStaminaWidth();
+		}
 
-	if(keyDown('w'))
-	{
-		localFighter.walk("up");
-	}
-	if(keyDown('s'))
-	{
-		localFighter.walk("down");
-	}
-	if(keyDown('a'))
-	{
-		localFighter.walk("left");
-	}
-	if(keyDown('d'))
-	{
-		localFighter.walk("right");
-	}
+		restoreHealthWidth();
 
-	if(mouseDown())
-	{
-		localFighter.sprite.sword.visible = true;
+		/* Invisible landscapeSprite around landscape */
+		if(localFighter.sprite.position.x < 0) {
+			localFighter.sprite.position.x = 0;
+		}
+		if(localFighter.sprite.position.y < 0) {
+		    localFighter.sprite.position.y = 0;
+		}
+		if(localFighter.sprite.position.x > SCENE_W) {
+		    localFighter.sprite.position.x = SCENE_W;
+		}
+		if(localFighter.sprite.position.y > SCENE_H) {
+		    localFighter.sprite.position.y = SCENE_H;
+		}
+
+		localFighter.update(enemyGroup);
+
 	}
 	else
 	{
-		localFighter.sprite.sword.visible = false;
-	}
+		var spectatorSpeed = 5.6;
 
-	/* Invisible landscapeSprite around landscape */
-	if(localFighter.sprite.position.x < 0) {
-		localFighter.sprite.position.x = 0;
-	}
-	if(localFighter.sprite.position.y < 0) {
-	    localFighter.sprite.position.y = 0;
-	}
-	if(localFighter.sprite.position.x > SCENE_W) {
-	    localFighter.sprite.position.x = SCENE_W;
-	}
-	if(localFighter.sprite.position.y > SCENE_H) {
-	    localFighter.sprite.position.y = SCENE_H;
-	}
+		if(keyDown(16))
+		{
+			spectatorSpeed = 9.81;
+		}
 
-	if(mouseWentDown())
-	{
-		reduceStaminaWidth();
-	}
+		if(keyDown('w'))
+		{
+			camera.position.y -= spectatorSpeed;
+		}
+		if(keyDown('s'))
+		{
+			camera.position.y += spectatorSpeed;
+		}
+		if(keyDown('a'))
+		{
+			camera.position.x -= spectatorSpeed;
+		}
+		if(keyDown('d'))
+		{
+			camera.position.x += spectatorSpeed;
+		}
+		if(keyDown(188))
+		{
+			camera.zoom = 1.5;
+		}
+		else if(keyDown(190))
+		{
+			camera.zoom = 0.5;
+		}
+		else
+		{
+			camera.zoom = 1;
+		}
 
+<<<<<<< HEAD
 	localFighterData = {
 		x: 		localFighter.sprite.position.x,
 		y: 		localFighter.sprite.position.y,
@@ -318,8 +373,28 @@ function draw()
 
 	localFighter.update(enemyGroup);
 	socket.emit('updateFighter', localFighterData);
+=======
+		if(isMod)
+		{
+			if(keyWentDown('c'))
+			{
+				socket.emit('addChest', camera.mouseX, camera.mouseY);
+				console.log("Added Chest");
+				initializedChe = false;
+			}
+			if(keyWentDown('o'))
+			{
+				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
+				console.log("Added Obstacle");
+				initializedObs = false;
+			}			
+		}
 
-	for (var i = 0; i < spawnerArray.length; i++) {
+	}
+>>>>>>> 03b0bfc214efd5bc280fb7e518f7cc41329e2b98
+
+	for (var i = 0; i < spawnerArray.length; i++)
+	{
 		spawnerArray[i].spawn(enemyGroup);
 		spawnerArray[i].updateAll(fighterArray);
 	}
@@ -327,33 +402,37 @@ function draw()
 	drawSprites();
 	drawSprite(cursorSprite);
 
-	
-	drawHud();
+	borderCamera();
 
+	if(isPlayer)
+	{
+		drawHud();
+	}
 }
+
 
 function borderCamera()
 {
-	var top = camera.position.y - (height / 2);
-	var bottom = camera.position.y + (height / 2);
+	var top = camera.position.y - ((height * 1/camera.zoom)  / 2);
+	var bottom = camera.position.y + ((height * 1/camera.zoom)  / 2);
 
-	var left = camera.position.x - (width / 2);
-	var right = camera.position.x + (width / 2);
+	var left = camera.position.x - ((width * 1/camera.zoom) / 2);
+	var right = camera.position.x + ((width * 1/camera.zoom) / 2);
 
 	if(top < 0)
 	{
-		camera.position.y = height/2;
+		camera.position.y = (height * 1/camera.zoom) /2;
 	}
 	if(bottom > SCENE_H)
 	{
-		camera.position.y = SCENE_H - height/2;
+		camera.position.y = SCENE_H - (height * 1/camera.zoom) /2;
 	}
 	if(left < 0)
 	{
-		camera.position.x = width/2;
+		camera.position.x = (width * 1/camera.zoom)/2;
 	}
 	if(right > SCENE_W)
 	{
-		camera.position.x = SCENE_W	- width/2;
+		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
 }

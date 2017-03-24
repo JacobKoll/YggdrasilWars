@@ -19,7 +19,7 @@ var friction = .5;
  * [Fighter This fuction is for creating a prototype function to make different kinds of fighters.]
  *
  * @constructor
- * 
+ *
  * @param {Number} health         [The health of the character]
  * @param {Number} x              [The x coordinate of the character]
  * @param {Number} y              [The y coordinate of the character]
@@ -42,9 +42,10 @@ function Fighter(x, y, type, id)
 	this.sprite.debug = true;
 
 	this.sprite.health = type.health; //Amount of health.
+	this.sprite.maxHealth = type.health; //Amount of health.
 
-	this.sprite.addAnimation('walk', type.walkAnimation);
-	this.sprite.addAnimation('death', type.deathAnimation);
+	//this.sprite.addAnimation('walk', type.walkAnimation);
+	//this.sprite.addAnimation('death', type.deathAnimation);
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
 	this.sprite.sword = createSprite(x, y, 138, 96);
@@ -60,7 +61,7 @@ function Fighter(x, y, type, id)
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", 0, 0, 30);
 	this.sprite.sword.setCollider("circle", 0, 0, 107);
-	
+
 	this.sprite.scale = .8;
 	this.sprite.sword.scale = .8;
 
@@ -70,7 +71,7 @@ function Fighter(x, y, type, id)
  * [walk Move the character forward]
  *
  * @function
- * 
+ *
  * @param  {String} direction [What direction is the character moving]
  */
 Fighter.prototype.walk = function(direction)
@@ -119,14 +120,13 @@ Fighter.prototype.update = function(enemyGroup)
 	this.sprite.sword.overlap(enemyGroup, this.attack);
 }
 
-Fighter.prototype.attack = function(sword, enemy) 
+Fighter.prototype.attack = function(sword, enemy)
 {
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
-	if(diffAngle <= 28 && diffAngle >= -32 && mouseDown())
+	if(diffAngle <= 28 && diffAngle >= -32 && mouseDown() && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
-		console.log("Enemy was hit");
-	}	
+	}
 };
