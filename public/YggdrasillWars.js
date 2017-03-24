@@ -1,7 +1,6 @@
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
-// var fighterWalkAnimation;
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
@@ -20,6 +19,7 @@ var localFighter;
 var chestArr = [];
 var openChest;
 var closedChest;
+
 
 var obstaclesArr = [];
 var bush;
@@ -60,6 +60,7 @@ var knight;
 var isMod;
 var isSpectator;
 var isPlayer;
+var paused;
 
 function preload()
 {
@@ -155,9 +156,8 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-
-	//becomePlayer();
-	becomeSpectator();
+	becomePlayer();
+	// becomeSpectator();
 	//becomeMod();
 
 	if(isPlayer)
@@ -222,6 +222,7 @@ function setup()
 			initializedChe = 1;
 		}
 	});
+}
 
 function draw()
 {
@@ -238,13 +239,11 @@ function draw()
 		camera.position.x = localFighter.sprite.position.x;
 		camera.position.y = localFighter.sprite.position.y;
 
-		if (localFighter.sprite.overlap(obstacleGroup)) {
-			localFighter.sprite.bounce(obstacleGroup);
-		};
-		for (var i=0; i<chestArr.length; i++) {
-			if (localFighter.sprite.overlap(chestArr[i].sprite)) {
-				localFighter.sprite.bounce(chestArr[i].sprite);
-			}
+		localFighter.sprite.collide(obstacleGroup)
+
+		for (var i=0; i<chestArr.length; i++) 
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
 
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
 				if (keyDown('e')) {
@@ -281,6 +280,7 @@ function draw()
 			localFighter.sprite.sword.visible = false;
 			restoreStaminaWidth();
 		}
+
 		restoreHealthWidth();
 
 		/* Invisible landscapeSprite around landscape */
@@ -300,7 +300,7 @@ function draw()
 		localFighter.update(enemyGroup);
 
 
-		drawHud();
+		
 	}
 	else if(isSpectator)
 	{
@@ -345,6 +345,18 @@ function draw()
 
 	}
 
+	if(keyDown('p'))
+	{
+		if(paused)
+		{
+			loop();
+		}
+		else
+		{
+			noLoop();
+		}
+	}
+
 	for (var i = 0; i < spawnerArray.length; i++)
 	{
 		spawnerArray[i].spawn(enemyGroup);
@@ -356,6 +368,11 @@ function draw()
 	drawSprite(cursorSprite);
 
 	borderCamera();
+
+	if(isPlayer)
+	{
+		drawHud();
+	}
 }
 
 

@@ -4,13 +4,13 @@ var itemsBar;
 function createHud(){
 
 
-  emptyHealthBar = createSprite(0,100,100,40);
+  emptyHealthBar = createSprite(10,100,135,23);
   emptyHealthBar.depth = 1500;
-  fullHealthBar = createSprite(0,10,100,40);
+  fullHealthBar = createSprite(10,10,135,23);
   fullHealthBar.depth = 1501;
-  emptyStaminaBar = createSprite(0,200,100,40);
+  emptyStaminaBar = createSprite(10,200,135,23);
   emptyStaminaBar.depth = 1502;
-  fullStaminaBar = createSprite(0,200,100,40);
+  fullStaminaBar = createSprite(10,200,135,23);
   fullStaminaBar.depth = 1503;
 
   fullHealthBar.shapeColor = color("red");
@@ -43,7 +43,6 @@ function changeHealthPosition(xPos, yPos){
   fullHealthBar.position.y = yPos;
   emptyHealthBar.position.x = xPos;
   emptyHealthBar.position.y = yPos;
-
 }
 
 function changeStaminaPosition(xPos,yPos){
@@ -97,7 +96,7 @@ function restoreHealthWidth(){
 
 function restoreStaminaWidth(){
 
-  fullStaminaBar.width += .1;
+  fullStaminaBar.width += .5;
   if(fullStaminaBar.width > 100){
     fullStaminaBar.width = 100;
 
@@ -108,8 +107,8 @@ function restoreStaminaWidth(){
 function drawHud(){
 
   changeItemPosition(camera.position.x-150, camera.position.y+310);
-  changeHealthPosition(camera.position.x-440, camera.position.y-335);
-  changeStaminaPosition(camera.position.x-300, camera.position.y-335);
+  changeHealthPosition(camera.position.x-420, camera.position.y-335);
+  changeStaminaPosition(camera.position.x-270, camera.position.y-335);
 
   stroke('black');
   textSize(24);

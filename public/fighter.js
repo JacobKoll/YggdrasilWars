@@ -125,6 +125,5 @@ Fighter.prototype.attack = function(sword, enemy)
 	if(diffAngle <= 28 && diffAngle >= -32 && mouseDown() && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
-		console.log("Enemy was hit");
 	}
 };
