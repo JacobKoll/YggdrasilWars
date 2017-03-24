@@ -68,7 +68,11 @@ function onSocketConnect(client)
 	/* When connected, add the client's fighter to the array. */
 	client.on('start', function(newFighter)
 	{
+<<<<<<< HEAD
 		var fighter = new Fighter(newFighter.)
+=======
+		var fighter = new Fighter(newFighter)
+>>>>>>> ff4ef174a13440d647a8baf64dc1aa146a8d1df1
 		fighterArr.push(newFighter);
 		io.sockets.emit('generateObstacles', obstacleArr);
 		io.sockets.emit('generateChests', chestArr);
@@ -119,6 +123,10 @@ function onSocketConnect(client)
 }
 
 io.on('connection', onSocketConnect);
+<<<<<<< HEAD
 
 init();
+=======
+>>>>>>> ff4ef174a13440d647a8baf64dc1aa146a8d1df1
 
+init();

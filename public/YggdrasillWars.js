@@ -11,6 +11,11 @@ var landscape;
 var emptyInventoryImage;
 var basicSwordImage;
 
+var bronzeSwordImage;
+var silverSwordImage;
+var goldSwordImage;
+
+
 var initializedObs;
 var initializedChe;
 
@@ -68,6 +73,11 @@ var paused = false;
 var footsteps;
 var swordSound;
 
+var isMod;
+var isSpectator;
+var isPlayer;
+var paused = false;
+
 function preload()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
@@ -84,14 +94,19 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
-	landscape = loadImage("assets/map.png")
-	emptyInventoryImage = loadImage("assets/emptyInventory.png")
-	basicSwordImage = loadImage("assets/basicSword.png")
 
-	bush = loadImage("assets/obstacles/bush.png");
+	landscape = loadImage("assets/map.png");
+	emptyInventoryImage = loadImage("assets/emptyInventory.png");
+	basicSwordImage = loadImage("assets/basicSword.png");
+	bronzeSwordImage = loadImage("assets/bronzeSword.png");
+	silverSwordImage = loadImage("assets/silverSword.png");
+	goldSwordImage = loadImage("assets/goldSword.png");
 
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
+
+
+	bush = loadImage("assets/obstacles/bush.png");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -114,11 +129,14 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,
-		damage: 2.53
+
+		damage: .5
+
 	};
 }
 
 function becomePlayer()
+
 {
 	isPlayer = true;
 	localFighter = new Fighter(1450, 960, knight);
@@ -142,6 +160,7 @@ function becomeMod()
 	isMod = true;
 }
 
+
 function setup()
 {
 	createCanvas(1000, 725);
@@ -151,8 +170,9 @@ function setup()
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 
-
 	footsteps.setVolume(0.15);
+
+	initGameItems();
 
 	assignTypes();
 	initializedObs = 0;
@@ -169,6 +189,7 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
+
 
 	localFighter = new Fighter(1450, 960, knight, socket.id);
 
@@ -199,16 +220,6 @@ function setup()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-	testSpawner = new EnemySpawner(35, 60, goblin, .5, 5, spawnerImage);
-
-	socket.on('generateObstacles', function(data) {
-		for (var i=0; i<data.length; i++) {
-			var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
-			obstacle.sprite.setCollider('circle',0,0,bush.width/3);
-			obstaclesArr.push(obstacle);
-			bg.add(obstacle.sprite);
-}
-});
 
 	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
 	testSpawner.sprite.depth = 1;
@@ -254,6 +265,7 @@ function setup()
 
 
 
+
 	miniMap = new miniMap(1000,1000);
 
 }
@@ -269,23 +281,9 @@ function draw()
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
-	for (var i = 0; i<obstaclesArr.length; i++) {
-		obstaclesArr[i].update;
-	}
-	for (var i = 0; i<chestArr.length; i++) {
-		chestArr[i].update;
-	}
-
-
-	cursorSprite.position.x = mouseX;
-	cursorSprite.position.y = mouseY;
-
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
-
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
 
 	miniMap.sprite.position.x = camera.position.x;
 	miniMap.sprite.position.y = camera.position.y; 
@@ -295,7 +293,7 @@ function draw()
 		camera.position.x = localFighter.sprite.position.x;
 		camera.position.y = localFighter.sprite.position.y;
 
-		localFighter.sprite.collide(obstacleGroup);
+		localFighter.sprite.collide(obstacleGroup)
 
 		for (var i=0; i<chestArr.length; i++)
 		{
@@ -309,107 +307,95 @@ function draw()
 			}
 		}
 
-	if(keyDown('w'))
-	{
-		swordSound.stop();
-		localFighter.walk("up");
-
-		if(!footsteps.isPlaying())
+		if(keyDown('w'))
 		{
-			footsteps.loop();
+			localFighter.walk("up");
 		}
-		miniMap.move(0,-5);
-
-	}
-	if(keyDown('s'))
-	{
-		swordSound.stop();
-		localFighter.walk("down");
-		if(!footsteps.isPlaying())
+		if(keyDown('s'))
 		{
-			footsteps.loop();
+			localFighter.walk("down");
 		}
-		miniMap.move(0,5);
-	}
-	if(keyDown('a'))
-	{
-		swordSound.stop();
-	localFighter.walk("left");
-	if(!footsteps.isPlaying())
+		if(keyDown('a'))
 		{
-			footsteps.loop();
-		}	
-		miniMap.move(-5,0);
-	}
-	if(keyDown('d'))
-	{
-		swordSound.stop();
-	localFighter.walk("right");
-	if(!footsteps.isPlaying())
-		{
-			footsteps.loop();
+			localFighter.walk("left");
 		}
-		miniMap.move(5,0);
-	}
-
-	if(!keyIsDown(87) && !keyIsDown(65) && !keyIsDown(83) && !keyIsDown(68)){
-		footsteps.stop();
-	}
-
-	if(keyWentDown('p')){
+		if(keyDown('d'))
+		{
+			localFighter.walk("right");
+		}
+		if(keyWentDown('p')){
 
 		miniMap.createDots(enemyGroup);
 	
-	}
-	if(keyDown('p')){
-
+		}
+		if(keyDown('p')){
 			
 		miniMap.sprite.visible = true;
 		miniMap.update();
 		miniMap.show();
-	}
-	else{
+
+		}
+		else{
 		
 		miniMap.sprite.visible = false;
 		miniMap.delete();
 	
-	}
+		}
+		if(keyWentDown(49))
+		{
+			localFighter.itemSelected = 0;
+			localFighter.sprite.sword.damage = localFighter.inventory[0].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = -150;
+		}
+		if(keyWentDown(50))
+		{
+			localFighter.itemSelected = 1;
+			localFighter.sprite.sword.damage = localFighter.inventory[1].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = -50;
+		}
+		if(keyWentDown(51))
+		{
+			localFighter.itemSelected = 2;
+			localFighter.sprite.sword.damage = localFighter.inventory[2].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = 50;
+		}
+		if(keyWentDown(52))
+		{
+			localFighter.itemSelected = 3;
+			localFighter.sprite.sword.damage = localFighter.inventory[3].dmg * localFighter.baseDamage;
+			itemSelectedSpriteX = 150;
+		}
 
-	
-	
-	/* Invisible landscapeSprite around landscape */
-	if(localFighter.sprite.position.x < 0) {
-		localFighter.sprite.position.x = 0;
-	}
-	if(localFighter.sprite.position.y < 0) {
-	    localFighter.sprite.position.y = 0;
-	}
-	if(localFighter.sprite.position.x > SCENE_W) {
-	    localFighter.sprite.position.x = SCENE_W;
-	}
-	if(localFighter.sprite.position.y > SCENE_H) {
-	    localFighter.sprite.position.y = SCENE_H;
-	}
 
-	if(mouseDown())
-	{
+		if(localFighter.inventory[localFighter.itemSelected].name != "Empty" && mouseDown()){
 			localFighter.sprite.sword.visible = true;
-			score += 1;
-			if(!swordSound.isPlaying())
-			{
-			swordSound.loop();
-			}reduceStaminaWidth();
-	}
-	else
-	{
-			swordSound.stop();
+			reduceStaminaWidth();
+		}
+		else
+		{
 			localFighter.sprite.sword.visible = false;
 			restoreStaminaWidth();
+		}
+
+		restoreHealthWidth();
+
+		/* Invisible landscapeSprite around landscape */
+		if(localFighter.sprite.position.x < 0) {
+			localFighter.sprite.position.x = 0;
+		}
+		if(localFighter.sprite.position.y < 0) {
+		    localFighter.sprite.position.y = 0;
+		}
+		if(localFighter.sprite.position.x > SCENE_W) {
+		    localFighter.sprite.position.x = SCENE_W;
+		}
+		if(localFighter.sprite.position.y > SCENE_H) {
+		    localFighter.sprite.position.y = SCENE_H;
+		}
+
+		localFighter.update(enemyGroup);
+
 	}
-
-
-		
-}
 	else
 	{
 		var spectatorSpeed = 5.6;
@@ -476,21 +462,8 @@ function draw()
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
 				initializedObs = false;
-			}			
+			}
 		}
-
-
-	}
-
-	for (var i = 0; i < spawnerArray.length; i++)
-	{
-		spawnerArray[i].spawn(enemyGroup);
-		spawnerArray[i].updateAll(fighterArray);
-	}
-
-	drawSprites();
-	drawSprite(cursorSprite);
-
 
 	borderCamera();
 
@@ -514,6 +487,25 @@ function draw()
 		}
 
 		localFighter.update(enemyGroup);
+
+	}
+
+	for (var i = 0; i < spawnerArray.length; i++)
+	{
+		spawnerArray[i].spawn(enemyGroup);
+		spawnerArray[i].updateAll(fighterArray);
+	}
+
+	drawSprites();
+	drawSprite(cursorSprite);
+
+	borderCamera();
+
+	if(isPlayer)
+	{
+		drawHud();
+	}
+
 }
 
 

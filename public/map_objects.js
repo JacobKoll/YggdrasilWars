@@ -5,7 +5,7 @@
 /**
  * Creates an immutable Obstacle object, represented by the image of a bush
  * @constructor
- *   
+ *
  * @param      {Number}     x       x-coordinate of the obstacle
  * @param      {Number}     y       y-coordinate of the obstacle
  * @param      {Number}     width   The width of the obstacle
@@ -32,7 +32,7 @@ Obstacle.prototype.update = function() {
 /**
  * Creates a treasure chest that can be opened, and will later give points when opened
  * @constructor
- * 
+ *
  * @param      {Number}  x            x-coordinate of chest
  * @param      {Number}  y            y-coordinate of chest
  * @param      {.png}  openImage    image to represent chest's open state
@@ -41,6 +41,7 @@ Obstacle.prototype.update = function() {
 function Chest(x, y, openImage, closedImage) {
 	this.width = closedImage.width;
 	this.height = closedImage.height;
+	this.itemStash = gameItems[round(random(0,4))];
 	this.sprite = createSprite(x, y, width, height);
 	this.sprite.immovable = true;
 	this.sprite.debug = true;
@@ -62,6 +63,9 @@ function Chest(x, y, openImage, closedImage) {
 		this.sprite.addImage('image', this.openImage);
 		this.image = openImage;
 		this.isOpen = true;
+
+		chestItemDrop(this.itemStash);
+		this.itemStash = gameItems[0];
 	}
 }
 
@@ -73,4 +77,5 @@ Chest.prototype.open = function() {
 	this.sprite.addImage('image', this.openImage);
 	this.image = openImage;
 	this.isOpen = true;
+
 };

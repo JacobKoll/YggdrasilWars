@@ -62,12 +62,15 @@ Enemy.prototype.update = function(playerArr)
 	var chasedDist;
 
 	if(playerArr.length > 0)
-	{	
+
+	{
 		if(!this.playerToChase)
 		{
 			this.playerToChase = playerArr[0].sprite;
+
 		}
 		chasedDist = dist(this.playerToChase.position.x, this.playerToChase.position.y, this.sprite.position.x, this.sprite.position.y);
+
 
 		// The monster will chase the player that is closest to it, in its view-range.
 		for(var i = 0; i < playerArr.length; i++)
@@ -128,7 +131,7 @@ Enemy.prototype.update = function(playerArr)
 
 			}
 		}
-		
+
 		if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
 		{
 			this.sprite.changeAnimation('walk');
@@ -164,7 +167,7 @@ Enemy.prototype.update = function(playerArr)
 		}
 
 		this.turnCounter++;
-		
+
 	}
 
 
@@ -174,8 +177,6 @@ Enemy.prototype.update = function(playerArr)
 	this.sprite.bar.width = this.sprite.health;
 
 
-
-	
 
 
 };
