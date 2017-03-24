@@ -21,6 +21,7 @@ function EnemySpawner(x, y, enemyType, rate, limit, image)
 	this.rate = rate;
 	this.limit = limit;
 	this.spawnCount = 0;
+	this.curDepth = 100;
 
 	this.enemyArr = [];
 
@@ -44,6 +45,8 @@ EnemySpawner.prototype.spawn = function(enemyGroup)
 		this.spawnCount++;
 
 		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
+		tempEnemy.sprite.depth = this.curDepth;
+		this.curDepth++;
 		this.enemyArr.push(tempEnemy);
 		enemyGroup.push(tempEnemy.sprite);
 

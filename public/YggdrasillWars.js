@@ -227,7 +227,7 @@ function setup()
 
 
 	socket.on('updateObstacles', function(data) {
-		var obsDepth = 500;
+		var obsDepth = 1000;
 		if (initializedObs == 0) {
 			console.log("Recieved Obstacles");
 			for (var i=0; i < data.length; i++) {
@@ -244,7 +244,7 @@ function setup()
 	});
 
 	socket.on('updateChests', function(chestData) {
-		var cheDepth = 1000;
+		var cheDepth = 1300;
 		if (initializedChe == 0){
 			console.log("Recieved Chests");
 			for (i=0; i<chestData.length; i++) {
