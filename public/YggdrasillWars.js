@@ -315,9 +315,9 @@ function draw()
 
 		drawHud();
 		drawSprite(cursorSprite);
-		}
-		else if(isSpectator)
-		{
+	}
+	else if(isSpectator)
+	{
 		var spectatorSpeed = 5.6;
 
 		if(keyDown(16))
@@ -359,9 +359,6 @@ function draw()
 	{
 
 	}
-
-
-
 	drawSprites();
 
 }
