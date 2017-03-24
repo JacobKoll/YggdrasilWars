@@ -105,6 +105,11 @@ function onSocketConnect(client)
 	io.on('disconnect', function()
 	{
 		console.log(client.id + " has disconnected from the server.\n");
+		for(var i = 0; i < fighterArr.length; i++){
+            if(client.id == fighterArr[i].id){
+                fighterArr.splice(i,1);
+            }
+        }
 	});
 }
 

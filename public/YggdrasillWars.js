@@ -119,7 +119,7 @@ function assignTypes()
 function becomePlayer()
 {
 	isPlayer = true;
-	localFighter = new Fighter(1450, 960, knight);
+	localFighter = new Fighter(random()*1450, random()*960, knight);
 
 	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
@@ -165,11 +165,8 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-
-	localFighter = new Fighter(1450, 960, knight, socket.id);
-
 	becomePlayer();
-	// becomeSpectator();
+	//becomeSpectator();
 	//becomeMod();
 
 	if(isPlayer)
@@ -259,7 +256,7 @@ function draw()
 			localFighter.sprite.collide(chestArr[i].sprite);
 
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-				if (keyDown('e')) {
+				if (keyDown('e') && !(chestArr[i].isOpen)) {
 					chestArr[i].open();
 					chestArr[i].update;
 				}
@@ -309,7 +306,7 @@ function draw()
 		}
 
 
-		if(localFighter.inventory[localFighter.itemSelected].name != "Empty" && mouseDown()){
+		if(localFighter.inventory[localFighter.itemSelected].name != "Empty" && (mouseDown() || keyDown(32))){
 			localFighter.sprite.sword.visible = true;
 			reduceStaminaWidth();
 		}
