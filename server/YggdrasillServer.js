@@ -68,7 +68,7 @@ function onSocketConnect(client)
 	{
 		io.sockets.emit('generateObstacles', obstacleArr);
 		io.sockets.emit('generateChests', chestArr);
-		console.log(client.id + " added it's fighter\n");
+		console.log(client.id + " added it[s fighter\n");
 	});
 
 	/**

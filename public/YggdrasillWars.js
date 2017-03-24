@@ -165,9 +165,6 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-
-	localFighter = new Fighter(1450, 960, knight, socket.id);
-
 	becomePlayer();
 	// becomeSpectator();
 	//becomeMod();
