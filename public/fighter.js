@@ -28,11 +28,13 @@ var friction = .5;
  * @param {Animation} deathAnimation [The death animation of the character]
  * @param {Animation} idleAnimation  [The idle animation of the character]
  */
-function Fighter(x, y, type)
+function Fighter(x, y, type, id)
 {
 	this.x = x;
 	this.y = y;
+	this.id = id;
 	this.speed = type.speed;
+	this.type = type;
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 72, 96);

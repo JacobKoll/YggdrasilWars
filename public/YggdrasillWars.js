@@ -122,20 +122,16 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	localFighter = new Fighter(1450, 960, knight);
+	localFighter = new Fighter(1450, 960, knight, socket.id);
 
 	/* Send new local fighter data to the server */
-	var localFighterData = {
-		health: localFighter.health,
-		alive: localFighter.alive,
+	var newFighter = {
 		x: localFighter.sprite.position.x,
 		y: localFighter.sprite.position.y,
-		currAnimation: localFighter.sprite.getAnimationLabel(),
-		spriteDebug: localFighter.sprite.debug,
-		swordDebug: localFighter.sprite.sword.debug,
-		rot: localFighter.sprite.rotation
+		type: localFighter.type,
+		id: localFighter.id
 	}
-	socket.emit('start', localFighterData);
+	socket.emit('start', newFighter);
 
 	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
@@ -208,7 +204,7 @@ function draw()
 		{
 			for(var i = 0; i<data.length; i++)
 			{	
-				fighterArray[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+				fighterArray[i] = new Fighter(data[i].x, data[i].y, data[i].type, data[i].id);
 			}
 		}
 		for(var i = 0; i < data.length; i++)
@@ -308,8 +304,20 @@ function draw()
 		reduceStaminaWidth();
 	}
 
+	localFighterData = {
+		x: 		localFighter.sprite.position.x,
+		y: 		localFighter.sprite.position.y,
+		type: 	localFighter.type,
+		id: 	localFighter.id,
+		health: localFighter.health,
+		alive: 	localFighter.alive,
+		swinging: localFighter.swinging,
+		curAnim:  localFighter.currAnimation,
+		rot: 	localFighter.rot
+	}
 
 	localFighter.update(enemyGroup);
+	socket.emit('updateFighter', localFighterData);
 
 	for (var i = 0; i < spawnerArray.length; i++) {
 		spawnerArray[i].spawn(enemyGroup);
