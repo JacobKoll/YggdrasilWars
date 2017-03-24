@@ -242,7 +242,7 @@ function draw()
 
 		localFighter.sprite.collide(obstacleGroup)
 
-		for (var i=0; i<chestArr.length; i++) 
+		for (var i=0; i<chestArr.length; i++)
 		{
 			localFighter.sprite.collide(chestArr[i].sprite);
 
@@ -300,8 +300,6 @@ function draw()
 
 		localFighter.update(enemyGroup);
 
-
-		
 	}
 	else
 	{
@@ -362,7 +360,6 @@ function draw()
 		spawnerArray[i].spawn(enemyGroup);
 		spawnerArray[i].updateAll(fighterArray);
 	}
-
 
 	drawSprites();
 	drawSprite(cursorSprite);
