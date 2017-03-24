@@ -34,6 +34,7 @@ function Fighter(x, y, type, id)
 	this.y = y;
 	this.id = id;
 	this.speed = type.speed;
+	this.maxSpeed = type.speed;
 	this.inventory = initPlayerItems();
 	this.baseDamage = type.damage;
 	this.itemSelected = 0;

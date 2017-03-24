@@ -249,7 +249,15 @@ function draw()
 		camera.position.x = localFighter.sprite.position.x;
 		camera.position.y = localFighter.sprite.position.y;
 
-		localFighter.sprite.collide(obstacleGroup)
+		if(localFighter.sprite.overlap(obstacleGroup))
+		{
+			localFighter.speed = localFighter.maxSpeed - 2;
+		}
+		else
+		{
+			localFighter.speed = localFighter.maxSpeed ;
+
+		}
 
 		for (var i=0; i<chestArr.length; i++)
 		{
