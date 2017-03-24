@@ -1,7 +1,7 @@
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
-var fighterWalkAnimation;
+// var fighterWalkAnimation;
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
@@ -108,7 +108,7 @@ function assignTypes()
 	};
 }
 
-function becomePlayer() 
+function becomePlayer()
 {
 	isPlayer = true;
 	localFighter = new Fighter(1450, 960, knight);
@@ -122,12 +122,12 @@ function becomePlayer()
 
 }
 
-function becomeSpectator() 
+function becomeSpectator()
 {
-	isSpectator = true;		
+	isSpectator = true;
 }
 
-function becomeMod() 
+function becomeMod()
 {
 	isMod = true;
 }
@@ -155,7 +155,8 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	// becomePlayer();
+
+	//becomePlayer();
 	becomeSpectator();
 	//becomeMod();
 
@@ -222,21 +223,15 @@ function setup()
 		}
 	});
 
-	
-}
-
 function draw()
 {
 	background(55,75,30);
-
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
-
-
 
 	if(isPlayer)
 	{
@@ -284,7 +279,9 @@ function draw()
 		else
 		{
 			localFighter.sprite.sword.visible = false;
+			restoreStaminaWidth();
 		}
+		restoreHealthWidth();
 
 		/* Invisible landscapeSprite around landscape */
 		if(localFighter.sprite.position.x < 0) {
@@ -299,7 +296,6 @@ function draw()
 		if(localFighter.sprite.position.y > SCENE_H) {
 		    localFighter.sprite.position.y = SCENE_H;
 		}
-
 
 		localFighter.update(enemyGroup);
 

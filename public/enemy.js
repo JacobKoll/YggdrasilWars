@@ -187,9 +187,6 @@ Enemy.prototype.attack = function(enemy, player)
 	player.health -= enemy.damage;
 	reduceHealthWidth(enemy.damage);
 
-	if(fullHealthBar.width <= 0){
-		fullHealthBar.width = 0;
-	}
 
 	if(player.health <= 0)
 	{
@@ -200,7 +197,6 @@ Enemy.prototype.attack = function(enemy, player)
 		fullHealthBar.width = 100;
 		fullStaminaBar.width = 100;
 		player.alive = true;
-
 
 		console.log("You died!");
 

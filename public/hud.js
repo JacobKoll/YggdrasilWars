@@ -76,12 +76,32 @@ function reduceHealthWidth(newWidth){
 
 function reduceStaminaWidth(){
 
-  fullStaminaBar.width -= 5;
+  fullStaminaBar.width -= .5;
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
+    localFighter.sprite.sword.visible = false;
+  }
+
+}
+
+function restoreHealthWidth(){
+
+  fullHealthBar.width += .1;
+  localFighter.sprite.health += .1;
+  if(fullHealthBar.width >= 100){
+    fullHealthBar.width = 100;
+    localFighter.sprite.health = 100;
+  }
+
+}
+
+function restoreStaminaWidth(){
+
+  fullStaminaBar.width += .1;
+  if(fullStaminaBar.width > 100){
+    fullStaminaBar.width = 100;
 
   }
-  score ++;
 
 }
 

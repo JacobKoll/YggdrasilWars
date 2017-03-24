@@ -9,10 +9,10 @@ var friction = .5;
 function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, idleAnimation)
 {
 	/* Properties of this fighter */
-	this.health = health; //Amount of health. 
+	this.health = health; //Amount of health.
 
 	this.alive = true;
-	
+
 	/* Initialize the animations */
 	this.walkAnimation = walkAnimation;// Walk animations
 	this.swingAnimation = swingAnimation; // Attack animation
@@ -24,7 +24,7 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 	this.sprite.rotateToDirection = true;
 	this.sprite.maxSpeed = maxSpeed;
 	this.sprite.friction = friction;
-	this.sprite.debug = true;	
+	this.sprite.debug = true;
 
 
 	this.sprite.addAnimation('walk', walkAnimation);
@@ -65,12 +65,12 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 				this.sprite.changeAnimation('walk');
 
 				/* Trying to make the bounding box for the sword follow the rotation */
-				this.sword.setCollider("circle", 
-					60 * cos(radians(this.sprite.getDirection() - 16)), 
-					60 * sin(radians(this.sprite.getDirection() - 16)), 
-					46);		
+				this.sword.setCollider("circle",
+					60 * cos(radians(this.sprite.getDirection() - 16)),
+					60 * sin(radians(this.sprite.getDirection() - 16)),
+					46);
 			}
-		}			
+		}
 	}
 
 	this.swing = function()
@@ -80,7 +80,7 @@ function Fighter(health, x, y, walkAnimation, swingAnimation, deathAnimation, id
 	}
 
 	this.die = function()
-	{	
+	{
 		this.alive = false;
 		this.sprite.remove();
 		this.sword.remove();
