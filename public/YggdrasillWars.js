@@ -345,11 +345,13 @@ function draw()
 			{
 				socket.emit('addChest', camera.mouseX, camera.mouseY);
 				console.log("Added Chest");
+				initializedChe = false;
 			}
 			if(keyWentDown('o'))
 			{
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
+				initializedObs = false;
 			}			
 		}
 
