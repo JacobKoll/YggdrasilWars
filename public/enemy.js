@@ -61,82 +61,113 @@ Enemy.prototype.update = function(playerArr)
 	var currDist;
 	var chasedDist;
 
-	if(!this.playerToChase)
-	{
-		this.playerToChase = playerArr[0].sprite;
-	}
-
-	chasedDist = dist(this.playerToChase.position.x, this.playerToChase.position.y, this.sprite.position.x, this.sprite.position.y);
-
-	// The monster will chase the player that is closest to it, in its view-range.
-	for(var i = 0; i < playerArr.length; i++)
-	{
-		currDist = dist(playerArr[i].sprite.position.x, playerArr[i].sprite.position.y, this.sprite.position.x, this.sprite.position.y);
-
-		if(currDist < chasedDist)
+	if(playerArr.length > 0)
+	{	
+		if(!this.playerToChase)
 		{
-			this.playerToChase = playerArr[i].sprite;
+			this.playerToChase = playerArr[0].sprite;
 		}
-		else
-		{
-			chasedDist = currDist;
-		}
+		chasedDist = dist(this.playerToChase.position.x, this.playerToChase.position.y, this.sprite.position.x, this.sprite.position.y);
 
-		if (this.sprite.overlap(obstacleGroup)) {
-			this.sprite.bounce(obstacleGroup);
-		};
-		if (this.sprite.overlap(chestGroup)) {
-			this.sprite.bounce(chestGroup);
-		}
-		if(chasedDist < this.detectionRadius)
+		// The monster will chase the player that is closest to it, in its view-range.
+		for(var i = 0; i < playerArr.length; i++)
 		{
-			this.playerToChase = playerArr[i].sprite;
-			this.sprite.attractionPoint(this.speed, playerArr[i].sprite.position.x, playerArr[i].sprite.position.y);
-		}
-		else
-		{
-			this.sprite.setSpeed(this.speed / 2.3);
-			this.sprite.rotationSpeed += random(-3.6, 3);
+			currDist = dist(playerArr[i].sprite.position.x, playerArr[i].sprite.position.y, this.sprite.position.x, this.sprite.position.y);
 
-			if((this.turnCounter % 9) == 0)
+			if(currDist < chasedDist)
 			{
-				this.sprite.rotationSpeed = 0;
+				this.playerToChase = playerArr[i].sprite;
+			}
+			else
+			{
+				chasedDist = currDist;
 			}
 
-			if(this.sprite.position.x < 0) {
-				this.sprite.position.x = 0;
+			if (this.sprite.overlap(obstacleGroup)) {
+				this.sprite.bounce(obstacleGroup);
+			};
+			if (this.sprite.overlap(chestGroup)) {
+				this.sprite.bounce(chestGroup);
 			}
-			if(this.sprite.position.y < 0) {
-			    this.sprite.position.y = 0;
+			if(chasedDist < this.detectionRadius)
+			{
+				this.playerToChase = playerArr[i].sprite;
+				this.sprite.attractionPoint(this.speed, playerArr[i].sprite.position.x, playerArr[i].sprite.position.y);
 			}
-			if(this.sprite.position.x > SCENE_W) {
-			    this.sprite.position.x = SCENE_W;
-			}
-			if(this.sprite.position.y > SCENE_H) {
-			    this.sprite.position.y = SCENE_H;
-			}
+			else
+			{
+				this.sprite.setSpeed(this.speed / 2.3);
+				this.sprite.rotationSpeed += random(-3.6, 3);
 
-			this.turnCounter++;
+				if((this.turnCounter % 9) == 0)
+				{
+					this.sprite.rotationSpeed = 0;
+				}
 
+				if(this.sprite.position.x < 0) {
+					this.sprite.position.x = 0;
+				}
+				if(this.sprite.position.y < 0) {
+				    this.sprite.position.y = 0;
+				}
+				if(this.sprite.position.x > SCENE_W) {
+				    this.sprite.position.x = SCENE_W;
+				}
+				if(this.sprite.position.y > SCENE_H) {
+				    this.sprite.position.y = SCENE_H;
+				}
+
+				this.turnCounter++;
+
+			}
+		}
+		
+		if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
+		{
+			this.sprite.changeAnimation('walk');
 		}
 
-		this.sprite.bar.position.x = this.sprite.position.x;
-		this.sprite.bar.position.y = this.sprite.position.y - 50;
-		this.sprite.bar.shapeColor = "yellow";
-		this.sprite.bar.width = this.sprite.health;
-
+		if(this.sprite.health <= 0)
+		{
+			this.sprite.remove();
+			this.sprite.bar.remove();
+		}
 	}
-
-	if(!this.sprite.collide(this.playerToChase, this.attack) && this.sprite.getAnimationLabel() != 'walk')
+	else
 	{
-		this.sprite.changeAnimation('walk');
+		this.sprite.setSpeed(this.speed / 2.3);
+		this.sprite.rotationSpeed += random(-3.6, 3);
+
+		if((this.turnCounter % 9) == 0)
+		{
+			this.sprite.rotationSpeed = 0;
+		}
+
+		if(this.sprite.position.x < 0) {
+			this.sprite.position.x = 0;
+		}
+		if(this.sprite.position.y < 0) {
+		    this.sprite.position.y = 0;
+		}
+		if(this.sprite.position.x > SCENE_W) {
+		    this.sprite.position.x = SCENE_W;
+		}
+		if(this.sprite.position.y > SCENE_H) {
+		    this.sprite.position.y = SCENE_H;
+		}
+
+		this.turnCounter++;
+		
 	}
 
-	if(this.sprite.health <= 0)
-	{
-		this.sprite.remove();
-		this.sprite.bar.remove();
-	}
+
+	this.sprite.bar.position.x = this.sprite.position.x;
+	this.sprite.bar.position.y = this.sprite.position.y - 50;
+	this.sprite.bar.shapeColor = "yellow";
+	this.sprite.bar.width = this.sprite.health;
+
+	
+
 
 };
 

@@ -155,7 +155,7 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	//becomePlayer();
+	// becomePlayer();
 	becomeSpectator();
 	//becomeMod();
 
@@ -225,46 +225,6 @@ function setup()
 	
 }
 
-// function draw()
-// {
-// 	background(55,75,30);
-//
-// 	cursorSprite.position.x = mouseX;
-// 	cursorSprite.position.y = mouseY;
-//
-// 	cursorSprite.position.x = camera.mouseX;
-// 	cursorSprite.position.y = camera.mouseY;
-//
-// 	camera.position.x = localFighter.sprite.position.x;
-// 	camera.position.y = localFighter.sprite.position.y;
-//
-// 	socket.on('updateFighters', function(data)
-// 	{
-// 		if(data.length > fighterArray.length)
-// 		{
-// 			for(var i = 0; i<data.length; i++)
-// 			{
-// 				fighterArray[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
-// 			}
-// 		}
-// 		for(var i = 0; i < data.length; i++)
-// 		{
-// 			fightersArr[i].health = data[i].health;
-// 			fightersArr[i].alive = data[i].alive;
-// 			fightersArr[i].sprite.position.x = data[i].x;
-// 			fightersArr[i].sprite.position.y = data[i].y;
-// 			fightersArr[i].sprite.depth = i + 50;
-// 			fightersArr[i].sword.visible = data[i].swinging;
-// 			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
-// 			fightersArr[i].sprite.debug = data[i].spriteDebug;
-// 			fightersArr[i].sword.debug = data[i].swordDebug;
-// 			fightersArr[i].sprite.rotation = data[i].rot;
-// 		}
-// 	});
-//
-// 	createHud();
-// }
-
 function draw()
 {
 	background(55,75,30);
@@ -277,8 +237,6 @@ function draw()
 	cursorSprite.position.y = camera.mouseY;
 
 
- 	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
-	borderCamera();
 
 	if(isPlayer)
 	{
@@ -342,16 +300,11 @@ function draw()
 		    localFighter.sprite.position.y = SCENE_H;
 		}
 
-		for (var i = 0; i < spawnerArray.length; i++)
-		{
-			spawnerArray[i].spawn(enemyGroup);
-			spawnerArray[i].updateAll(fighterArray);
-		}
 
 		localFighter.update(enemyGroup);
 
+
 		drawHud();
-		drawSprite(cursorSprite);
 	}
 	else if(isSpectator)
 	{
@@ -380,7 +333,6 @@ function draw()
 		}
 		if(keyDown(188))
 		{
-			console.log("Zooming");
 			camera.zoom = 1.5;
 		}
 		else if(keyDown(190))
@@ -397,35 +349,42 @@ function draw()
 
 	}
 
+	for (var i = 0; i < spawnerArray.length; i++)
+	{
+		spawnerArray[i].spawn(enemyGroup);
+		spawnerArray[i].updateAll(fighterArray);
+	}
 
 
 	drawSprites();
+	drawSprite(cursorSprite);
 
+	borderCamera();
 }
 
 
 function borderCamera()
 {
-	var top = camera.position.y - (height / 2);
-	var bottom = camera.position.y + (height / 2);
+	var top = camera.position.y - ((height * 1/camera.zoom)  / 2);
+	var bottom = camera.position.y + ((height * 1/camera.zoom)  / 2);
 
-	var left = camera.position.x - (width / 2);
-	var right = camera.position.x + (width / 2);
+	var left = camera.position.x - ((width * 1/camera.zoom) / 2);
+	var right = camera.position.x + ((width * 1/camera.zoom) / 2);
 
 	if(top < 0)
 	{
-		camera.position.y = height/2;
+		camera.position.y = (height * 1/camera.zoom) /2;
 	}
 	if(bottom > SCENE_H)
 	{
-		camera.position.y = SCENE_H - height/2;
+		camera.position.y = SCENE_H - (height * 1/camera.zoom) /2;
 	}
 	if(left < 0)
 	{
-		camera.position.x = width/2;
+		camera.position.x = (width * 1/camera.zoom)/2;
 	}
 	if(right > SCENE_W)
 	{
-		camera.position.x = SCENE_W	- width/2;
+		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
 }
