@@ -155,20 +155,25 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
-	becomePlayer();
+	//becomePlayer();
+	becomeSpectator();
+	//becomeMod();
 
-	/* Send new local fighter data to the server */
-	var localFighterData = {
-		health: localFighter.health,
-		alive: localFighter.alive,
-		x: localFighter.sprite.position.x,
-		y: localFighter.sprite.position.y,
-		currAnimation: localFighter.sprite.getAnimationLabel(),
-		spriteDebug: localFighter.sprite.debug,
-		swordDebug: localFighter.sprite.sword.debug,
-		rot: localFighter.sprite.rotation
+	if(isPlayer)
+	{
+		/* Send new local fighter data to the server */
+		var localFighterData = {
+			health: localFighter.health,
+			alive: localFighter.alive,
+			x: localFighter.sprite.position.x,
+			y: localFighter.sprite.position.y,
+			currAnimation: localFighter.sprite.getAnimationLabel(),
+			spriteDebug: localFighter.sprite.debug,
+			swordDebug: localFighter.sprite.sword.debug,
+			rot: localFighter.sprite.rotation
+		}
+		socket.emit('start', localFighterData);
 	}
-	socket.emit('start', localFighterData);
 
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
@@ -268,18 +273,18 @@ function draw()
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
-
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
 
  	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
 	borderCamera();
 
 	if(isPlayer)
 	{
+		camera.position.x = localFighter.sprite.position.x;
+		camera.position.y = localFighter.sprite.position.y;
+
 		if (localFighter.sprite.overlap(obstacleGroup)) {
 			localFighter.sprite.bounce(obstacleGroup);
 		};
@@ -350,7 +355,42 @@ function draw()
 	}
 	else if(isSpectator)
 	{
+		var spectatorSpeed = 5.6;
 
+		if(keyDown(16))
+		{
+			spectatorSpeed = 9.81;
+		}
+
+		if(keyDown('w'))
+		{
+			camera.position.y -= spectatorSpeed;
+		}
+		if(keyDown('s'))
+		{
+			camera.position.y += spectatorSpeed;
+		}
+		if(keyDown('a'))
+		{
+			camera.position.x -= spectatorSpeed;
+		}
+		if(keyDown('d'))
+		{
+			camera.position.x += spectatorSpeed;
+		}
+		if(keyDown(188))
+		{
+			console.log("Zooming");
+			camera.zoom = 1.5;
+		}
+		else if(keyDown(190))
+		{
+			camera.zoom = 0.5;
+		}
+		else
+		{
+			camera.zoom = 1;
+		}
 	}
 	else if(isMod)
 	{
