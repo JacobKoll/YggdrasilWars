@@ -20,7 +20,7 @@ function initPlayerItems(){
   playerItems = [];
   playerItems.push(gameItems[1]);
   playerItems.push(gameItems[0]);
-  playerItems.push(gameItems[4]);
+  playerItems.push(gameItems[0]);
   playerItems.push(gameItems[0]);
   return playerItems;
 }

@@ -165,9 +165,12 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 
+
+	localFighter = new Fighter(1450, 960, knight, socket.id);
+
 	becomePlayer();
 	// becomeSpectator();
-	// becomeMod();
+	//becomeMod();
 
 	if(isPlayer)
 	{
@@ -372,6 +375,21 @@ function draw()
 		{
 			camera.zoom = 1;
 		}
+
+	localFighterData = {
+		x: 		localFighter.sprite.position.x,
+		y: 		localFighter.sprite.position.y,
+		type: 	localFighter.type,
+		id: 	localFighter.id,
+		health: localFighter.health,
+		alive: 	localFighter.alive,
+		swinging: localFighter.swinging,
+		curAnim:  localFighter.currAnimation,
+		rot: 	localFighter.rot
+	}
+
+	localFighter.update(enemyGroup);
+	socket.emit('updateFighter', localFighterData);
 
 		if(isMod)
 		{
