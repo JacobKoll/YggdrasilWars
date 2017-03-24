@@ -1,7 +1,6 @@
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
-// var fighterWalkAnimation;
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
@@ -20,6 +19,7 @@ var localFighter;
 var chestArr = [];
 var openChest;
 var closedChest;
+
 
 var obstaclesArr = [];
 var bush;
@@ -60,6 +60,7 @@ var knight;
 var isMod;
 var isSpectator;
 var isPlayer;
+var paused = false;
 
 function preload()
 {
@@ -92,7 +93,7 @@ function assignTypes()
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
-		damage: .7,
+		damage: .83,
 		speed: 1.8,
 		detectionRadius: 225
 	};
@@ -102,7 +103,7 @@ function assignTypes()
 		idleAnimation: knightIdleAnimation,
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
-		health: 100,
+		health: 135,
 		speed: 3,
 		damage: 2.53
 	};
@@ -221,14 +222,11 @@ function setup()
 			initializedChe = 1;
 		}
 	});
-
-
 }
 
 function draw()
 {
 	background(55,75,30);
-
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
@@ -236,22 +234,16 @@ function draw()
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
-
- 	/* This makes the camera stop moving when it hits the edges of the map. Unlocks character movement for that direction */
-	borderCamera();
-
 	if(isPlayer)
 	{
 		camera.position.x = localFighter.sprite.position.x;
 		camera.position.y = localFighter.sprite.position.y;
 
-		if (localFighter.sprite.overlap(obstacleGroup)) {
-			localFighter.sprite.bounce(obstacleGroup);
-		};
-		for (var i=0; i<chestArr.length; i++) {
-			if (localFighter.sprite.overlap(chestArr[i].sprite)) {
-				localFighter.sprite.bounce(chestArr[i].sprite);
-			}
+		localFighter.sprite.collide(obstacleGroup)
+
+		for (var i=0; i<chestArr.length; i++)
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
 
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
 				if (keyDown('e')) {
@@ -288,6 +280,7 @@ function draw()
 			localFighter.sprite.sword.visible = false;
 			restoreStaminaWidth();
 		}
+
 		restoreHealthWidth();
 
 		/* Invisible landscapeSprite around landscape */
@@ -304,17 +297,8 @@ function draw()
 		    localFighter.sprite.position.y = SCENE_H;
 		}
 
-
-		for (var i = 0; i < spawnerArray.length; i++)
-		{
-			spawnerArray[i].spawn(enemyGroup);
-			spawnerArray[i].updateAll(fighterArray);
-		}
-
 		localFighter.update(enemyGroup);
 
-		drawHud();
-		drawSprite(cursorSprite);
 	}
 	else if(isSpectator)
 	{
@@ -343,7 +327,6 @@ function draw()
 		}
 		if(keyDown(188))
 		{
-			console.log("Zooming");
 			camera.zoom = 1.5;
 		}
 		else if(keyDown(190))
@@ -359,33 +342,47 @@ function draw()
 	{
 
 	}
-	drawSprites();
 
+	for (var i = 0; i < spawnerArray.length; i++)
+	{
+		spawnerArray[i].spawn(enemyGroup);
+		spawnerArray[i].updateAll(fighterArray);
+	}
+
+	drawSprites();
+	drawSprite(cursorSprite);
+
+	borderCamera();
+
+	if(isPlayer)
+	{
+		drawHud();
+	}
 }
 
 
 function borderCamera()
 {
-	var top = camera.position.y - (height / 2);
-	var bottom = camera.position.y + (height / 2);
+	var top = camera.position.y - ((height * 1/camera.zoom)  / 2);
+	var bottom = camera.position.y + ((height * 1/camera.zoom)  / 2);
 
-	var left = camera.position.x - (width / 2);
-	var right = camera.position.x + (width / 2);
+	var left = camera.position.x - ((width * 1/camera.zoom) / 2);
+	var right = camera.position.x + ((width * 1/camera.zoom) / 2);
 
 	if(top < 0)
 	{
-		camera.position.y = height/2;
+		camera.position.y = (height * 1/camera.zoom) /2;
 	}
 	if(bottom > SCENE_H)
 	{
-		camera.position.y = SCENE_H - height/2;
+		camera.position.y = SCENE_H - (height * 1/camera.zoom) /2;
 	}
 	if(left < 0)
 	{
-		camera.position.x = width/2;
+		camera.position.x = (width * 1/camera.zoom)/2;
 	}
 	if(right > SCENE_W)
 	{
-		camera.position.x = SCENE_W	- width/2;
+		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
 }

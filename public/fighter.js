@@ -40,6 +40,7 @@ function Fighter(x, y, type)
 	this.sprite.debug = true;
 
 	this.sprite.health = type.health; //Amount of health.
+	this.sprite.maxHealth = type.health; //Amount of health.
 
 	//this.sprite.addAnimation('walk', type.walkAnimation);
 	//this.sprite.addAnimation('death', type.deathAnimation);
@@ -125,6 +126,5 @@ Fighter.prototype.attack = function(sword, enemy)
 	if(diffAngle <= 28 && diffAngle >= -32 && mouseDown() && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
-		console.log("Enemy was hit");
 	}
 };
