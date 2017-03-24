@@ -8,6 +8,10 @@ var fighterIdleAnimation;
 var customCursor;
 var spawnerImage;
 var landscape;
+
+var emptyInventoryImage;
+var basicSwordImage;
+
 var initializedObs;
 var initializedChe;
 
@@ -69,8 +73,9 @@ function preload()
 
 	openChest = loadImage("assets/obstacles/chest_open.png");
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
-
 	landscape = loadImage("assets/map.png")
+	emptyInventoryImage = loadImage("assets/emptyInventory.png")
+	basicSwordImage = loadImage("assets/basicSword.png")
 
 	bush = loadImage("assets/obstacles/bush.png");
 }
@@ -189,45 +194,45 @@ function setup()
 	createHud();
 }
 
-function draw()
-{
-	background(55,75,30);
-
-	cursorSprite.position.x = mouseX;
-	cursorSprite.position.y = mouseY;
-
-	cursorSprite.position.x = camera.mouseX;
-	cursorSprite.position.y = camera.mouseY;
-
-	camera.position.x = localFighter.sprite.position.x;
-	camera.position.y = localFighter.sprite.position.y;
-
-	socket.on('updateFighters', function(data)
-	{	
-		if(data.length > fighterArray.length)
-		{
-			for(var i = 0; i<data.length; i++)
-			{	
-				fighterArray[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
-			}
-		}
-		for(var i = 0; i < data.length; i++)
-		{
-			fightersArr[i].health = data[i].health;
-			fightersArr[i].alive = data[i].alive;
-			fightersArr[i].sprite.position.x = data[i].x;
-			fightersArr[i].sprite.position.y = data[i].y;
-			fightersArr[i].sprite.depth = i + 50;
-			fightersArr[i].sword.visible = data[i].swinging;
-			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
-			fightersArr[i].sprite.debug = data[i].spriteDebug;
-			fightersArr[i].sword.debug = data[i].swordDebug;
-			fightersArr[i].sprite.rotation = data[i].rot;
-		}
-	});
-
-	createHud();
-}
+// function draw()
+// {
+// 	background(55,75,30);
+//
+// 	cursorSprite.position.x = mouseX;
+// 	cursorSprite.position.y = mouseY;
+//
+// 	cursorSprite.position.x = camera.mouseX;
+// 	cursorSprite.position.y = camera.mouseY;
+//
+// 	camera.position.x = localFighter.sprite.position.x;
+// 	camera.position.y = localFighter.sprite.position.y;
+//
+// 	socket.on('updateFighters', function(data)
+// 	{
+// 		if(data.length > fighterArray.length)
+// 		{
+// 			for(var i = 0; i<data.length; i++)
+// 			{
+// 				fighterArray[i] = new Fighter(100, width/2, height/2, walkAnimation, swingAnimation, deathAnimation, idleAnimation);
+// 			}
+// 		}
+// 		for(var i = 0; i < data.length; i++)
+// 		{
+// 			fightersArr[i].health = data[i].health;
+// 			fightersArr[i].alive = data[i].alive;
+// 			fightersArr[i].sprite.position.x = data[i].x;
+// 			fightersArr[i].sprite.position.y = data[i].y;
+// 			fightersArr[i].sprite.depth = i + 50;
+// 			fightersArr[i].sword.visible = data[i].swinging;
+// 			fightersArr[i].sprite.changeAnimation(data[i].currAnimation);
+// 			fightersArr[i].sprite.debug = data[i].spriteDebug;
+// 			fightersArr[i].sword.debug = data[i].swordDebug;
+// 			fightersArr[i].sprite.rotation = data[i].rot;
+// 		}
+// 	});
+//
+// 	createHud();
+// }
 
 function draw()
 {
@@ -319,7 +324,7 @@ function draw()
 	drawSprites();
 	drawSprite(cursorSprite);
 
-	
+
 	drawHud();
 
 }

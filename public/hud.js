@@ -1,9 +1,8 @@
-var items;
 
+var itemsBar;
 
 function createHud(){
 
-  items = new Group();
 
   emptyHealthBar = createSprite(0,100,100,40);
   emptyHealthBar.depth = 1500;
@@ -20,18 +19,23 @@ function createHud(){
   emptyStaminaBar.shapeColor = color("black");
 
   var itemDepth = 1504;
-  for(i = 0; i < 4; i++){
+  itemsBar = new Group();
+  var item  = createSprite(0,0,90,90);
+  item.addImage(basicSwordImage);
+  item.depth = itemDepth;
+  itemsBar.add(item);
+  itemDepth++;
+
+  for(i = 0; i < 3; i++){
     var item  = createSprite(0,0,90,90);
-    item.shapeColor = color("black");
+    item.addImage(emptyInventoryImage);
     item.depth = itemDepth;
-    items.add(item);
+    itemsBar.add(item);
     itemDepth++;
+
   }
 
 }
-
-
-
 
 function changeHealthPosition(xPos, yPos){
 
@@ -54,8 +58,8 @@ function changeStaminaPosition(xPos,yPos){
 function changeItemPosition(xPos,yPos){
   var xPosShift = xPos;
   for(i = 0; i < 4; i++){
-    items[i].position.x = xPosShift;
-    items[i].position.y = yPos;
+    itemsBar[i].position.x = xPosShift;
+    itemsBar[i].position.y = yPos;
     xPosShift += 100;
   }
 }
@@ -86,7 +90,7 @@ function drawHud(){
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition(camera.position.x-440, camera.position.y-335);
   changeStaminaPosition(camera.position.x-300, camera.position.y-335);
-  
+
   stroke('black');
   textSize(24);
   fill('white');
