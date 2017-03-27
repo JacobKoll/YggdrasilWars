@@ -66,8 +66,8 @@ function Fighter(x, y, type, id)
 	this.sprite.sword.position = this.sprite.position;
 
 	/* Bounding boxes */
-	this.sprite.setCollider("circle", type.spriteCollider[0], type.spriteCollider[1], type.spriteCollider[3]);
-	this.sprite.sword.setCollider("circle", type.spriteCollider[0], type.spriteCollider[1], type.spriteCollider[3]);
+	this.sprite.setCollider("circle", type.spriteCollider[0], type.spriteCollider[1], type.spriteCollider[2]);
+	this.sprite.sword.setCollider("circle", type.weaponCollider[0], type.weaponCollider[1], type.weaponCollider[2]);
 
 	this.sprite.scale = .8;
 	this.sprite.sword.scale = .8;

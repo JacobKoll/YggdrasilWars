@@ -27,7 +27,7 @@ var closedChest;
 
 
 var obstaclesArr = [];
-var bush;
+var forest;
 
 var landscapeSprite;
 
@@ -96,17 +96,17 @@ function preload()
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
 
 	landscape = loadImage("assets/map.png");
-	emptyInventoryImage = loadImage("assets/emptyInventory.png");
-	basicSwordImage = loadImage("assets/basicSword.png");
-	bronzeSwordImage = loadImage("assets/bronzeSword.png");
-	silverSwordImage = loadImage("assets/silverSword.png");
-	goldSwordImage = loadImage("assets/goldSword.png");
+	emptyInventoryImage = loadImage("assets/inventory/emptyInventory.png");
+	basicSwordImage = loadImage("assets/inventory/basicSword.png");
+	bronzeSwordImage = loadImage("assets/inventory/bronzeSword.png");
+	silverSwordImage = loadImage("assets/inventory/silverSword.png");
+	goldSwordImage = loadImage("assets/inventory/goldSword.png");
 
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
 
 
-	bush = loadImage("assets/obstacles/bush.png");
+	forest = loadImage("assets/obstacles/forest.png");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -130,8 +130,8 @@ function assignTypes()
 		health: 135,
 		speed: 3,		
 		damage: 1.2,
-		spriteCollider: {0, 0, 30}, // {offsetX, offsetY, radius}
-		weaponCollider: {0, 0, 107},
+		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
+		weaponCollider: [0, 0, 107],
 		leftConeAngle: -32,
 		rightConeAngle: 28
 	};
@@ -188,8 +188,8 @@ function setup()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 
-	//becomePlayer();
-	becomeSpectator();
+	becomePlayer();
+	//becomeSpectator();
 	//becomeMod();
 
 	if(isPlayer)
@@ -230,9 +230,8 @@ function setup()
 		if (initializedObs == 0) {
 			console.log("Recieved Obstacles");
 			for (var i=0; i < data.length; i++) {
-				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, forest);
 				obstacle.sprite.depth = obsDepth;
-				obstacle.sprite.setCollider('circle',0,0,bush.width/3);
 				obstaclesArr.push(obstacle);
 				obstacleGroup.add(obstacle.sprite);
 				obsDepth++;
