@@ -44,8 +44,8 @@ var fighterArray = [];
 var spawnerArray = [];
 
 var cursorSprite;
-var SCENE_H = 1450;
-var SCENE_W = 2000;
+var SCENE_H = 4000;
+var SCENE_W = 4000;
 
 var score = 10;
 
@@ -129,8 +129,11 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,		
-		damage: 1.2
-
+		damage: 1.2,
+		spriteCollider: {0, 0, 30}, // {offsetX, offsetY, radius}
+		weaponCollider: {0, 0, 107},
+		leftConeAngle: -32,
+		rightConeAngle: 28
 	};
 }
 
@@ -161,7 +164,7 @@ function setup()
 	createCanvas(1000, 725);
 
 
-	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
+	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 
@@ -185,8 +188,8 @@ function setup()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 
-	becomePlayer();
-	//becomeSpectator();
+	//becomePlayer();
+	becomeSpectator();
 	//becomeMod();
 
 	if(isPlayer)
@@ -291,7 +294,7 @@ function draw()
 		}
 		else
 		{
-			localFighter.speed = localFighter.maxSpeed ;
+			localFighter.speed = localFighter.maxSpeed;
 
 		}
 
@@ -395,7 +398,6 @@ function draw()
 		}
 
 		localFighter.update(enemyGroup);
-
 	}
 	else
 	{
@@ -428,7 +430,7 @@ function draw()
 		}
 		else if(keyDown(190))
 		{
-			camera.zoom = 0.8;
+			camera.zoom = 0.4;
 		}
 		else
 		{
@@ -450,7 +452,6 @@ function draw()
 				initializedObs = false;
 			}
 		}
-
 	}
 
 	for (var i = 0; i < spawnerArray.length; i++)
