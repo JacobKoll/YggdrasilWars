@@ -229,7 +229,6 @@ function setup()
 			for (var i=0; i < data.length; i++) {
 				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
 				obstacle.sprite.depth = obsDepth;
-				obstacle.sprite.setCollider('circle',0,0,bush.width/3);
 				obstaclesArr.push(obstacle);
 				obstacleGroup.add(obstacle.sprite);
 				obsDepth++;
