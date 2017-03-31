@@ -27,7 +27,7 @@ var closedChest;
 
 
 var obstaclesArr = [];
-var bush;
+var forest;
 
 var landscapeSprite;
 
@@ -44,8 +44,8 @@ var fighterArray = [];
 var spawnerArray = [];
 
 var cursorSprite;
-var SCENE_H = 1450;
-var SCENE_W = 2000;
+var SCENE_H = 4000;
+var SCENE_W = 4000;
 
 var score = 10;
 
@@ -96,17 +96,17 @@ function preload()
 	closedChest = loadImage("assets/obstacles/chest_closed.png");
 
 	landscape = loadImage("assets/map.png");
-	emptyInventoryImage = loadImage("assets/emptyInventory.png");
-	basicSwordImage = loadImage("assets/basicSword.png");
-	bronzeSwordImage = loadImage("assets/bronzeSword.png");
-	silverSwordImage = loadImage("assets/silverSword.png");
-	goldSwordImage = loadImage("assets/goldSword.png");
+	emptyInventoryImage = loadImage("assets/inventory/emptyInventory.png");
+	basicSwordImage = loadImage("assets/inventory/basicSword.png");
+	bronzeSwordImage = loadImage("assets/inventory/bronzeSword.png");
+	silverSwordImage = loadImage("assets/inventory/silverSword.png");
+	goldSwordImage = loadImage("assets/inventory/goldSword.png");
 
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
 
 
-	bush = loadImage("assets/obstacles/bush.png");
+	forest = loadImage("assets/obstacles/forest.png");
 }
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
@@ -129,8 +129,11 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,		
-		damage: 1.2
-
+		damage: 1.2,
+		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
+		weaponCollider: [0, 0, 107],
+		leftConeAngle: -32,
+		rightConeAngle: 28
 	};
 }
 
@@ -161,7 +164,7 @@ function setup()
 	createCanvas(1000, 725);
 
 
-	landscapeSprite = createSprite(1000, 725, SCENE_W, SCENE_H);
+	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 
@@ -227,7 +230,7 @@ function setup()
 		if (initializedObs == 0) {
 			console.log("Recieved Obstacles");
 			for (var i=0; i < data.length; i++) {
-				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, bush);
+				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, forest);
 				obstacle.sprite.depth = obsDepth;
 				obstaclesArr.push(obstacle);
 				obstacleGroup.add(obstacle.sprite);
@@ -290,7 +293,7 @@ function draw()
 		}
 		else
 		{
-			localFighter.speed = localFighter.maxSpeed ;
+			localFighter.speed = localFighter.maxSpeed;
 
 		}
 
@@ -394,7 +397,6 @@ function draw()
 		}
 
 		localFighter.update(enemyGroup);
-
 	}
 	else
 	{
@@ -427,7 +429,7 @@ function draw()
 		}
 		else if(keyDown(190))
 		{
-			camera.zoom = 0.8;
+			camera.zoom = 0.4;
 		}
 		else
 		{
@@ -449,7 +451,6 @@ function draw()
 				initializedObs = false;
 			}
 		}
-
 	}
 
 	for (var i = 0; i < spawnerArray.length; i++)
