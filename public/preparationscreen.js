@@ -10,6 +10,13 @@ function PreparationScreen(characterImages)
 	this.currentSprite = createSprite(128, height/2,128,128);
 	this.leftSprite = createSprite(64, height/2,128,128);
 	this.rightSprite = createSprite(192, height/2,128,128);
+
+	for (var i = 0; i < characterImages.length; i++)
+	{
+		this.currentSprite.addImage(characterImages[i]);
+		this.leftSprite.addImage(characterImages[i]);
+		this.rightSprite.addImage(characterImages[i]);
+	}
 }
 
 PreparationScreen.prototype.changeSelection = function(direction) 
@@ -34,6 +41,8 @@ PreparationScreen.prototype.changeSelection = function(direction)
 	this.currentSprite.addImage(characterImages[this.current]);
 	this.leftSprite.addImage(characterImages[this.left]);
 	this.rightSprite.addImage(characterImages[this.right]);
+
+
 
 }
 
