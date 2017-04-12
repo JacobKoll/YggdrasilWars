@@ -189,8 +189,8 @@ function setup()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 
-	becomePlayer();
-	//becomeSpectator();
+	//becomePlayer();
+	becomeSpectator();
 	//becomeMod();
 
 	if(isPlayer)
