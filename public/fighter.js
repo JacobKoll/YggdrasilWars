@@ -30,8 +30,8 @@ var friction = .5;
  */
 function Fighter(x, y, type, id)
 {
-	this.x = x;
-	this.y = y;
+	this.type = type;
+
 	this.id = id;
 	this.speed = type.speed;
 	this.maxSpeed = type.speed;
@@ -40,7 +40,6 @@ function Fighter(x, y, type, id)
 	this.baseDamage = type.damage;
 	this.itemSelected = 0;
 
-	this.type = type;
 
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 72, 96);
@@ -66,16 +65,15 @@ function Fighter(x, y, type, id)
 
 	this.sprite.sword.position = this.sprite.position;
 
-	this.sprite.greenDot = createSprite(x,y,4,4);
-
-	this.sprite.greenDot.visible = false;
-
 	/* Bounding boxes */
-	this.sprite.setCollider("circle", 0, 0, 30);
-	this.sprite.sword.setCollider("circle", 0, 0, 107);
+	this.sprite.setCollider("circle", type.spriteCollider[0], type.spriteCollider[1], type.spriteCollider[2]);
+	this.sprite.sword.setCollider("circle", type.weaponCollider[0], type.weaponCollider[1], type.weaponCollider[2]);
 
 	this.sprite.scale = .8;
 	this.sprite.sword.scale = .8;
+
+	this.leftCone = type.leftConeAngle;
+	this.rightCone = type.rightConeAngle;
 
 }
 
@@ -137,7 +135,7 @@ Fighter.prototype.attack = function(sword, enemy)
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
-	if(diffAngle <= 28 && diffAngle >= -32 && mouseDown() && sword.visible == true)
+	if(diffAngle <= this.rightCone && diffAngle >= this.leftCone && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
 	}
