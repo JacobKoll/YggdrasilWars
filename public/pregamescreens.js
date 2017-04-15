@@ -4,9 +4,13 @@
 var clickedButtonImage;
 var defaultButtonImage;
 
+var titleScreenImage;
+
 var testButton;
 
 var prepScreen;
+
+var titleScreenFinished = false;
 
 var characterImages = [];
 var characterNames  = [];
@@ -15,6 +19,8 @@ function preload()
 {
 	defaultButtonImage = loadImage("assets/screens/testbuttondefault.png");
 	clickedButtonImage = loadImage("assets/screens/testbuttonclicked.png");
+
+	titleScreenImage = loadImage("assets/screens/titleImage.png");
 
 	characterImages.push(loadImage("assets/test_characters/abomination.png"));
 	characterNames.push("Abomination");
@@ -43,11 +49,28 @@ function draw()
 {
 	background("#343832");
 
-	drawPrepScreen();
+	
 
-	if(keyWentDown('e'))
+	if(titleScreenFinished)
 	{
-		console.log(characterImages[0]);
+		console.log("Moving past the title screen");
+
+		if(drawPrepScreen())
+		{
+			console.log("You will now be loaded into the game world.");
+			noLoop();
+		}
+
 	}
+	else
+	{
+		image(titleScreenImage, 0, 0);
+
+		if(keyWentDown(13))
+		{
+			titleScreenFinished = true;
+		}
+	}
+
 }
 

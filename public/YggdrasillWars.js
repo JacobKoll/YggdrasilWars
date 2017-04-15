@@ -262,7 +262,6 @@ function setup()
 
 
 	miniMap = new miniMap(1000,1000);
-
 }
 
 function mouseReleased(){
@@ -469,7 +468,6 @@ function draw()
 	{
 		drawHud();
 	}
-
 }
 
 

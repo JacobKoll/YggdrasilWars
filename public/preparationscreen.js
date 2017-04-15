@@ -21,9 +21,11 @@ var selectButton;
 var leftButton;
 var rightButton;
 
+var selectedCharacter;
+
 function initPrepScreen(characterImageArray, characterNameArray)
 {
-
+	selectedCharacter = null
 	backgroundImage = loadImage("assets/screens/prep_background.png");
 	foregroundImage = loadImage("assets/screens/prep_foreground.png");
 
@@ -125,6 +127,7 @@ function changeLeft()
 function select()
 {
 	console.log(currentSprite.getAnimationLabel());
+	selectedCharacter =  currentSprite.getAnimationLabel();
 }
 
 function drawPrepScreen()
@@ -152,4 +155,10 @@ function drawPrepScreen()
 	stroke("Black");
 	fill("Yellow");
 	text("Choose Your Character!", width / 2, 100);
+
+	if(selectedCharacter)
+	{
+		console.log("A character has been selected. Now moving from the prep screen into the game.");
+		return selectedCharacter;
+	}
 }
