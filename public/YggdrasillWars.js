@@ -15,6 +15,7 @@ var bronzeSwordImage;
 var silverSwordImage;
 var goldSwordImage;
 
+var characterImages = [];
 
 var initializedObs;
 var initializedChe;
@@ -83,11 +84,13 @@ function preload()
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
 	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
+	characterImages.push(enemyIdleAnimation);
 
 	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
 	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
 	knightDeathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
 	knightIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
+	characterImages.push(knightIdleAnimation);
 
 	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
@@ -188,9 +191,9 @@ function setup()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 
-	becomePlayer();
+	// becomePlayer();
 	//becomeSpectator();
-	//becomeMod();
+	becomeMod();
 
 	if(isPlayer)
 	{

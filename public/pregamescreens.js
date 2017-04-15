@@ -6,6 +6,10 @@ var defaultButtonImage;
 
 var testButton;
 
+var prepScreen;
+
+var characterImages = [];
+
 function preload()
 {
 	defaultButtonImage = loadImage("assets/screens/testbuttondefault.png");
@@ -15,16 +19,14 @@ function preload()
 function setup()
 {
 	createCanvas(900, 720);
-	testButton = new Button(width/2, height/2, "Test Button!", 22, defaultButtonImage, clickedButtonImage, function(){
-		console.log("Wow! The button works!");
-	});
 
+	initPrepScreen(characterImages);
 }
 
 function draw()
 {
 	background("darkgreen");
 
-	testButton.draw();
+	prepScreen.draw();
 }
 
