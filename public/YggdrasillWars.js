@@ -166,7 +166,6 @@ function setup()
 {
 	createCanvas(1000, 725);
 
-
 	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
@@ -178,7 +177,6 @@ function setup()
 	assignTypes();
 	initializedObs = 0;
 	initializedChe = 0;
-
 
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
@@ -192,8 +190,8 @@ function setup()
 	enemySymbols = new Group();
 
 	// becomePlayer();
-	//becomeSpectator();
-	becomeMod();
+	becomeSpectator();
+	// becomeMod();
 
 	if(isPlayer)
 	{
