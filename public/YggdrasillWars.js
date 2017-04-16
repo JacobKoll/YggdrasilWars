@@ -79,7 +79,7 @@ var isSpectator;
 var isPlayer;
 var paused = false;
 
-function preload()
+function preloadGameAssets()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
@@ -140,8 +140,10 @@ function assignTypes()
 	};
 }
 
-function becomePlayer()
+function becomePlayer(playerType)
 {
+	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
+
 	isPlayer = true;
 	localFighter = new Fighter(random(1450), random(960), knight);
 
@@ -162,7 +164,7 @@ function becomeMod()
 }
 
 
-function setup()
+function setupGame()
 {
 	createCanvas(1000, 725);
 
@@ -190,7 +192,7 @@ function setup()
 	enemySymbols = new Group();
 
 	// becomePlayer();
-	becomeSpectator();
+	// becomeSpectator();
 	// becomeMod();
 
 	if(isPlayer)
@@ -261,15 +263,10 @@ function setup()
 
 
 
-	miniMap = new miniMap(1000,1000);
+	//miniMap = new miniMap(1000,1000);
 }
 
-function mouseReleased(){
-	swordSound.stop();
-
-}
-
-function draw()
+function drawGame()
 {
 	background(55,75,30);
 
@@ -279,8 +276,8 @@ function draw()
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
-	miniMap.sprite.position.x = camera.position.x;
-	miniMap.sprite.position.y = camera.position.y; 
+	// miniMap.sprite.position.x = camera.position.x;
+	// miniMap.sprite.position.y = camera.position.y; 
 
 	if(isPlayer)
 	{
@@ -289,7 +286,7 @@ function draw()
 
 		if(localFighter.sprite.overlap(obstacleGroup))
 		{
-			localFighter.speed = localFighter.maxSpeed - 2;
+			localFighter.speed = localFighter.maxSpeed - 1.213;
 		}
 		else
 		{
@@ -325,25 +322,25 @@ function draw()
 		{
 			localFighter.walk("right");
 		}
-		if(keyWentDown('p')){
+		// if(keyWentDown('p')){
 
-		miniMap.createDots(enemyGroup);
+		// miniMap.createDots(enemyGroup);
 	
-		}
-		if(keyDown('p'))
-		{
-			console.log("Showing map");	
-			miniMap.sprite.visible = true;
-			miniMap.update();
-			miniMap.show();
+		// }
+		// if(keyDown('p'))
+		// {
+		// 	console.log("Showing map");	
+		// 	miniMap.sprite.visible = true;
+		// 	miniMap.update();
+		// 	miniMap.show();
 
-		}
-		else{
+		// }
+		// else{
 		
-		miniMap.sprite.visible = false;
-		miniMap.delete();
+		// miniMap.sprite.visible = false;
+		// miniMap.delete();
 	
-		}
+		// }
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;

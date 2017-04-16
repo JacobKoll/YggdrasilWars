@@ -5,6 +5,10 @@ var clickedButtonImage;
 var defaultButtonImage;
 var mainMenuImage;
 
+var initializedGame;
+
+var startGame;
+
 var titleScreenImage;
 
 var testButton;
@@ -46,6 +50,8 @@ function preload()
 
 	characterImages.push(loadImage("assets/test_characters/will.png"));
 	characterNames.push("Will");
+
+
 }
 
 function setup()
@@ -53,51 +59,76 @@ function setup()
 	createCanvas(1000, 725);
 	initPrepScreen();
 	initMainMenu();
+	
+	preloadGameAssets();
+
+	startGame = false;
 
 }
 
 function draw()
-{
+{	
+	var chosenClass;
+
 	background("#343832");
 
-	
-
-	if(titleScreenFinished)
+	if(!startGame)
 	{
-
-		switch(drawMainMenu())
+		if(titleScreenFinished)
 		{
-			case 1: // Go to preparation screen
-				if(drawPrepScreen())
-				{
-					console.log("You will now be loaded into the game world.");
-					noLoop();
-				}
-				break;
-			case 2: //Enter game as spectator
 
-				break;
-			case 3: //Enter game as mod (if login works)
+			switch(drawMainMenu())
+			{
+				case 1: // Go to preparation screen
 
-				break;
-			case 4: //Go to the options page (Just changes css)
+					if(chosenClass = drawPrepScreen())
+					{
+						allSprites.removeSprites();
+						
+						setupGame();
+						startGame = true;
+		
+						becomePlayer(chosenClass);
+					}
+					break;
+				case 2: //Enter game as spectator
+					becomeSpectator();
+					allSprites.removeSprites();
+					
+					setupGame();
+					startGame = true;	
+					break;
+				case 3: //Enter game as mod (if login works)
+					becomeMod();
 
-				break;
+					allSprites.removeSprites();
+					
+					setupGame();
+					startGame = true;	
+
+					console.log("This hasn't been implemented yet! (Might be removed)");
+					break;
+				case 4: //Go to the options page (Just changes css)
+					break;
+
+			}
+
 
 		}
+		else
+		{
+			image(titleScreenImage, 0, 0);
 
-
+			if(keyWentDown(13))
+			{
+				console.log("Moving past the title screen");
+				titleScreenFinished = true;
+			}
+		}
 	}
 	else
 	{
-		image(titleScreenImage, 0, 0);
-
-		if(keyWentDown(13))
-		{
-			console.log("Moving past the title screen");
-			titleScreenFinished = true;
-		}
+		drawGame();
 	}
-
 }
 
