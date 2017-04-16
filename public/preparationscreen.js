@@ -1,6 +1,3 @@
-var imageArray;
-var nameArray;
-
 var leftPosX ;
 var rightPosX;
 
@@ -14,26 +11,19 @@ var currentSprite;
 var leftSprite;
 var rightSprite;
 
-var backgroundImage;
-var foregroundImage;
-
 var selectButton;
 var leftButton;
 var rightButton;
 
 var selectedCharacter;
 
-function initPrepScreen(characterImageArray, characterNameArray)
+function initPrepScreen()
 {
 	selectedCharacter = null
-	backgroundImage = loadImage("assets/screens/prep_background.png");
-	foregroundImage = loadImage("assets/screens/prep_foreground.png");
 
 	leftPosX = (width/2) - 300;
 	rightPosX = (width/2) + 300;
 
-	imageArray = characterImageArray;
-	nameArray = characterNameArray;
 	current = 2; // current index of the character image array being selected
 	left =  1;
 	right = 3;
@@ -50,9 +40,9 @@ function initPrepScreen(characterImageArray, characterNameArray)
 
 	for (var i = 0; i < characterImages.length; i++)
 	{
-		currentSprite.addImage(characterNameArray[i], characterImageArray[i]);
-		leftSprite.addImage(characterNameArray[i], characterImageArray[i]);
-		rightSprite.addImage(characterNameArray[i], characterImageArray[i]);
+		currentSprite.addImage(characterNames[i], characterImages[i]);
+		leftSprite.addImage(characterNames[i], characterImages[i]);
+		rightSprite.addImage(characterNames[i], characterImages[i]);
 	}
 
 	changeLeft();
@@ -62,21 +52,21 @@ function changeRight()
 {	
 	if(left == 0)
 	{
-		left = imageArray.length - 1;
+		left = characterImages.length - 1;
 		current = 0;
 		right = 1;
 	}
 	else if(current == 0)
 	{
-		left = imageArray.length - 2;
-		current = imageArray.length - 1;
+		left = characterImages.length - 2;
+		current = characterImages.length - 1;
 		right = 0;
 	}
 	else if(right == 0)
 	{
-		left = imageArray.length - 3;
-		current = imageArray.length - 2;
-		right = imageArray.length - 1;
+		left = characterImages.length - 3;
+		current = characterImages.length - 2;
+		right = characterImages.length - 1;
 	}
 	else
 	{
@@ -86,27 +76,27 @@ function changeRight()
 	}
 	
 
-	currentSprite.changeImage(nameArray[current]);
-	leftSprite.changeImage(nameArray[left]);
-	rightSprite.changeImage(nameArray[right]);
+	currentSprite.changeImage(characterNames[current]);
+	leftSprite.changeImage(characterNames[left]);
+	rightSprite.changeImage(characterNames[right]);
 
 }
 
 function changeLeft()
 {
-	if(right == imageArray.length - 1)
+	if(right == characterImages.length - 1)
 	{
-		left = imageArray.length - 2;
-		current = imageArray.length - 1;
+		left = characterImages.length - 2;
+		current = characterImages.length - 1;
 		right = 0;
 	}
-	else if(current == imageArray.length - 1)
+	else if(current == characterImages.length - 1)
 	{
-		left = imageArray.length - 1;
+		left = characterImages.length - 1;
 		current = 0;
 		right = 1;
 	}
-	else if(left == imageArray.length - 1)
+	else if(left == characterImages.length - 1)
 	{
 		left = 0;
 		current = 1;
@@ -119,9 +109,9 @@ function changeLeft()
 		right++;
 	}
 
-	currentSprite.changeImage(nameArray[current]);
-	leftSprite.changeImage(nameArray[left]);
-	rightSprite.changeImage(nameArray[right]);
+	currentSprite.changeImage(characterNames[current]);
+	leftSprite.changeImage(characterNames[left]);
+	rightSprite.changeImage(characterNames[right]);
 }
 
 function select()
@@ -148,7 +138,7 @@ function drawPrepScreen()
 	stroke("black");
 	textSize(36);
 	strokeWeight(2);
-	text(nameArray[current], (width/2), 420);
+	text(characterNames[current], (width/2), 420);
 
 	textSize(72);
 	strokeWeight(4);

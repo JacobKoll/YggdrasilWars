@@ -3,6 +3,7 @@
  */
 var clickedButtonImage;
 var defaultButtonImage;
+var mainMenuImage;
 
 var titleScreenImage;
 
@@ -15,12 +16,21 @@ var titleScreenFinished = false;
 var characterImages = [];
 var characterNames  = [];
 
+var backgroundImage;
+var foregroundImage;
+
 function preload()
 {
 	defaultButtonImage = loadImage("assets/screens/testbuttondefault.png");
 	clickedButtonImage = loadImage("assets/screens/testbuttonclicked.png");
 
 	titleScreenImage = loadImage("assets/screens/titleImage.png");
+
+	mainMenuImage = loadImage("assets/screens/mainmenu.png");
+
+
+	backgroundImage = loadImage("assets/screens/prep_background.png");
+	foregroundImage = loadImage("assets/screens/prep_foreground.png");
 
 	characterImages.push(loadImage("assets/test_characters/abomination.png"));
 	characterNames.push("Abomination");
@@ -41,7 +51,8 @@ function preload()
 function setup()
 {
 	createCanvas(1000, 725);
-	initPrepScreen(characterImages, characterNames);
+	initPrepScreen();
+	initMainMenu();
 
 }
 
@@ -53,13 +64,28 @@ function draw()
 
 	if(titleScreenFinished)
 	{
-		console.log("Moving past the title screen");
 
-		if(drawPrepScreen())
+		switch(drawMainMenu())
 		{
-			console.log("You will now be loaded into the game world.");
-			noLoop();
+			case 1: // Go to preparation screen
+				if(drawPrepScreen())
+				{
+					console.log("You will now be loaded into the game world.");
+					noLoop();
+				}
+				break;
+			case 2: //Enter game as spectator
+
+				break;
+			case 3: //Enter game as mod (if login works)
+
+				break;
+			case 4: //Go to the options page (Just changes css)
+
+				break;
+
 		}
+
 
 	}
 	else
@@ -68,6 +94,7 @@ function draw()
 
 		if(keyWentDown(13))
 		{
+			console.log("Moving past the title screen");
 			titleScreenFinished = true;
 		}
 	}
