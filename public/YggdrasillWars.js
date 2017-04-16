@@ -48,6 +48,7 @@ var SCENE_H = 4000;
 var SCENE_W = 4000;
 
 var score = 10;
+var partyScreen;
 
 var footsteps;
 var swordSound;
@@ -188,8 +189,8 @@ function setup()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 
-	//becomePlayer();
-	becomeSpectator();
+	becomePlayer();
+	//becomeSpectator();
 	//becomeMod();
 
 	if(isPlayer)
@@ -261,6 +262,8 @@ function setup()
 
 
 	miniMap = new miniMap(1000,1000);
+	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
+		partyScreen.draw(fighterArray);
 
 }
 
@@ -273,6 +276,7 @@ function draw()
 {
 	background(55,75,30);
 
+
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
@@ -280,7 +284,10 @@ function draw()
 	cursorSprite.position.y = camera.mouseY;
 
 	miniMap.sprite.position.x = camera.position.x;
-	miniMap.sprite.position.y = camera.position.y; 
+	miniMap.sprite.position.y = camera.position.y;
+
+	partyScreen.sprite.position.x = camera.position.x;
+	partyScreen.sprite.position.y = camera.position.y; 
 
 	if(isPlayer)
 	{
@@ -327,12 +334,15 @@ function draw()
 		}
 		if(keyWentDown('p')){
 
+
 		miniMap.createDots(enemyGroup);
 	
 		}
+		
 		if(keyDown('p'))
 		{
 			console.log("Showing map");	
+
 			miniMap.sprite.visible = true;
 			miniMap.update();
 			miniMap.show();
@@ -344,6 +354,11 @@ function draw()
 		miniMap.delete();
 	
 		}
+		
+		// else{
+		// 	partyScreen.sprite.visible = false;
+		// 	partyScreen.delete();
+		// }
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -467,8 +482,31 @@ function draw()
 	if(isPlayer)
 	{
 		drawHud();
-	}
 
+	}
+if(keyWentDown('y')){
+
+			partyScreen.move(camera.position.x, camera.position.y);
+			
+
+
+	}
+if(keyDown('y')){
+			partyScreen.sprite.visible = true;
+			partyScreen.show();
+			partyScreen.move(camera.position.x + 200,camera.position.y - 200, fighterArray);
+			text("Character", camera.position.x - 400, camera.position.y - 250);
+			text("Health", camera.position.x + 130, camera.position.y - 250);
+			text("Points", camera.position.x - 100, camera.position.y-250);
+			partyScreen.addNames(fighterArray);
+			partyScreen.addPoints(fighterArray);
+
+		}
+
+else{
+			partyScreen.sprite.visible = false;
+			partyScreen.delete();
+		}
 }
 
 
