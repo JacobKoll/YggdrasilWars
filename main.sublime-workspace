@@ -1,0 +1,1057 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"int",
+				"int32_t"
+			],
+			[
+				"c",
+				"const"
+			],
+			[
+				"di",
+				"direct_kills"
+			],
+			[
+				"kill_a",
+				"kill_avenged"
+			],
+			[
+				"kil",
+				"kill_direct"
+			],
+			[
+				"kill",
+				"kill_direct"
+			],
+			[
+				"D",
+				"DUNGEON_X"
+			],
+			[
+				"DUN",
+				"DUNGEON_Y"
+			],
+			[
+				"dim",
+				"dim_x"
+			],
+			[
+				"cur",
+				"currRoom"
+			],
+			[
+				"curr",
+				"currX"
+			],
+			[
+				"ne",
+				"next"
+			],
+			[
+				"is",
+				"isViewing"
+			],
+			[
+				"pair",
+				"pair_t"
+			],
+			[
+				"ma",
+				"mapxy"
+			],
+			[
+				"rand",
+				"rand_range"
+			],
+			[
+				"cu",
+				"currY"
+			],
+			[
+				"num",
+				"num_rooms"
+			],
+			[
+				"dir",
+				"dirY"
+			],
+			[
+				"cha",
+				"character"
+			],
+			[
+				"DU",
+				"DUNGEON_Y"
+			],
+			[
+				"fr",
+				"for\tFor Loop"
+			],
+			[
+				"d",
+				"dim_x"
+			],
+			[
+				"in",
+				"inc\t#include \"…\""
+			],
+			[
+				"tot",
+				"Total"
+			],
+			[
+				"h",
+				"hello\thello"
+			],
+			[
+				"enemy",
+				"enemyGroup"
+			],
+			[
+				"fighter",
+				"fighterGroup"
+			],
+			[
+				"hello",
+				"hello\tlog"
+			],
+			[
+				"f",
+				"fun\tFunction"
+			],
+			[
+				"att",
+				"attackAnimation"
+			],
+			[
+				"walk",
+				"walkAnimation"
+			],
+			[
+				"go",
+				"gokuPic"
+			],
+			[
+				"spawn",
+				"spawnCount"
+			],
+			[
+				"re",
+				"render"
+			],
+			[
+				"So",
+				"SpaceBoy"
+			],
+			[
+				"space",
+				"spaceboyAnimation"
+			],
+			[
+				"spa",
+				"spaceboySheet"
+			],
+			[
+				"I",
+				"INFINITY"
+			],
+			[
+				"ver",
+				"vertex_t"
+			],
+			[
+				"dung",
+				"dungeon_t"
+			],
+			[
+				"up",
+				"update"
+			],
+			[
+				"sp",
+				"sprites"
+			],
+			[
+				"updateg",
+				"updateGameDraw"
+			],
+			[
+				"updateGam",
+				"updateGameDraw"
+			],
+			[
+				"backg",
+				"background-color"
+			],
+			[
+				"block",
+				"block"
+			],
+			[
+				"pro",
+				"productBefore"
+			],
+			[
+				"node",
+				"node"
+			],
+			[
+				"next",
+				"nextNode"
+			],
+			[
+				"style",
+				"Style"
+			],
+			[
+				"get",
+				"getElementById"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "public/fighter.js",
+			"settings":
+			{
+				"buffer_size": 3877,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/screenelements.js",
+			"settings":
+			{
+				"buffer_size": 1000,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/hud.js",
+			"settings":
+			{
+				"buffer_size": 2938,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/inventory.js",
+			"settings":
+			{
+				"buffer_size": 1045,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/YggdrasillWars.js",
+			"settings":
+			{
+				"buffer_size": 10768,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/pregamescreens.js",
+			"settings":
+			{
+				"buffer_size": 600,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/preparationscreen.js",
+			"settings":
+			{
+				"buffer_size": 1273,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/index.html",
+			"settings":
+			{
+				"buffer_size": 1461,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 250.0,
+		"last_filter": "pa in pa",
+		"selected_items":
+		[
+			[
+				"pa in pa",
+				"Package Control: Install Package"
+			],
+			[
+				"boxy",
+				"Boxy Theme: Preferences"
+			],
+			[
+				"re",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"",
+				"Bookmarks: Select All"
+			],
+			[
+				"in",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"pa inpa",
+				"Package Control: Install Package"
+			],
+			[
+				"pack in pa",
+				"Package Control: Install Package"
+			],
+			[
+				"box",
+				"Boxy Theme: Extras"
+			],
+			[
+				"Package Control:  in ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control:  in",
+				"Package Control: Install Package"
+			],
+			[
+				"pa rm p",
+				"Package Control: Remove Package"
+			],
+			[
+				"pa rm",
+				"Package Control: Remove Channel"
+			],
+			[
+				"pack in ",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"Snip",
+				"Snippet: #!/usr/bin/env"
+			],
+			[
+				"Snippet:c",
+				"Snippet: setTimeout function"
+			],
+			[
+				"LatEx",
+				"LaTeXTools: Show toggles"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 190.0,
+		"history":
+		[
+			":help",
+			"$clear",
+			":clear",
+			"-clear",
+			"help",
+			"reset",
+			"clear",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"dir"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": false,
+		"show_minimap": true,
+		"show_open_files": false,
+		"show_tabs": true,
+		"side_bar_visible": true,
+		"status_bar_visible": true
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Owner/cs309",
+		"/C/Users/Owner/cs309/public"
+	],
+	"file_history":
+	[
+		"/C/Users/Owner/cs309/public/item.js",
+		"/home/student/cs327/lectures/week9_s2017/string327.cpp",
+		"/home/student/cs327/ass6/pc.h",
+		"/home/student/cs327/ass6/npc.h",
+		"/home/student/cs327/lectures/week9_s2017/c-cpp-header.h",
+		"/home/student/cs327/ass6/dungeon.c",
+		"/home/student/cs327/lectures/week9_s2017/lecture_week9.txt",
+		"/home/student/cs327/lectures/week9_s2017/c-part.c",
+		"/home/student/cs327/lectures/week9_s2017/cpp-part.cpp",
+		"/home/student/cs327/lectures/week9_s2017/string327.h",
+		"/home/student/cs327/lectures/inheritence.cpp",
+		"/home/student/cs327/ass6/npc.cpp",
+		"/home/student/cs327/ass6/pc.cpp",
+		"/home/student/cs327/ass6/character.h",
+		"/home/student/cs327/ass6/Makefile",
+		"/home/student/cs327/ass6/rlg327.c",
+		"/home/student/cs327/ass6/ass5.sublime-project",
+		"/home/student/cs327/ass6/npc.c",
+		"/home/student/cs327/ass5/rlg327.c",
+		"/home/student/cs327/ass5/dungeon.h",
+		"/home/student/cs327/ass5/move.c",
+		"/home/student/cs327/ass5/character.c",
+		"/home/student/cs327/ass5/npc.c",
+		"/home/student/cs327/ass5/dungeon.c",
+		"/home/student/cs327/ass5/character.h",
+		"/home/student/cs327/ass5/npc.h",
+		"/home/student/cs327/ass5/pc.c",
+		"/home/student/cs327/ass5/pc.h",
+		"/home/student/cs327/ass5/CHANGELOG",
+		"/home/student/cs327/ass5/README",
+		"/home/student/cs327/ass5/filelist.txt",
+		"/home/student/cs327/tests/curses_test.c",
+		"/home/student/.config/sublime-text-3/Packages/Trimmer/Default (Linux).sublime-keymap",
+		"/home/student/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/student/cs327/ass5/Makefile",
+		"/home/student/cs327/ass5/test.c",
+		"/U/cfdavis/hw2/Wang_Cai_Ning/Wang_Cai_Ning.txt",
+		"/U/cfdavis/hw2/Ubwa_Terver/Ubwa_Terver.txt",
+		"/U/cfdavis/hw2/Trivedi_Jay/Trivedi_Jay.txt",
+		"/U/cfdavis/hw2/Thompson_Andrew/Thompson_Andrew.txt",
+		"/U/cfdavis/hw2/Si_Conghui/Si_Conghui.txt",
+		"/U/cfdavis/hw2/Ringgenberg_Katherine/Ringgenberg_Katherine.txt",
+		"/U/cfdavis/hw2/Peterson_Brett/Peterson_Brett.txt",
+		"/U/cfdavis/hw2/Peck_Jason/Peck_Jason.txt",
+		"/U/cfdavis/hw2/Melton_Elizabeth/Melton_Elizabeth.txt",
+		"/U/cfdavis/hw2/Luedtke_Connor/Luedtke_Connor.txt",
+		"/U/cfdavis/hw2/Kornse_Zachary/Kornse_Zachary.txt",
+		"/U/cfdavis/hw2/Kornse_Zachary/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Jarvis_Mitchell/Jarvis_Mitchell.txt",
+		"/U/cfdavis/hw2/Gould_Ann/Gould_Ann.txt",
+		"/U/cfdavis/hw2/Foughty_Carter/Foughty_Carter.txt",
+		"/U/cfdavis/hw2/Sung_Yealim/Sung_Yealim.txt",
+		"/U/cfdavis/hw2/Alvarado_Carias_Tania/Alvarado_Carias_Tania.txt",
+		"/U/cfdavis/hw2/Young_Emily/Young_Emily.txt",
+		"/U/cfdavis/hw2/Young_Emily/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Wang_Cai_Ning/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Ubwa_Terver/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Trivedi_Jay/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Alvarado_Carias_Tania/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Sung_Yealim/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Thompson_Andrew/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Thompson_Andrew/Thompson_Andrew_Summary.txt",
+		"/U/cfdavis/hw2/Si_Conghui/hw2/FootballGame.java",
+		"/C/Users/Owner/OneDrive/Documents/cs227ta/hw2Grading/hw2_prototype/src/hw2/FootballGame.java",
+		"/C/Users/Owner/OneDrive/Documents/cs227ta/hw2_skeleton/hw2_skeleton/src/hw2/FootballGame.java",
+		"/C/Users/Owner/OneDrive/Documents/cs227ta/hw2_skeleton/hw2_skeleton/src/example/Team.java",
+		"/C/Users/Owner/OneDrive/Documents/cs227ta/hw2_skeleton/hw2_skeleton/src/example/UI.java",
+		"/U/cfdavis/hw2/Ringgenberg_Katherine/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Peterson_Brett/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Peck_Jason/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Peterson_Brett/Peterson_Brett_stdout.txt",
+		"/U/cfdavis/hw2/Peterson_Brett/Peterson_Brett_Output.txt",
+		"/U/cfdavis/hw2/Melton_Elizabeth/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Luedtke_Connor/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Kornse_Zachary/Kornse_Zachary_Summary.txt",
+		"/U/cfdavis/hw2/Jarvis_Mitchell/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Gould_Ann/hw2/FootballGame.java",
+		"/U/cfdavis/hw2/Foughty_Carter/hw2/FootballGame.java",
+		"/C/Users/Owner/OneDrive/Documents/cs227ta/hw2Grading/hw2_grading.docx",
+		"/U/cfdavis/hw1/Beckett_Tyler/Beckett_Tyler.txt",
+		"/C/Users/Owner/cs309/server/simpleserver.js",
+		"/C/Users/Owner/cs309/public/index.html",
+		"/C/Users/Owner/cs309/public/enemy.js",
+		"/C/Users/Owner/cs309/public/YggdrasillWars.html",
+		"/C/Users/Owner/cs309/public/YggdrasillWars.js",
+		"/C/Users/Owner/cs309/public/assets/index.html",
+		"/C/Users/Owner/cs309/public/enemy_spawner_test.js",
+		"/C/Users/Owner/cs309/public/enemyspawner.js",
+		"/C/Users/Owner/cs309/Public/YggdrasillWars.html",
+		"/C/Users/Owner/cs309/Public/YggdrasillWars.js",
+		"/C/Users/Owner/cs309/public/fighter.js",
+		"/C/Users/Owner/cs309/public/enemy_spawner_test.html",
+		"/C/Users/Chand/cs309/asd.txt",
+		"/C/Users/Chand/cs309/server/server.js",
+		"/C/Users/Chand/AppData/Roaming/Sublime Text 3/Packages/User/CustomSnippets/log.sublime-snippet",
+		"/C/Users/Chand/cs309/public/multifighter.js",
+		"/C/Users/Chand/cs309/public/index.html",
+		"/C/Users/Chand/cs309/public/multifighter.html",
+		"/C/Users/Chand/cs309/public/enemy_spawner_test.html",
+		"/C/Users/Chand/cs309/public/enemyspawner.js",
+		"/C/Users/Chand/OneDrive/Documents/ComS230HW5.tex",
+		"/C/Users/Chand/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
+		"/C/Users/Chand/AppData/Local/Sublime Text 3/Cache/LaTeXTools/preview_math/304047b238cdc0b487f3ed0e2f1f9c44.png.err",
+		"/C/Users/Chand/OneDrive/Documents/ComS230HW3.tex",
+		"/C/Users/Chand/AppData/Local/Sublime Text 3/Cache/LaTeXTools/preview_math/f50b649b0b4997be70fa2d69fea0f3bc.png.err",
+		"/C/Users/Chand/cs309/public/js_modules/p5.play.js",
+		"/C/Users/Chand/cs309/public/js_modules/p5.js",
+		"/C/Users/Chand/cs309/public/SpaceShip_Chan.js",
+		"/C/Users/Chand/OneDrive/Pictures/309_project_assets/p5.play-master/p5.play-master/lib/p5.play.js",
+		"/C/Users/Chand/cs309/public/index.tml",
+		"/C/Users/Chand/OneDrive/Pictures/309_project_assets/p5.play-master/p5.play-master/examples/animation_sprite_sheet.html",
+		"/C/Users/Chand/OneDrive/coms309/project/characters.html",
+		"/C/Users/Chand/OneDrive/coms309/project/map.html",
+		"/C/Users/Chand/OneDrive/coms327/ass3/dun_gen.c",
+		"/C/Users/Chand/OneDrive/coms327/ass3/TAGS",
+		"/C/Users/Chand/OneDrive/coms327/ass3/Makefile",
+		"/C/Users/Chand/OneDrive/coms327/ass3/macros.h",
+		"/C/Users/Owner/Desktop/cs327/ass3/heap.h",
+		"/C/Users/Owner/Desktop/cs327/ass3/heap.c",
+		"/C/Users/Owner/Desktop/cs327/tests/dijkstra_test.c",
+		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/rlg327.c",
+		"/C/Users/Owner/AppData/Roaming/Sublime Text 3/Packages/User/GitGutter.sublime-settings",
+		"/C/Users/Owner/AppData/Roaming/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/heap.c",
+		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/heap.h",
+		"/C/Users/Owner/Desktop/cs327/ass3/rlg327",
+		"/C/Users/Owner/Desktop/cs327/tests/assignment0.c",
+		"/C/Users/Owner/OneDrive/Documents/ComS230HW3.tex"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 117.0,
+		"where_history":
+		[
+			"<current file>,<open files>,/home/student/cs327/ass6",
+			"<current file>,<open files>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"character",
+			"Character",
+			"character",
+			"Character",
+			"<<<<<<< HEAD",
+			" \t\t\t\n",
+			"c",
+			"sdfkljhasdfsadf",
+			"d->kills",
+			"kills",
+			"irs(",
+			"case ter_debug:\n\t\t\t\t\t\taddch('*');\n\t\t\t\t\t\tbreak;",
+			"currRoom",
+			"x",
+			"X",
+			"currX",
+			"position",
+			"immutable)",
+			"immutable",
+			"else",
+			"ext[dim_x] = d.pc.pos",
+			"next[dim_y] = d.pc.",
+			"if(d.map[next[dim_y]][next[dim_x]] != ter_wall && d.map[next[dim_y]][next[dim_x]] != ter_wall_immutable)",
+			"d->pc.position",
+			"->pc.position[dim_x]",
+			"y",
+			"d.map[next[dim_y]][next[dim_x]] != ter_wall,",
+			"mappair(next)",
+			"mapxy(next[dim_x], next[dim_y])",
+			"move_character(&d, &d.pc, next);",
+			"pc_is_",
+			"pc,",
+			"pc",
+			"->",
+			"ove_character(&d, pc, )",
+			"\n\t\t\t\t",
+			"move_character(&d, pc, )\n",
+			"move_character(&d, pc, )",
+			"moveCharacter",
+			"symbol",
+			",",
+			"d->pc.position[dim_x] - 20 + x",
+			"charxy(d->pc.position[dim_x] - 20 + x",
+			"d->pc.position[dim_y] - 1 + y",
+			"d->pc.position[dim_x] - 20 + x",
+			"y",
+			"pc",
+			"mvaddch",
+			"character",
+			"a",
+			"mvaddch",
+			"\n\t\t\t\t",
+			"pcY",
+			"pcX",
+			"mvaddch",
+			"addch",
+			"pc_t",
+			"moveCharacter",
+			"mo",
+			"next",
+			"pc_next_pos",
+			"y",
+			"render",
+			"utchar",
+			"addch",
+			"x,y",
+			"('*', ",
+			"('*',",
+			", x,y",
+			"('*', ",
+			"('*',",
+			", x,y",
+			"y, x",
+			"render_dun",
+			"mvaddch",
+			"\t\t\t\t  mvaddch",
+			"  ",
+			"addch",
+			"ddch",
+			"}\n",
+			"i",
+			"ender_tunnel_distance_map",
+			"y, x",
+			"y",
+			"y, ",
+			"y,",
+			"dim_x",
+			"x",
+			"y, ",
+			"y,",
+			"y",
+			"')",
+			"'",
+			"');",
+			"addch",
+			"pc_next_pos",
+			"npc_next_pos",
+			"npc",
+			"#",
+			"putchar",
+			"WINDOW *window",
+			"WINDOW",
+			"window",
+			"WINDOW",
+			"window",
+			"WINDOW",
+			"WINDOW *window",
+			"ncurses",
+			"s",
+			"render",
+			"yardsRanOrPass",
+			"syso",
+			"SingleTimeYards",
+			"Sys",
+			"main",
+			"team",
+			"a",
+			"bLoc",
+			"sT1",
+			"sT0",
+			"scores",
+			"o",
+			" y1",
+			"q",
+			"x",
+			"yardsToGoalLine",
+			"int",
+			"necessary"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			" "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "public/fighter.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3877,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3783,
+								3783
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 238.0,
+						"translation.y": 2349.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/screenelements.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1000,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 304.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/hud.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2938,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1968,
+								1968
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 1515.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "public/inventory.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1045,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								399,
+								399
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public/YggdrasillWars.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10768,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7378,
+								7378
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7392.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "public/pregamescreens.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 600,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "public/preparationscreen.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1273,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								638,
+								638
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 24.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "public/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1461,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1309,
+								1309
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 380.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 43.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 132.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "Packages/C++/C++ Single File.sublime-build",
+	"project": "main.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 147.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

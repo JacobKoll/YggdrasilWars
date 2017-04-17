@@ -29,31 +29,31 @@ function partyScreen(x,y, characterText, healthText, pointsText){
 
 
 //names may be replaced by the player array if possible. 
-partyScreen.prototype.draw = function(names){
+partyScreen.prototype.draw = function(){
 
-	healthBars = new Group();
+	healthBars.clear();
 
-	drawSprite(this.sprite);
+		drawSprite(this.sprite);
 		stroke('white');
   		textSize(32);
   		fill('white');
   		textFont('Georgia');
-	text(this.characterString,this.sprite.position.x + 10,this.sprite.position.y);
-	text(this.healthString,this.sprite.position.x + 20,this.sprite.position.y);
 	
-	text(this.pointsString, this.sprite.position.x + 30,this.sprite.position.y);
 
 
-	for(var i = 0; i < names.length; i++){
+	for(var i = 0; i < numTeamMates; i++){
 
 
-
-		this.sprite.healthBar = createSprite(20, 10, names[i].health, 8);
+	
+		this.sprite.healthBar = createSprite(20, 10, 100, 8);
 		this.sprite.healthBar.position.x += this.sprite.position.x + 20;
 
 		this.sprite.healthBar.position.y += this.sprite.position.y + 10;
 		this.sprite.healthBar.shapeColor = "red";
-		this.sprite.healthBar.visible = false; 
+		this.sprite.healthBar.visible = false;
+	
+
+		
 
 		healthBars.add(this.sprite.healthBar);
 
@@ -73,7 +73,7 @@ partyScreen.prototype.show = function(){
 
 
 
-partyScreen.prototype.move = function(mapX, mapY, arr){
+partyScreen.prototype.move = function(mapX, mapY){
 
 for(var k = 0; k < healthBars.length; k++){
 	healthBars[k].maxSpeed = 5;
@@ -93,6 +93,8 @@ partyScreen.prototype.delete = function(){
 
 		healthBars[i].visible = false;
 	}
+
+
 
 };
 

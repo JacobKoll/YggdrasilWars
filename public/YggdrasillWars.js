@@ -15,6 +15,7 @@ var bronzeSwordImage;
 var silverSwordImage;
 var goldSwordImage;
 
+var characterImages = [];
 
 var initializedObs;
 var initializedChe;
@@ -65,6 +66,7 @@ var knight;
 
 var miniMap;
 
+var healthBars;
 
 var isMod;
 var isSpectator;
@@ -79,16 +81,20 @@ var isSpectator;
 var isPlayer;
 var paused = false;
 
-function preload()
+var numTeamMates = 0;
+
+function preloadGameAssets()
 {
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
 	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
+	characterImages.push(enemyIdleAnimation);
 
 	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
 	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
 	knightDeathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
 	knightIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
+	characterImages.push(knightIdleAnimation);
 
 	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
@@ -138,10 +144,13 @@ function assignTypes()
 	};
 }
 
-function becomePlayer()
+function becomePlayer(playerType)
 {
+	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
+
 	isPlayer = true;
 	localFighter = new Fighter(random(1450), random(960), knight);
+	numTeamMates++;
 
 	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
@@ -160,10 +169,9 @@ function becomeMod()
 }
 
 
-function setup()
+function setupGame()
 {
 	createCanvas(1000, 725);
-
 
 	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
@@ -177,7 +185,6 @@ function setup()
 	initializedObs = 0;
 	initializedChe = 0;
 
-
 	/* Connect to the server */
 	socket = io.connect('http://localhost:3000');
 
@@ -188,10 +195,11 @@ function setup()
 	chestGroup = new Group();
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
+	healthBars = new Group();
 
-	becomePlayer();
-	//becomeSpectator();
-	//becomeMod();
+	// becomePlayer();
+	// becomeSpectator();
+	// becomeMod();
 
 	if(isPlayer)
 	{
@@ -261,9 +269,10 @@ function setup()
 
 
 
+
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
-		partyScreen.draw(fighterArray);
+	
 
 }
 
@@ -272,7 +281,7 @@ function mouseReleased(){
 
 }
 
-function draw()
+function drawGame()
 {
 	background(55,75,30);
 
@@ -283,11 +292,13 @@ function draw()
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
 
+
 	miniMap.sprite.position.x = camera.position.x;
 	miniMap.sprite.position.y = camera.position.y;
 
 	partyScreen.sprite.position.x = camera.position.x;
 	partyScreen.sprite.position.y = camera.position.y; 
+
 
 	if(isPlayer)
 	{
@@ -296,7 +307,7 @@ function draw()
 
 		if(localFighter.sprite.overlap(obstacleGroup))
 		{
-			localFighter.speed = localFighter.maxSpeed - 2;
+			localFighter.speed = localFighter.maxSpeed - 1.213;
 		}
 		else
 		{
@@ -332,7 +343,7 @@ function draw()
 		{
 			localFighter.walk("right");
 		}
-		if(keyWentDown('p')){
+	 if(keyWentDown('p')){
 
 
 		miniMap.createDots(enemyGroup);
@@ -349,16 +360,15 @@ function draw()
 
 		}
 		else{
+
+		
 		
 		miniMap.sprite.visible = false;
 		miniMap.delete();
-	
+
 		}
 		
-		// else{
-		// 	partyScreen.sprite.visible = false;
-		// 	partyScreen.delete();
-		// }
+		
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -477,6 +487,7 @@ function draw()
 	drawSprites();
 	drawSprite(cursorSprite);
 
+
 	borderCamera();
 
 	if(isPlayer)
@@ -484,17 +495,18 @@ function draw()
 		drawHud();
 
 	}
+
+	
 if(keyWentDown('y')){
-
-			partyScreen.move(camera.position.x, camera.position.y);
-			
-
+		partyScreen.draw();
 
 	}
 if(keyDown('y')){
-			partyScreen.sprite.visible = true;
+
 			partyScreen.show();
-			partyScreen.move(camera.position.x + 200,camera.position.y - 200, fighterArray);
+			partyScreen.sprite.visible = true;
+		
+			partyScreen.move(camera.position.x + 200,camera.position.y - 200);
 			text("Character", camera.position.x - 400, camera.position.y - 250);
 			text("Health", camera.position.x + 130, camera.position.y - 250);
 			text("Points", camera.position.x - 100, camera.position.y-250);
@@ -507,6 +519,7 @@ else{
 			partyScreen.sprite.visible = false;
 			partyScreen.delete();
 		}
+
 }
 
 

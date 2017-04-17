@@ -17,7 +17,6 @@ function Button(x, y, givenText, textSize, defaultImage, clickedImage, functionT
 	this.buttonText = givenText;
 	this.textSize = textSize;
 
-	this.sprite.debug = true;
 }
 
 Button.prototype.press = function()

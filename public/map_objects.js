@@ -20,7 +20,6 @@ function Obstacle(x, y, width, height, image) {
 	this.width = width;
 	this.height = height;
 	this.image = image;
-	this.sprite.debug = true;
 	this.sprite.addImage('image', image);
 }
 
@@ -44,7 +43,7 @@ function Chest(x, y, openImage, closedImage) {
 	this.itemStash = gameItems[round(random(0,4))];
 	this.sprite = createSprite(x, y, width, height);
 	this.sprite.immovable = true;
-	this.sprite.debug = true;
+	// this.sprite.debug = true;
 
 	this.closedImage = closedImage;
 	this.openImage = openImage;

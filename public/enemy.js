@@ -26,7 +26,7 @@ function Enemy(x, y, type)
 
 	this.sprite = createSprite(x, y, 32, 32);
 	this.sprite.setCollider('circle', 0, 0, 30);
-	this.sprite.debug = true;
+	// this.sprite.debug = true;
 	this.sprite.rotateToDirection = true;
 	this.sprite.gravity = .5;
 	this.sprite.maxSpeed = type.speed;

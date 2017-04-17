@@ -1,53 +1,154 @@
-function PreparationScreen(characterImages)
+var leftPosX ;
+var rightPosX;
+
+var current;
+var left;
+var right;
+
+var hasSelected;
+
+var currentSprite;
+var leftSprite;
+var rightSprite;
+
+var selectButton;
+var leftButton;
+var rightButton;
+
+var selectedCharacter;
+
+function initPrepScreen()
 {
-	this.characterImages = characterImages;
-	this.current = characterImages.size() / 2; // Start in the middle of the group
-	this.left =  this.current - 1;
-	this.right = this.current + 1;
+	selectedCharacter = null
 
-	this.hasSelected = false;
+	leftPosX = (width/2) - 300;
+	rightPosX = (width/2) + 300;
 
-	this.currentSprite = createSprite(128, height/2,128,128);
-	this.leftSprite = createSprite(64, height/2,128,128);
-	this.rightSprite = createSprite(192, height/2,128,128);
+	current = 2; // current index of the character image array being selected
+	left =  1;
+	right = 3;
+
+	hasSelected = false;
+
+	currentSprite = createSprite(width/2, 545);
+	leftSprite = createSprite(leftPosX - 30, 490);
+	rightSprite = createSprite(rightPosX + 30, 490);
+
+	selectButton = new Button(width/2, 257, "Select", 22, defaultButtonImage, clickedButtonImage, select);
+	leftButton = new Button(leftPosX + 137, 257, "<<<<<<<", 22, defaultButtonImage, clickedButtonImage, changeLeft);
+	rightButton = new Button(rightPosX - 137, 257, ">>>>>>>", 22, defaultButtonImage, clickedButtonImage, changeRight);
 
 	for (var i = 0; i < characterImages.length; i++)
 	{
-		this.currentSprite.addImage(characterImages[i]);
-		this.leftSprite.addImage(characterImages[i]);
-		this.rightSprite.addImage(characterImages[i]);
+		currentSprite.addImage(characterNames[i], characterImages[i]);
+		leftSprite.addImage(characterNames[i], characterImages[i]);
+		rightSprite.addImage(characterNames[i], characterImages[i]);
 	}
+
+	changeLeft();
 }
 
-PreparationScreen.prototype.changeSelection = function(direction) 
-{
-	if(direction == "right")
+function changeRight()
+{	
+	if(left == 0)
 	{
-		if(this.current == this.characterImages.size() - 1)
-		{
-			this.current = 0;
-			this.right = 1;
-		}
+		left = characterImages.length - 1;
+		current = 0;
+		right = 1;
+	}
+	else if(current == 0)
+	{
+		left = characterImages.length - 2;
+		current = characterImages.length - 1;
+		right = 0;
+	}
+	else if(right == 0)
+	{
+		left = characterImages.length - 3;
+		current = characterImages.length - 2;
+		right = characterImages.length - 1;
 	}
 	else
 	{
-		if(this.current == 0)
-		{
-			this.current = this.characterImages.size()-1;
-			this.left = this.current - 1;
-		}
+		left--;
+		current--;
+		right--;
 	}
+	
 
-	this.currentSprite.addImage(characterImages[this.current]);
-	this.leftSprite.addImage(characterImages[this.left]);
-	this.rightSprite.addImage(characterImages[this.right]);
-
-
+	currentSprite.changeImage(characterNames[current]);
+	leftSprite.changeImage(characterNames[left]);
+	rightSprite.changeImage(characterNames[right]);
 
 }
 
-PreparationScreen.prototype.chooseSelection = function() 
+function changeLeft()
 {
-		this.hasSelected = true;
-		return this.currentSprite;	
-};
+	if(right == characterImages.length - 1)
+	{
+		left = characterImages.length - 2;
+		current = characterImages.length - 1;
+		right = 0;
+	}
+	else if(current == characterImages.length - 1)
+	{
+		left = characterImages.length - 1;
+		current = 0;
+		right = 1;
+	}
+	else if(left == characterImages.length - 1)
+	{
+		left = 0;
+		current = 1;
+		right = 2;
+	}
+	else
+	{
+		left++;
+		current++;
+		right++;
+	}
+
+	currentSprite.changeImage(characterNames[current]);
+	leftSprite.changeImage(characterNames[left]);
+	rightSprite.changeImage(characterNames[right]);
+}
+
+function select()
+{
+	console.log(currentSprite.getAnimationLabel());
+	selectedCharacter =  currentSprite.getAnimationLabel();
+}
+
+function drawPrepScreen()
+{
+	image(backgroundImage,0,0);
+
+	drawSprite(currentSprite);
+	drawSprite(leftSprite);
+	drawSprite(rightSprite);
+
+	image(foregroundImage,0,0);
+
+	selectButton.draw();
+	leftButton.draw();
+	rightButton.draw();
+
+	fill("white");
+	stroke("black");
+	textSize(36);
+	strokeWeight(2);
+	text(characterNames[current], (width/2), 420);
+
+	textSize(72);
+	strokeWeight(4);
+	stroke("Black");
+	fill("Yellow");
+	text("Choose Your Character!", width / 2, 100);
+
+	if(selectedCharacter)
+	{
+		console.log("A character has been selected. Now moving from the prep screen into the game.");
+		return selectedCharacter;
+	}
+}
