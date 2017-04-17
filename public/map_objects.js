@@ -37,7 +37,7 @@ Obstacle.prototype.update = function() {
  * @param      {.png}  openImage    image to represent chest's open state
  * @param      {.png}  closedImage  image to represent chest's closed state
  */
-function Chest(x, y, openImage, closedImage) {
+function Chest(x, y, openImage, closedImage, unlockCode, lockStrength) {
 	this.width = closedImage.width;
 	this.height = closedImage.height;
 	this.itemStash = gameItems[round(random(0,4))];
@@ -52,6 +52,8 @@ function Chest(x, y, openImage, closedImage) {
 	this.x = x;
 	this.y = y;
 	this.image = closedImage;
+	this.unlockCode = unlockCode;
+	this.lockStrength = lockStrength;
 
 
 	this.update = function() {
@@ -76,5 +78,14 @@ Chest.prototype.open = function() {
 	this.sprite.addImage('image', this.openImage);
 	this.image = openImage;
 	this.isOpen = true;
+
+};
+
+Chest.prototype.setUnlockCode = function(){
+	for(var i = 0; i< 3; i++){
+
+
+	this.unlockCode[i] = setRandomLetter();
+}
 
 };

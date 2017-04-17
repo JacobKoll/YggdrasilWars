@@ -82,6 +82,9 @@ var isPlayer;
 var paused = false;
 
 var numTeamMates = 0;
+var tempUnlockCode = [1,2,3];
+var lockProgress = 0;
+
 
 function preloadGameAssets()
 {
@@ -142,6 +145,67 @@ function assignTypes()
 		leftConeAngle: -32,
 		rightConeAngle: 28
 	};
+
+	// cavalier = {
+	// 	walkAnimation: cavalierWalkAnimation,
+	// 	idleAnimation: cavalierIdleAnimation,
+	// 	deathAnimation: cavalierDeathAnimation,
+	// 	swingAnimation: cavalierSwingAnimation,
+	// 	health: 120,
+	// 	speed: 4,
+	// 	damage: 1.1,
+	// 	spriteCollider: [0,0,30],
+	// 	weaponCollider: [0,0,107],
+	// 	leftConeAngle: -32,
+	// 	rightConeAngle: 28
+
+
+	// };
+
+	// barbarian = {
+	// 	walkAnimation: barbarianWalkAnimation,
+	// 	idleAnimation: barbarianIdleAnimation,
+	// 	deathAnimation: barbarianDeathAnimation,
+	// 	swingAnimation: barbarianSwingAnimation,
+	// 	health: 150,
+	// 	speed: 2,
+	// 	damage: 1.5,
+	// 	spriteCollider: [0,0,30],
+	// 	weaponCollider: [0,0,107],
+	// 	leftConeAngle: -42,
+	// 	rightConeAngle: 38
+
+	// };
+
+	// mercenary = {
+	// 	walkAnimation: mercWalkAnimation,
+	// 	idleAnimation: mercIdleAnimation,
+	// 	deathAnimation: mercDeathAnimation,
+	// 	swingAnimation: mercSwingAnimation,
+	// 	health: 125, 
+	// 	speed: 3.2,
+	// 	damage: 1.15,
+	// 	spriteCollider: [0,0,30],
+	// 	weaponCollider: [0,0,107],
+	// 	leftConeAngle: -32,
+	// 	rightConeAngle: 28
+	// };
+
+	// rogue = {
+	// 	walkAnimation: rogueWalkAnimation,
+	// 	idleAnimation: rogueIdleAnimation,
+	// 	deathAnimation: rogueDeathAnimation,
+	// 	swingAnimation: roguewingAnimation,
+	// 	health: 100,
+	// 	speed: 3.2,
+	// 	damage: 1,
+	// 	spriteCollider: [0,0,30],
+	// 	weaponCollider: [0,0,107],
+	// 	leftConeAngle: -32,
+	// 	rightConeAngle: 28
+
+	// };
+
 }
 
 function becomePlayer(playerType)
@@ -166,6 +230,13 @@ function becomeSpectator()
 function becomeMod()
 {
 	isMod = true;
+}
+
+function setChestsCode(){
+	for(var i=0; i<chestArr.length; i++){
+		chestArr[i].setUnlockCode();
+
+	}
 }
 
 
@@ -255,7 +326,8 @@ function setupGame()
 		if (initializedChe == 0){
 			console.log("Recieved Chests");
 			for (i=0; i<chestData.length; i++) {
-				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest);
+				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
+				chest.setUnlockCode();
 				chest.sprite.depth = cheDepth;
 				chestArr.push(chest);
 				chestGroup.add(chest.sprite);
@@ -272,18 +344,19 @@ function setupGame()
 
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
-	
+	setChestsCode();
 
 }
 
 function mouseReleased(){
 	swordSound.stop();
-
 }
+
 
 function drawGame()
 {
 	background(55,75,30);
+
 
 
 	cursorSprite.position.x = mouseX;
@@ -319,13 +392,26 @@ function drawGame()
 		{
 			localFighter.sprite.collide(chestArr[i].sprite);
 
+
+			
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-				if (keyDown('e') && !(chestArr[i].isOpen)) {
-					chestArr[i].open();
-					chestArr[i].update;
+
+				
+				if (keyDown(chestArr[i].unlockCode[lockProgress]) && !(chestArr[i].isOpen)){
+
+					lockProgress+=1;
+					if(lockProgress == chestArr[i].lockStrength){
+						lockProgress = 0;
+						chestArr[i].setUnlockCode();
+						chestArr[i].open();
+						chestArr[i].update;
+
+					}
 				}
-			}
+			}	
 		}
+
+
 
 		if(keyDown('w'))
 		{
@@ -344,6 +430,7 @@ function drawGame()
 			localFighter.walk("right");
 		}
 
+
 	 	if(keyWentDown('m'))
 	 	{
 			miniMap.createDots(enemyGroup);
@@ -357,10 +444,14 @@ function drawGame()
 			miniMap.update();
 			miniMap.show();
 		}
-		else
-		{
+
+		else{
+
+
+
 			miniMap.sprite.visible = false;
 			miniMap.delete();
+
 		}
 		
 		
@@ -407,13 +498,13 @@ function drawGame()
 			localFighter.sprite.position.x = 0;
 		}
 		if(localFighter.sprite.position.y < 0) {
-		    localFighter.sprite.position.y = 0;
+			localFighter.sprite.position.y = 0;
 		}
 		if(localFighter.sprite.position.x > SCENE_W) {
-		    localFighter.sprite.position.x = SCENE_W;
+			localFighter.sprite.position.x = SCENE_W;
 		}
 		if(localFighter.sprite.position.y > SCENE_H) {
-		    localFighter.sprite.position.y = SCENE_H;
+			localFighter.sprite.position.y = SCENE_H;
 		}
 
 		localFighter.update(enemyGroup);
@@ -489,10 +580,15 @@ function drawGame()
 		drawHud();
 	}
 
+
 	if(keyWentDown('p'))
 	{
+
 		partyScreen.draw();
 	}
+
+	
+
 
 	if(keyDown('p'))
 	{
@@ -511,6 +607,24 @@ function drawGame()
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
+
+	for (var i=0; i<chestArr.length; i++)
+	{
+		localFighter.sprite.collide(chestArr[i].sprite);
+
+
+
+		if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+			text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+			text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+			text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+
+		}
+	}
+
+
+	
+
 
 }
 
