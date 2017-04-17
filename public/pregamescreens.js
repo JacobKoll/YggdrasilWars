@@ -48,8 +48,8 @@ function preload()
 	characterImages.push(loadImage("assets/screens/class_images/rogue_portrait.png"));
 	characterNames.push("Rogue");
 
-	// characterImages.push(loadImage("assets/screens/class_images/merc_portrait.png"));
-	// characterNames.push("Mercenary");
+	characterImages.push(loadImage("assets/screens/class_images/merc_portrait.png"));
+	characterNames.push("Mercenary");
 
 
 }
