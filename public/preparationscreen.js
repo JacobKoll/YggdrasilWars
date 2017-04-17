@@ -15,6 +15,8 @@ var selectButton;
 var leftButton;
 var rightButton;
 
+var lastIndex;
+
 var selectedCharacter;
 
 function initPrepScreen()
@@ -34,6 +36,8 @@ function initPrepScreen()
 	leftSprite = createSprite(leftPosX - 30, 490);
 	rightSprite = createSprite(rightPosX + 30, 490);
 
+	lastIndex  = characterImages.length - 1;
+
 	selectButton = new Button(width/2, 257, "Select", 22, defaultButtonImage, clickedButtonImage, select);
 	leftButton = new Button(leftPosX + 137, 257, "<<<<<<<", 22, defaultButtonImage, clickedButtonImage, changeLeft);
 	rightButton = new Button(rightPosX - 137, 257, ">>>>>>>", 22, defaultButtonImage, clickedButtonImage, changeRight);
@@ -52,21 +56,21 @@ function changeRight()
 {	
 	if(left == 0)
 	{
-		left = characterImages.length - 1;
+		left = lastIndex;
 		current = 0;
 		right = 1;
 	}
 	else if(current == 0)
 	{
-		left = characterImages.length - 2;
-		current = characterImages.length - 1;
+		left = lastIndex - 1;
+		current = lastIndex;
 		right = 0;
 	}
 	else if(right == 0)
 	{
-		left = characterImages.length - 3;
-		current = characterImages.length - 2;
-		right = characterImages.length - 1;
+		left = lastIndex - 2;
+		current = lastIndex - 1;
+		right = lastIndex;
 	}
 	else
 	{
@@ -84,19 +88,19 @@ function changeRight()
 
 function changeLeft()
 {
-	if(right == characterImages.length - 1)
+	if(right == lastIndex)
 	{
-		left = characterImages.length - 2;
-		current = characterImages.length - 1;
+		left = lastIndex - 1;
+		current = lastIndex;
 		right = 0;
 	}
-	else if(current == characterImages.length - 1)
+	else if(current == lastIndex)
 	{
-		left = characterImages.length - 1;
+		left = lastIndex;
 		current = 0;
 		right = 1;
 	}
-	else if(left == characterImages.length - 1)
+	else if(left == lastIndex)
 	{
 		left = 0;
 		current = 1;
@@ -108,6 +112,10 @@ function changeLeft()
 		current++;
 		right++;
 	}
+
+	console.clear();
+	console.log(current);
+	console.log(lastIndex);
 
 	currentSprite.changeImage(characterNames[current]);
 	leftSprite.changeImage(characterNames[left]);

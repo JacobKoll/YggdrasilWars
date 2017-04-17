@@ -429,22 +429,22 @@ function drawGame()
 		{
 			localFighter.walk("right");
 		}
-		if(keyWentDown('p')){
 
 
+	 	if(keyWentDown('m'))
+	 	{
 			miniMap.createDots(enemyGroup);
-
 		}
 		
-		if(keyDown('p'))
+		if(keyDown('m'))
 		{
 			console.log("Showing map");	
 
 			miniMap.sprite.visible = true;
 			miniMap.update();
 			miniMap.show();
-
 		}
+
 		else{
 
 
@@ -573,38 +573,41 @@ function drawGame()
 	drawSprites();
 	drawSprite(cursorSprite);
 
-
 	borderCamera();
 
 	if(isPlayer)
 	{
 		drawHud();
+	}
 
+
+	if(keyWentDown('p'))
+	{
+
+		partyScreen.draw();
 	}
 
 	
-	if(keyWentDown('y')){
-		partyScreen.draw();
 
-	}
-	if(keyDown('y')){
 
+	if(keyDown('p'))
+	{
 		partyScreen.show();
 		partyScreen.sprite.visible = true;
-		
+	
 		partyScreen.move(camera.position.x + 200,camera.position.y - 200);
 		text("Character", camera.position.x - 400, camera.position.y - 250);
 		text("Health", camera.position.x + 130, camera.position.y - 250);
 		text("Points", camera.position.x - 100, camera.position.y-250);
 		partyScreen.addNames(fighterArray);
 		partyScreen.addPoints(fighterArray);
-
 	}
-
-	else{
+	else
+	{
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
+
 	for (var i=0; i<chestArr.length; i++)
 	{
 		localFighter.sprite.collide(chestArr[i].sprite);
@@ -617,9 +620,10 @@ function drawGame()
 			text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
 
 		}
-
-
 	}
+
+
+	
 
 
 }
