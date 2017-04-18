@@ -137,7 +137,7 @@ function onSocketConnect(client)
 		io.sockets.emit('generateObstacles', obstacleArr);
 		io.sockets.emit('generateChests', chestArr);
 		io.sockets.emit('generateSpawners', spawnerArr);
-		console.log(client.id + " added it[s fighter\n");
+		console.log(client.id + " added it's fighter\n");
 	});
 
 	/**
@@ -157,7 +157,7 @@ function onSocketConnect(client)
 		for (var i=0; i<spawnerArr.length; i++) {
 			spawnerArr[i].spawn;
 		}
-		io.sockets.emit('updateGame', gameData)
+		io.sockets.emit('updateGame', gameData);
 
 	}
 
