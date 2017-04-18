@@ -135,7 +135,7 @@ function assignTypes()
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
 		health: 135,
-		speed: 3,		
+		speed: 3,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
 		weaponCollider: [0, 0, 107],
@@ -234,6 +234,7 @@ function setupGame()
 
 
 
+
 	socket.on('updateObstacles', function(data) {
 		var obsDepth = 1000;
 		if (initializedObs == 0) {
@@ -272,7 +273,7 @@ function setupGame()
 
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
-	
+
 
 }
 
@@ -297,7 +298,7 @@ function drawGame()
 	miniMap.sprite.position.y = camera.position.y;
 
 	partyScreen.sprite.position.x = camera.position.x;
-	partyScreen.sprite.position.y = camera.position.y; 
+	partyScreen.sprite.position.y = camera.position.y;
 
 
 	if(isPlayer)
@@ -348,10 +349,10 @@ function drawGame()
 	 	{
 			miniMap.createDots(enemyGroup);
 		}
-		
+
 		if(keyDown('m'))
 		{
-			console.log("Showing map");	
+			console.log("Showing map");
 
 			miniMap.sprite.visible = true;
 			miniMap.update();
@@ -362,8 +363,8 @@ function drawGame()
 			miniMap.sprite.visible = false;
 			miniMap.delete();
 		}
-		
-		
+
+
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -498,7 +499,7 @@ function drawGame()
 	{
 		partyScreen.show();
 		partyScreen.sprite.visible = true;
-	
+
 		partyScreen.move(camera.position.x + 200,camera.position.y - 200);
 		text("Character", camera.position.x - 400, camera.position.y - 250);
 		text("Health", camera.position.x + 130, camera.position.y - 250);

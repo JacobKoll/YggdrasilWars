@@ -14,6 +14,7 @@ var optionsButton;
 
 var menuChoice = 0;
 
+
 function initMainMenu()
 {
 	// menuImage = backgroundImage;
@@ -35,7 +36,7 @@ function drawMainMenu()
 
 	if(menuChoice > 0)
 	{
-		return menuChoice;
+		return menuChoice
 	}
 
 }
