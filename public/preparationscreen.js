@@ -32,9 +32,12 @@ function initPrepScreen()
 
 	hasSelected = false;
 
-	currentSprite = createSprite(width/2, 545);
-	leftSprite = createSprite(leftPosX - 30, 490);
-	rightSprite = createSprite(rightPosX + 30, 490);
+	currentSprite = createSprite(width/2, 455);
+	leftSprite = createSprite(leftPosX - 45, 440);
+	rightSprite = createSprite(rightPosX + 45, 440);
+
+	currentSprite.scale = 1.6;
+	leftSprite.scale = rightSprite.scale  = 1.4;
 
 	lastIndex  = characterImages.length - 1;
 

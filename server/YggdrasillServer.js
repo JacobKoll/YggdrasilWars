@@ -25,8 +25,69 @@ var spawnerArr = [];
 var enemyArr = [];
 var obstacleArr = [];
 var chestArr = [];
+var numSpawners = 2;
 
 app.use(express.static("../public"));
+
+
+/**
+ * @author Chandler Davis and Andrew Messerly
+ */
+
+/**
+ * Constructs a spawner that spawns Enemy objects/sprites
+ * @constructor
+ *
+ * @param {int} x         Initial x-position of the spawner
+ * @param {int} y         Initial y-position of the spawner
+ * @param {function} enemyType The constructor for the Enemy that it will spawn
+ * @param {int} rate      The rate (per second) that the spawner will emit a new Enemy
+ * @param {int} limit     The maximum amount of Enemies that this spawner will emit
+ * @param {Image} image     The image for the EnemySpawner sprite
+ */
+function EnemySpawner(x, y, rate, limit) 
+{
+	this.x = x;
+	this.y = y;
+	this.rate = rate;
+	this.limit = limit;
+	this.spawnCount = 0;
+	this.curDepth = 100;
+
+	this.enemyArr = [];
+	this.spawn;
+	this.timer = 0;
+}	
+
+/**
+ * Spawns Enemies given the values initialized in the constructor function
+ * @function
+ * 
+ */
+EnemySpawner.prototype.spawn = function(enemyGroup) 
+{
+	if((this.timer % (100/this.rate)) == 0 && this.enemyArr.length < this.limit)
+	{
+		this.spawnCount++;
+
+		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
+		tempEnemy.sprite.depth = this.curDepth;
+		this.curDepth++;
+		this.enemyArr.push(tempEnemy);
+		enemyGroup.push(tempEnemy.sprite);
+
+	}
+	
+	this.timer++;
+};
+
+EnemySpawner.prototype.updateAll = function(fighterArr) 
+{
+	for (var i = 0; i < this.enemyArr.length; i++) 
+	{
+		this.enemyArr[i].update(fighterArr);
+	}
+};
 
 var chestArr;
 /**
@@ -42,9 +103,9 @@ function init()
 	/**
 	 * Initialize obstacles
 	 */
-	for (var i=0; i<20; i++) {
-		var a = Math.floor((Math.random())*2000/45)*(45);
-		var b = Math.floor((Math.random())*1450/45)*(45);
+	for (var i=0; i<60; i++) {
+		var a = Math.floor((Math.random())*4000/45)*(45);
+		var b = Math.floor((Math.random())*4000/45)*(45);
 		var obsData = {x: a, y: b};
 		obstacleArr.push(obsData);
 	}
@@ -53,15 +114,22 @@ function init()
 	/**
 	 * Initialize chests
 	 */
-	 for (var i=0; i<4; i++) {
-		var a = Math.floor((Math.random())*2000/45)*(45);
-		var b = Math.floor((Math.random())*1450/45)*(45);
+	 for (var i=0; i<10; i++) {
+		var a = Math.floor((Math.random())*4000/45)*(45);
+		var b = Math.floor((Math.random())*4000/45)*(45);
 		var chestData = {x: a, y: b};
 		chestArr.push(chestData);
 	}
 	console.log("Chests Generated");
 
-	console.log("The Yygdrasill Wars server is open and running... \n");
+	/**
+	 * Initialize spawners
+	 */
+	 for (i=0; i<numSpawners; i++) {
+	 	spawnerArr[i] = new EnemySpawner()
+	 }
+
+	console.log("The Yggdrasill Wars server is open and running... \n");
 }
 
 /**
@@ -80,7 +148,8 @@ function onSocketConnect(client)
 	{
 		io.sockets.emit('generateObstacles', obstacleArr);
 		io.sockets.emit('generateChests', chestArr);
-		console.log(client.id + " added it[s fighter\n");
+		io.sockets.emit('generateSpawners', spawnerArr);
+		console.log(client.id + " added it's fighter\n");
 	});
 
 	/**
@@ -88,11 +157,19 @@ function onSocketConnect(client)
 	 */
 	function heartbeat()
 	{
+		/* Fighter data */
+		var gameData = {
+
+		};
 		io.sockets.emit('updateFighters' , fighterArr);
 		io.sockets.emit('updateSpawners' , spawnerArr);
 		io.sockets.emit('updateEnemies'  , enemyArr);
 		io.sockets.emit('updateObstacles', obstacleArr);
 		io.sockets.emit('updateChests'   , chestArr);
+		for (var i=0; i<spawnerArr.length; i++) {
+			spawnerArr[i].spawn;
+		}
+		io.sockets.emit('updateGame', gameData);
 
 	}
 
