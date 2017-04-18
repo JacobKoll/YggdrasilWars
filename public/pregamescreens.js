@@ -36,20 +36,20 @@ function preload()
 	backgroundImage = loadImage("assets/screens/prep_background.png");
 	foregroundImage = loadImage("assets/screens/prep_foreground.png");
 
-	characterImages.push(loadImage("assets/test_characters/abomination.png"));
-	characterNames.push("Abomination");
+	characterImages.push(loadImage("assets/screens/class_images/barb_portrait.png"));
+	characterNames.push("Barbarian");
 
-	characterImages.push(loadImage("assets/test_characters/babbs.png"));
-	characterNames.push("Babbs");
+	characterImages.push(loadImage("assets/screens/class_images/calvary_portrait.png"));
+	characterNames.push("Calvary");
 
-	characterImages.push(loadImage("assets/test_characters/squiggly.png"));
-	characterNames.push("Squiggly");
+	characterImages.push(loadImage("assets/screens/class_images/knight_portrait.png"));
+	characterNames.push("Knight");
 
-	characterImages.push(loadImage("assets/test_characters/Steve.png"));
-	characterNames.push("Steve");
+	characterImages.push(loadImage("assets/screens/class_images/rogue_portrait.png"));
+	characterNames.push("Rogue");
 
-	characterImages.push(loadImage("assets/test_characters/will.png"));
-	characterNames.push("Will");
+	characterImages.push(loadImage("assets/screens/class_images/merc_portrait.png"));
+	characterNames.push("Mercenary");
 
 
 }
