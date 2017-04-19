@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<html>
 <head>
   <meta charset="UTF-8">
   <!-- All of the imports needed for the project -->
@@ -8,35 +8,38 @@
 
 	<script src="signup.html"></script>
 
+
   <style> body {padding: 0; margin: 0;} </style>
 
 </head>
 
 <body>
 
-  <form name="SpaceShip">
-      Username<input type="text" name="userid"/>
-      Password<input type="password" name="pswrd"/>
-      <input type="button" onclick="check(this.form)" value="Login"/>
+  <form name="YggdrasillWars">
+      Username<input type="text" id="userid" name="userid"/>
+      Password<input type="password" id="pswrd" name="pswrd"/>
+      <input type="button" onclick="check(this.form)" value="Submit"/>
       <input type="reset" value="Cancel"/>
-      <input type="button" onclick="window.open('signup.html', '_self')" value="Sign Up"/>
+      <input type="button" onclick="window.open('index.html', '_self')" value="Back"/>
   </form>
   <script language="javascript">
+
     function check(form){
       // socket = io.connect('http://proj-309-la-1.cs.iastate.edu:3000');
       var socket = io.connect('http://localhost:3000');
-      var data = {
+      var datain = {
         UserName: form.userid.value,
         Pass: form.pswrd.value
       };
-      socket.emit('checkDB', data);
+      socket.emit('checkUserDB', datain);
 
-      socket.on('checkedDB', function(data){
-        if(!data){
-          alert("Wrong Username or Password")/*displays error message*/
+      socket.on('checkedUserDB', function(data){
+        if(data){
+          alert("Username in use")/*displays error message*/
           location.reload();
         }
         else {
+          socket.emit('insertDB', datain);
           window.open('YggdrasillWars.html','_self')/*opens the target page while Id & password matches*/
         }
       });

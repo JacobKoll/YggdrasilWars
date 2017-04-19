@@ -36,20 +36,20 @@ function preload()
 	backgroundImage = loadImage("assets/screens/prep_background.png");
 	foregroundImage = loadImage("assets/screens/prep_foreground.png");
 
-	characterImages.push(loadImage("assets/test_characters/abomination.png"));
-	characterNames.push("Abomination");
+	characterImages.push(loadImage("assets/screens/class_images/barb_portrait.png"));
+	characterNames.push("Barbarian");
 
-	characterImages.push(loadImage("assets/test_characters/babbs.png"));
-	characterNames.push("Babbs");
+	characterImages.push(loadImage("assets/screens/class_images/calvary_portrait.png"));
+	characterNames.push("Calvary");
 
-	characterImages.push(loadImage("assets/test_characters/squiggly.png"));
-	characterNames.push("Squiggly");
+	characterImages.push(loadImage("assets/screens/class_images/knight_portrait.png"));
+	characterNames.push("Knight");
 
-	characterImages.push(loadImage("assets/test_characters/Steve.png"));
-	characterNames.push("Steve");
+	characterImages.push(loadImage("assets/screens/class_images/rogue_portrait.png"));
+	characterNames.push("Rogue");
 
-	characterImages.push(loadImage("assets/test_characters/will.png"));
-	characterNames.push("Will");
+	characterImages.push(loadImage("assets/screens/class_images/mercenary__portrait.png"));
+	characterNames.push("Mercenary");
 
 
 }
@@ -59,7 +59,7 @@ function setup()
 	createCanvas(1000, 725);
 	initPrepScreen();
 	initMainMenu();
-	
+
 	preloadGameAssets();
 
 	startGame = false;
@@ -67,7 +67,7 @@ function setup()
 }
 
 function draw()
-{	
+{
 	var chosenClass;
 
 	background("#343832");
@@ -84,27 +84,27 @@ function draw()
 					if(chosenClass = drawPrepScreen())
 					{
 						allSprites.removeSprites();
-						
+
 						setupGame();
 						startGame = true;
-		
+
 						becomePlayer(chosenClass);
 					}
 					break;
 				case 2: //Enter game as spectator
 					becomeSpectator();
 					allSprites.removeSprites();
-					
+
 					setupGame();
-					startGame = true;	
+					startGame = true;
 					break;
 				case 3: //Enter game as mod (if login works)
 					becomeMod();
 
 					allSprites.removeSprites();
-					
+
 					setupGame();
-					startGame = true;	
+					startGame = true;
 
 					console.log("This hasn't been implemented yet! (Might be removed)");
 					break;
@@ -131,4 +131,3 @@ function draw()
 		drawGame();
 	}
 }
-
