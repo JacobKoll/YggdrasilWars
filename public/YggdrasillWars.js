@@ -357,6 +357,8 @@ function drawGame()
 {
 	background(55,75,30);
 
+	// console.log(localFighter.leftCone); (it becomes -32)
+	// console.log(localFighter.rightCone); (it becomes 28)
 
 
 	cursorSprite.position.x = mouseX;

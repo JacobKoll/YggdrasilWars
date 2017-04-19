@@ -135,7 +135,8 @@ Fighter.prototype.attack = function(sword, enemy)
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
-	if(diffAngle <= this.rightCone && diffAngle >= this.leftCone && sword.visible == true)
+
+	if(diffAngle <= localFighter.rightCone && diffAngle >= localFighter.leftCone && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
 	}
