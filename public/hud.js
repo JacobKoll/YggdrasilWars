@@ -84,7 +84,7 @@ function reduceHealthWidth(newWidth){
 function reduceStaminaWidth(){
 
 
-  fullStaminaBar.width -= 2;
+  fullStaminaBar.width -= .9;
 
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
@@ -108,9 +108,9 @@ function restoreHealthWidth(){
 
 function restoreStaminaWidth(){
 
-  fullStaminaBar.width += .5;
-  if(fullStaminaBar.width > 135){
-    fullStaminaBar.width = 135;
+  fullStaminaBar.width += 1;
+  if(fullStaminaBar.width > 300){
+    fullStaminaBar.width = 300;
 
   }
 

@@ -116,7 +116,6 @@ function changeLeft()
 		right++;
 	}
 
-	console.clear();
 	console.log(current);
 	console.log(lastIndex);
 

@@ -44,19 +44,18 @@ function Fighter(x, y, type, id)
 	/* This is where we initialize the sprite and it's animations */
 	this.sprite = createSprite(x, y, 72, 96);
 	this.sprite.friction = friction;
-	// this.sprite.debug = true;
+	this.sprite.debug = true;
 
 	this.sprite.health = type.health; //Amount of health.
 	this.sprite.maxHealth = type.health; //Amount of health.
 
-	//this.sprite.addAnimation('walk', type.walkAnimation);
-	//this.sprite.addAnimation('death', type.deathAnimation);
+	this.sprite.addAnimation('walk', type.walkAnimation);
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
 	this.sprite.sword = createSprite(x, y, 138, 96);
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
-	// this.sprite.sword.debug = true;
+	this.sprite.sword.debug = true;
 
 	this.sprite.sword.damage = type.damage * this.inventory[0].dmg;
 
@@ -69,8 +68,7 @@ function Fighter(x, y, type, id)
 	this.sprite.setCollider("circle", type.spriteCollider[0], type.spriteCollider[1], type.spriteCollider[2]);
 	this.sprite.sword.setCollider("circle", type.weaponCollider[0], type.weaponCollider[1], type.weaponCollider[2]);
 
-	this.sprite.scale = .8;
-	this.sprite.sword.scale = .8;
+	this.sprite.scale = this.sprite.sword.scale = type.scale;
 
 	this.leftCone = type.leftConeAngle;
 	this.rightCone = type.rightConeAngle;
@@ -134,6 +132,8 @@ Fighter.prototype.attack = function(sword, enemy)
 {
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
+
+
 
 	if(diffAngle <= this.rightCone && diffAngle >= this.leftCone && sword.visible == true)
 	{

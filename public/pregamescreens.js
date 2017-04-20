@@ -23,6 +23,7 @@ var characterNames  = [];
 var backgroundImage;
 var foregroundImage;
 
+
 function preload()
 {
 	defaultButtonImage = loadImage("assets/screens/testbuttondefault.png");
@@ -57,10 +58,12 @@ function preload()
 function setup()
 {
 	createCanvas(1000, 725);
+	preloadGameAssets();
 	initPrepScreen();
 	initMainMenu();
+
+	frameRate(45);
 	
-	preloadGameAssets();
 
 	startGame = false;
 
