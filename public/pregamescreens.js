@@ -23,6 +23,7 @@ var characterNames  = [];
 var backgroundImage;
 var foregroundImage;
 
+
 function preload()
 {
 	defaultButtonImage = loadImage("assets/screens/testbuttondefault.png");
@@ -48,7 +49,7 @@ function preload()
 	characterImages.push(loadImage("assets/screens/class_images/rogue_portrait.png"));
 	characterNames.push("Rogue");
 
-	characterImages.push(loadImage("assets/screens/class_images/mercenary__portrait.png"));
+	characterImages.push(loadImage("assets/screens/class_images/merc_portrait.png"));
 	characterNames.push("Mercenary");
 
 
@@ -57,10 +58,11 @@ function preload()
 function setup()
 {
 	createCanvas(1000, 725);
+	preloadGameAssets();
 	initPrepScreen();
 	initMainMenu();
 
-	preloadGameAssets();
+	frameRate(45);
 
 	startGame = false;
 
