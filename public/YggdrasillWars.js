@@ -132,6 +132,8 @@ function assignTypes()
 		idleAnimation: knightIdleAnimation,
 		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
+		stamina: 135,
+		staminaRate: 2,
 		health: 135,
 		speed: 3,
 		damage: 1.2,
@@ -272,6 +274,7 @@ function setupGame()
 		/* Send new local fighter data to the server */
 		var localFighterData = {
 			health: localFighter.health,
+
 			alive: localFighter.alive,
 			x: localFighter.sprite.position.x,
 			y: localFighter.sprite.position.y,
@@ -430,28 +433,7 @@ function drawGame()
 		}
 
 
-	 	if(keyWentDown('m'))
-	 	{
-			miniMap.createDots(enemyGroup);
-		}
-
-		if(keyDown('m'))
-		{
-			console.log("Showing map");
-
-			miniMap.sprite.visible = true;
-			miniMap.update();
-			miniMap.show();
-		}
-
-		else{
-
-
-
-			miniMap.sprite.visible = false;
-			miniMap.delete();
-
-		}
+	 	
 
 
 		if(keyWentDown(49))
@@ -606,6 +588,29 @@ function drawGame()
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
+
+	if(keyWentDown('m'))
+	 	{
+			miniMap.createDots(enemyGroup);
+		}
+
+		if(keyDown('m'))
+		{
+			console.log("Showing map");
+
+			miniMap.sprite.visible = true;
+			miniMap.update();
+			miniMap.show();
+		}
+
+		else{
+
+
+
+			miniMap.sprite.visible = false;
+			miniMap.delete();
+
+		}
 
 	for (var i=0; i<chestArr.length; i++)
 	{
