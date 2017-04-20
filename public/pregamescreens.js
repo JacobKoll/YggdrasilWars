@@ -63,14 +63,13 @@ function setup()
 	initMainMenu();
 
 	frameRate(45);
-	
 
 	startGame = false;
 
 }
 
 function draw()
-{	
+{
 	var chosenClass;
 
 	background("#343832");
@@ -87,27 +86,27 @@ function draw()
 					if(chosenClass = drawPrepScreen())
 					{
 						allSprites.removeSprites();
-						
+
 						setupGame();
 						startGame = true;
-		
+
 						becomePlayer(chosenClass);
 					}
 					break;
 				case 2: //Enter game as spectator
 					becomeSpectator();
 					allSprites.removeSprites();
-					
+
 					setupGame();
-					startGame = true;	
+					startGame = true;
 					break;
 				case 3: //Enter game as mod (if login works)
 					becomeMod();
 
 					allSprites.removeSprites();
-					
+
 					setupGame();
-					startGame = true;	
+					startGame = true;
 
 					console.log("This hasn't been implemented yet! (Might be removed)");
 					break;
@@ -134,4 +133,3 @@ function draw()
 		drawGame();
 	}
 }
-

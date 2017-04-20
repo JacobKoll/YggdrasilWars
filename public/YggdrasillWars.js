@@ -101,11 +101,6 @@ var paused = false;
 var footsteps;
 var swordSound;
 
-var isMod;
-var isSpectator;
-var isPlayer;
-var paused = false;
-
 var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
@@ -248,7 +243,6 @@ function assignTypes()
 		"Mercenary" : mercenary,
 		"Rogue" : rogue,
 	};
-
 }
 
 function becomePlayer(playerType)
@@ -351,6 +345,7 @@ function setupGame()
 
 
 
+
 	socket.on('updateObstacles', function(data) {
 		var obsDepth = 1000;
 		if (initializedObs == 0) {
@@ -390,6 +385,7 @@ function setupGame()
 
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
+
 	setChestsCode();
 
 }
@@ -403,8 +399,6 @@ function drawGame()
 {
 	background(55,75,30);
 
-
-
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
@@ -416,7 +410,7 @@ function drawGame()
 	miniMap.sprite.position.y = camera.position.y;
 
 	partyScreen.sprite.position.x = camera.position.x;
-	partyScreen.sprite.position.y = camera.position.y; 
+	partyScreen.sprite.position.y = camera.position.y;
 
 
 	if(isPlayer)
@@ -439,10 +433,10 @@ function drawGame()
 			localFighter.sprite.collide(chestArr[i].sprite);
 
 
-			
+
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
 
-				
+
 				if (keyDown(chestArr[i].unlockCode[lockProgress]) && !(chestArr[i].isOpen)){
 
 					lockProgress+=1;
@@ -454,7 +448,7 @@ function drawGame()
 
 					}
 				}
-			}	
+			}
 		}
 
 
@@ -481,10 +475,10 @@ function drawGame()
 	 	{
 			miniMap.createDots(enemyGroup);
 		}
-		
+
 		if(keyDown('m'))
 		{
-			console.log("Showing map");	
+			console.log("Showing map");
 
 			miniMap.sprite.visible = true;
 			miniMap.update();
@@ -499,8 +493,8 @@ function drawGame()
 			miniMap.delete();
 
 		}
-		
-		
+
+
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -642,17 +636,16 @@ function drawGame()
 
 	if(keyWentDown('p'))
 	{
-
 		partyScreen.draw();
 	}
 
-	
+
 
 	if(keyDown('p'))
 	{
 		partyScreen.show();
 		partyScreen.sprite.visible = true;
-	
+
 		partyScreen.move(camera.position.x + 200,camera.position.y - 200);
 		text("Character", camera.position.x - 400, camera.position.y - 250);
 		text("Health", camera.position.x + 130, camera.position.y - 250);
@@ -666,11 +659,11 @@ function drawGame()
 		partyScreen.delete();
 	}
 
-	var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.rightCone));
-	var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.rightCone));
+	var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
+	var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
 
-	var rightX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.leftCone));
-	var rightY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.leftCone));
+	var rightX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
+	var rightY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
 
 	textSize(6);
 	stroke("red");

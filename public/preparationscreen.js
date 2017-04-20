@@ -115,10 +115,6 @@ function changeLeft()
 		current++;
 		right++;
 	}
-
-	console.log(current);
-	console.log(lastIndex);
-
 	currentSprite.changeImage(characterNames[current]);
 	leftSprite.changeImage(characterNames[left]);
 	rightSprite.changeImage(characterNames[right]);
@@ -126,7 +122,6 @@ function changeLeft()
 
 function select()
 {
-	console.log(currentSprite.getAnimationLabel());
 	selectedCharacter =  currentSprite.getAnimationLabel();
 }
 

@@ -70,8 +70,8 @@ function Fighter(x, y, type, id)
 
 	this.sprite.scale = this.sprite.sword.scale = type.scale;
 
-	this.leftCone = type.leftConeAngle;
-	this.rightCone = type.rightConeAngle;
+	this.sprite.sword.leftCone = type.leftConeAngle;
+	this.sprite.sword.rightCone = type.rightConeAngle;
 
 }
 
