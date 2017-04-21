@@ -80,6 +80,8 @@ var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
 
+var hudNeedReset = false;
+
 
 function preloadGameAssets()
 {
@@ -430,29 +432,6 @@ function drawGame()
 		}
 
 
-	 	if(keyWentDown('m'))
-	 	{
-			miniMap.createDots(enemyGroup);
-		}
-
-		if(keyDown('m'))
-		{
-			console.log("Showing map");
-
-			miniMap.sprite.visible = true;
-			miniMap.update();
-			miniMap.show();
-		}
-
-		else{
-
-
-
-			miniMap.sprite.visible = false;
-			miniMap.delete();
-
-		}
-
 
 		if(keyWentDown(49))
 		{
@@ -507,6 +486,7 @@ function drawGame()
 		}
 
 		localFighter.update(enemyGroup);
+
 	}
 	else
 	{
@@ -539,7 +519,7 @@ function drawGame()
 		}
 		else if(keyDown(190))
 		{
-			camera.zoom = 0.4;
+			camera.zoom = 0.3;
 		}
 		else
 		{
@@ -576,13 +556,40 @@ function drawGame()
 
 	if(isPlayer)
 	{
-		drawHud();
+		if(keyDown('m'))
+		{
+			camera.zoom = 0.3;
+			deleteHud();
+			hudNeedReset = true;
+
+		}
+		else {
+			if(hudNeedReset){
+				createHud();
+				hudNeedReset = false;
+			}
+			camera.zoom = 1;
+			drawHud();
+		}
+
+		for (var i=0; i<chestArr.length; i++)
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
+
+
+
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+
+			}
+		}
 	}
 
 
 	if(keyWentDown('p'))
 	{
-
 		partyScreen.draw();
 	}
 
@@ -606,24 +613,6 @@ function drawGame()
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
-
-	for (var i=0; i<chestArr.length; i++)
-	{
-		localFighter.sprite.collide(chestArr[i].sprite);
-
-
-
-		if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
-			text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-			text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-			text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
-
-		}
-	}
-
-
-
-
 
 }
 
