@@ -201,8 +201,8 @@ Enemy.prototype.attack = function(enemy, player)
 		player.position.x = random(50, width - 50);
 		player.position.y = random(50, height - 50);
 		player.health = player.maxHealth;
-		fullHealthBar.width = 135;
-		fullStaminaBar.width = 135;
+		fullHealthBar.width = player.maxHealth;
+		fullStaminaBar.width = player.maxStamina;
 		player.alive = true;
 
 		console.log("You died!");

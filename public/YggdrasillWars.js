@@ -1,9 +1,33 @@
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
+
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
+
+var knightWalkAnimation;
+var knightSwingAnimation;
+var knightIdleAnimation;
+
+var rogueWalkAnimation;
+var rogueSwingAnimation;
+var rogueIdleAnimation;
+
+var mercWalkAnimation;
+var mercSwingAnimation;
+var mercIdleAnimation;
+
+var barbWalkAnimation;
+var barbSwingAnimation;
+var barbIdleAnimation;
+
+var calvaryWalkAnimation;
+var calvarySwingAnimation;
+var calvaryIdleAnimation;
+
+
+
 var customCursor;
 var spawnerImage;
 var landscape;
@@ -62,7 +86,10 @@ var testSpawner2;
 var goblin;
 
 /* Player Types */
-var knight;
+
+var playerTypeArray;
+
+var globalType;
 
 var miniMap;
 
@@ -88,13 +115,26 @@ function preloadGameAssets()
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
 	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
-	characterImages.push(enemyIdleAnimation);
 
 	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
 	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
-	knightDeathAnimation = loadAnimation("assets/fighter/death/death00.png","assets/fighter/death/death18.png");
 	knightIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
-	characterImages.push(knightIdleAnimation);
+
+	rogueWalkAnimation = loadAnimation("assets/rogue/walk/roguewalk0.png","assets/rogue/walk/roguewalk7.png");
+	rogueSwingAnimation = loadAnimation("assets/rogue/attack/rogueattack0.png","assets/rogue/attack/rogueattack6.png");
+	rogueIdleAnimation = loadAnimation("assets/rogue/walk/roguewalk3.png");
+
+	mercWalkAnimation = loadAnimation("assets/mercenary/walk/mercwalk00.png","assets/mercenary/walk/mercwalk11.png");
+	mercSwingAnimation = loadAnimation("assets/mercenary/attack/mercattack0.png","assets/mercenary/attack/mercattack5.png");
+	mercIdleAnimation = loadAnimation("assets/mercenary/walk/mercwalk00.png");
+
+	barbWalkAnimation = loadAnimation("assets/barbarian/walk/barbwalk0.png","assets/barbarian/walk/barbwalk7.png");
+	barbSwingAnimation = loadAnimation("assets/barbarian/attack/barbattack0.png","assets/barbarian/attack/barbattack5.png");
+	barbIdleAnimation = loadAnimation("assets/barbarian/walk/barbwalk2.png");
+
+	calvaryWalkAnimation = loadAnimation("assets/calvary/walk/calvarywalk0.png","assets/calvary/walk/calvarywalk3.png");
+	calvarySwingAnimation = loadAnimation("assets/calvary/swing/calvaryswing0.png","assets/calvary/swing/calvaryswing5.png");
+	calvaryIdleAnimation = loadAnimation("assets/calvary/walk/calvarywalk3.png");
 
 	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
@@ -119,6 +159,7 @@ function preloadGameAssets()
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
 {
+	// NOTE: Goblin is still global
 	goblin = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
@@ -129,13 +170,15 @@ function assignTypes()
 		detectionRadius: 225
 	};
 
-	knight = {
+	var knight = {
 		walkAnimation: knightWalkAnimation,
 		idleAnimation: knightIdleAnimation,
-		deathAnimation: knightDeathAnimation,
 		swingAnimation: knightSwingAnimation,
+		stamina: 120,
+		staminaRate: 2,
 		health: 135,
 		speed: 3,
+		scale: 1,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
 		weaponCollider: [0, 0, 107],
@@ -143,66 +186,77 @@ function assignTypes()
 		rightConeAngle: 28
 	};
 
-	// cavalier = {
-	// 	walkAnimation: cavalierWalkAnimation,
-	// 	idleAnimation: cavalierIdleAnimation,
-	// 	deathAnimation: cavalierDeathAnimation,
-	// 	swingAnimation: cavalierSwingAnimation,
-	// 	health: 120,
-	// 	speed: 4,
-	// 	damage: 1.1,
-	// 	spriteCollider: [0,0,30],
-	// 	weaponCollider: [0,0,107],
-	// 	leftConeAngle: -32,
-	// 	rightConeAngle: 28
+	var calvary = {
+		walkAnimation: calvaryWalkAnimation,
+		idleAnimation: calvaryIdleAnimation,
+		swingAnimation: calvarySwingAnimation,
+		stamina: 135,
+		staminaRate: 2,
+		health: 120,
+		speed: 4,
+		damage: 1.1,
+		scale: 2.5,
+		spriteCollider: [0,0,30],
+		weaponCollider: [0,0,107],
+		leftConeAngle: -32,
+		rightConeAngle: 28
+	};
 
+	var barb = {
+		walkAnimation: barbWalkAnimation,
+		idleAnimation: barbIdleAnimation,
+		swingAnimation: barbSwingAnimation,
+		stamina: 150,
+		staminaRate: 2,
+		health: 150,
+		speed: 2,
+		damage: 1.5,
+		scale: 2,
+		spriteCollider: [0,0,30],
+		weaponCollider: [0,0,107],
+		leftConeAngle: -42,
+		rightConeAngle: 38
+	};
 
-	// };
+	var mercenary = {
+		walkAnimation: mercWalkAnimation,
+		idleAnimation: mercIdleAnimation,
+		swingAnimation: mercSwingAnimation,
+		stamina: 145,
+		staminaRate: 2,
+		health: 125,
+		speed: 3.2,
+		scale: 1.5,
+		damage: 1.15,
+		spriteCollider: [0,0,30],
+		weaponCollider: [0,0,107],
+		leftConeAngle: -32,
+		rightConeAngle: 28
+	};
 
-	// barbarian = {
-	// 	walkAnimation: barbarianWalkAnimation,
-	// 	idleAnimation: barbarianIdleAnimation,
-	// 	deathAnimation: barbarianDeathAnimation,
-	// 	swingAnimation: barbarianSwingAnimation,
-	// 	health: 150,
-	// 	speed: 2,
-	// 	damage: 1.5,
-	// 	spriteCollider: [0,0,30],
-	// 	weaponCollider: [0,0,107],
-	// 	leftConeAngle: -42,
-	// 	rightConeAngle: 38
+	var rogue = {
+		walkAnimation: rogueWalkAnimation,
+		idleAnimation: rogueIdleAnimation,
+		swingAnimation: rogueSwingAnimation,
+		stamina: 120,
+		staminaRate: 2,
+		health: 100,
+		speed: 3.4,
+		scale: .8,
+		damage: 1,
+		spriteCollider: [0,0,30],
+		weaponCollider: [0,0,107],
+		leftConeAngle: -32,
+		rightConeAngle: 28
+	};
 
-	// };
-
-	// mercenary = {
-	// 	walkAnimation: mercWalkAnimation,
-	// 	idleAnimation: mercIdleAnimation,
-	// 	deathAnimation: mercDeathAnimation,
-	// 	swingAnimation: mercSwingAnimation,
-	// 	health: 125,
-	// 	speed: 3.2,
-	// 	damage: 1.15,
-	// 	spriteCollider: [0,0,30],
-	// 	weaponCollider: [0,0,107],
-	// 	leftConeAngle: -32,
-	// 	rightConeAngle: 28
-	// };
-
-	// rogue = {
-	// 	walkAnimation: rogueWalkAnimation,
-	// 	idleAnimation: rogueIdleAnimation,
-	// 	deathAnimation: rogueDeathAnimation,
-	// 	swingAnimation: roguewingAnimation,
-	// 	health: 100,
-	// 	speed: 3.2,
-	// 	damage: 1,
-	// 	spriteCollider: [0,0,30],
-	// 	weaponCollider: [0,0,107],
-	// 	leftConeAngle: -32,
-	// 	rightConeAngle: 28
-
-	// };
-
+	playerTypeArray = {
+		"Knight" : knight,
+		"Calvary" : calvary,
+		"Barbarian" : barb,
+		"Mercenary" : mercenary,
+		"Rogue" : rogue,
+	};
 }
 
 function becomePlayer(playerType)
@@ -210,7 +264,10 @@ function becomePlayer(playerType)
 	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
 
 	isPlayer = true;
-	localFighter = new Fighter(random(1450), random(960), knight);
+
+	globalType = playerType;
+
+	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
 	numTeamMates++;
 
 	fighterArray.push(localFighter);
@@ -274,6 +331,7 @@ function setupGame()
 		/* Send new local fighter data to the server */
 		var localFighterData = {
 			health: localFighter.health,
+
 			alive: localFighter.alive,
 			x: localFighter.sprite.position.x,
 			y: localFighter.sprite.position.y,
@@ -356,10 +414,6 @@ function drawGame()
 {
 	background(55,75,30);
 
-	// console.log(localFighter.leftCone); (it becomes -32)
-	// console.log(localFighter.rightCone); (it becomes 28)
-
-
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
 
@@ -432,7 +486,6 @@ function drawGame()
 		}
 
 
-
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -487,6 +540,7 @@ function drawGame()
 
 		localFighter.update(enemyGroup);
 
+
 	}
 	else
 	{
@@ -515,7 +569,7 @@ function drawGame()
 		}
 		if(keyDown(188))
 		{
-			camera.zoom = 1.3;
+			camera.zoom = 1.7;
 		}
 		else if(keyDown(190))
 		{
@@ -595,7 +649,6 @@ function drawGame()
 
 
 
-
 	if(keyDown('p'))
 	{
 		partyScreen.show();
@@ -614,6 +667,32 @@ function drawGame()
 		partyScreen.delete();
 	}
 
+
+//
+//
+//
+//
+	// var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
+	// var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
+	//
+	// var rightX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
+	// var rightY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
+	//
+	// textSize(6);
+	// stroke("red");
+	// strokeWeight(2);
+	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, leftX, leftY);
+	// text("L", leftX, leftY);
+	//
+	// stroke("blue");
+	// strokeWeight(2);
+	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
+	// text("R", rightX, rightY);
+//
+// 	// stroke("grey");
+// 	// strokeWeight(1);
+// 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
+//  
 }
 
 
