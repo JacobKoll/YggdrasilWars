@@ -72,7 +72,6 @@ function Fighter(x, y, type, id)
 
 	this.sprite.sword.leftCone = type.leftConeAngle;
 	this.sprite.sword.rightCone = type.rightConeAngle;
-
 }
 
 /**
@@ -133,9 +132,18 @@ Fighter.prototype.attack = function(sword, enemy)
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
+	var dLeft = round(this.leftCone) + (-1 * round(sword.rotation));
+	var dRight = round(this.rightCone) + (-1 * round(sword.rotation));
 
 
-	if(diffAngle <= this.rightCone && diffAngle >= this.leftCone && sword.visible == true)
+	if(mouseWentDown())
+	{
+		console.clear();
+		console.log(this.leftCone, diffAngle, this.rightCone);	
+		console.log(this.leftCone, enemyAngle, this.rightCone);	
+	}
+
+	if(diffAngle >= this.rightCone && diffAngle <= this.leftCone)// && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
 	}

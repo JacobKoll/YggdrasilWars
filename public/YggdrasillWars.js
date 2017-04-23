@@ -172,7 +172,7 @@ function assignTypes()
 		swingAnimation: knightSwingAnimation,
 		health: 135,
 		speed: 3,		
-		scale: 1,
+		scale: 1.06,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
 		weaponCollider: [0, 0, 107],
@@ -187,7 +187,7 @@ function assignTypes()
 		health: 120,
 		speed: 4,
 		damage: 1.1,
-		scale: 2.5,
+		scale: 1.8,
 		spriteCollider: [0,0,30],
 		weaponCollider: [0,0,107],
 		leftConeAngle: -32,
@@ -201,11 +201,11 @@ function assignTypes()
 		health: 150,
 		speed: 2,
 		damage: 1.5,
-		scale: 2,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -42,
-		rightConeAngle: 38
+		scale: 1.5,
+		spriteCollider: [0,0,22.5],
+		weaponCollider: [0,0,60],
+		leftConeAngle: 38,
+		rightConeAngle: -42
 	};
 
 	var mercenary = {
@@ -214,12 +214,12 @@ function assignTypes()
 		swingAnimation: mercSwingAnimation,
 		health: 125, 
 		speed: 3.2,
-		scale: 1.5,
+		scale: 1.15,
 		damage: 1.15,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -32,
-		rightConeAngle: 28
+		spriteCollider: [0,0,24],
+		weaponCollider: [0,0,64],
+		leftConeAngle: 8,
+		rightConeAngle: -45
 	};
 
 	var rogue = {
@@ -228,12 +228,12 @@ function assignTypes()
 		swingAnimation: rogueSwingAnimation,
 		health: 100,
 		speed: 3.2,
-		scale: .8,
-		damage: 1,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -32,
-		rightConeAngle: 28
+		scale: 1,
+		damage: 3,
+		spriteCollider: [0,0,23],
+		weaponCollider: [0,0,71],
+		leftConeAngle: -10,
+		rightConeAngle: -38
 	};
 
 	playerTypeArray = {
@@ -250,8 +250,6 @@ function becomePlayer(playerType)
 	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
 
 	isPlayer = true;
-
-
 
 	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
 	numTeamMates++;
@@ -336,10 +334,10 @@ function setupGame()
 	noCursor(); // Hides the system's cursor when inside the canvas
 
 
-	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
+	testSpawner = new EnemySpawner(400, 163, goblin, .5, 1, spawnerImage);
 	testSpawner.sprite.depth = 1;
 	spawnerArray.push(testSpawner);
-	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 18, spawnerImage);
+	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 1, spawnerImage);
 	testSpawner2.sprite.depth = 1;
 	spawnerArray.push(testSpawner2);
 
@@ -668,13 +666,13 @@ function drawGame()
 	textSize(6);
 	stroke("red");
 	strokeWeight(2);
-	line(localFighter.sprite.position.x, localFighter.sprite.position.y, leftX, leftY);
-	text("L", leftX, leftY);	
+	line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
+	text("L", rightX, rightY);	
 		
 	stroke("blue");
 	strokeWeight(2);
-	line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
-	text("R", rightX, rightY);	
+	line(localFighter.sprite.position.x, localFighter.sprite.position.y, leftX, leftY);
+	text("R", leftX, leftY);	
 	
 	// stroke("grey");
 	// strokeWeight(1);

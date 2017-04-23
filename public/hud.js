@@ -73,7 +73,7 @@ function changeItemPosition(xPos,yPos){
 
 function reduceHealthWidth(newWidth){
 
-  fullHealthBar.width -= newWidth;
+  // fullHealthBar.width -= newWidth;
   if(fullHealthBar.width <= 0){
     fullHealthBar.width = 0;
 
@@ -84,7 +84,7 @@ function reduceHealthWidth(newWidth){
 function reduceStaminaWidth(){
 
 
-  fullStaminaBar.width -= .9;
+  // fullStaminaBar.width -= .9;
 
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
