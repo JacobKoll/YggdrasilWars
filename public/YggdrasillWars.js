@@ -610,9 +610,16 @@ function drawGame()
 
 	if(isPlayer)
 	{
+		if(keyWentDown('m'))
+	 	{
+			miniMap.createDots(enemyGroup);
+		}
 		if(keyDown('m'))
 		{
-			camera.zoom = 0.3;
+			miniMap.sprite.visible = true;
+			miniMap.sprite.depth = 1500;
+			miniMap.update();
+			miniMap.show();
 			deleteHud();
 			hudNeedReset = true;
 
@@ -621,8 +628,10 @@ function drawGame()
 			if(hudNeedReset){
 				createHud();
 				hudNeedReset = false;
+
 			}
-			camera.zoom = 1;
+			miniMap.sprite.visible = false;
+			miniMap.delete();
 			drawHud();
 		}
 
@@ -692,7 +701,7 @@ function drawGame()
 // 	// stroke("grey");
 // 	// strokeWeight(1);
 // 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
-//  
+//
 }
 
 
