@@ -40,6 +40,8 @@ var goblin;
 
 var playerTypeArray;
 
+var globalType;
+
 var miniMap;
 
 var healthBars;
@@ -54,6 +56,8 @@ var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
 
+var hudNeedReset = false;
+
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
 {
@@ -65,16 +69,19 @@ function assignTypes()
 		damage: .83,
 		speed: 1.8,
 		detectionRadius: 225,
-		scale: .75
+		scale: .75,
+		friction: 0.5
 	};
 
 	var knight = {
 		walkAnimation: knightWalkAnimation,
 		idleAnimation: knightIdleAnimation,
 		swingAnimation: knightSwingAnimation,
+		stamina: 120,
+		staminaRate: 2,
 		health: 135,
-		speed: 3,		
-		scale: 1.06,
+		speed: 3,
+		scale: 1,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
 		weaponCollider: [0, 0, 104],
@@ -86,6 +93,8 @@ function assignTypes()
 		walkAnimation: calvaryWalkAnimation,
 		idleAnimation: calvaryIdleAnimation,
 		swingAnimation: calvarySwingAnimation,
+		stamina: 135,
+		staminaRate: 2,
 		health: 120,
 		speed: 4,
 		damage: 1.1,
@@ -100,6 +109,8 @@ function assignTypes()
 		walkAnimation: barbWalkAnimation,
 		idleAnimation: barbIdleAnimation,
 		swingAnimation: barbSwingAnimation,
+		stamina: 150,
+		staminaRate: 2,
 		health: 150,
 		speed: 2,
 		damage: 1.5,
@@ -114,7 +125,9 @@ function assignTypes()
 		walkAnimation: mercWalkAnimation,
 		idleAnimation: mercIdleAnimation,
 		swingAnimation: mercSwingAnimation,
-		health: 125, 
+		stamina: 145,
+		staminaRate: 2,
+		health: 125,
 		speed: 3.2,
 		scale: 1.15,
 		damage: 1.15,
@@ -128,10 +141,12 @@ function assignTypes()
 		walkAnimation: rogueWalkAnimation,
 		idleAnimation: rogueIdleAnimation,
 		swingAnimation: rogueSwingAnimation,
+		stamina: 120,
+		staminaRate: 2,
 		health: 100,
-		speed: 3.2,
-		scale: 1,
-		damage: 3,
+		speed: 3.4,
+		scale: .8,
+		damage: 1,
 		spriteCollider: [0,0,23],
 		weaponCollider: [0,0,71],
 		leftConeAngle: 10,
@@ -152,6 +167,8 @@ function becomePlayer(playerType)
 	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
 
 	isPlayer = true;
+
+	globalType = playerType;
 
 	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
 	numTeamMates++;
@@ -217,6 +234,7 @@ function setupGame()
 		/* Send new local fighter data to the server */
 		var localFighterData = {
 			health: localFighter.health,
+
 			alive: localFighter.alive,
 			x: localFighter.sprite.position.x,
 			y: localFighter.sprite.position.y,
@@ -371,30 +389,6 @@ function drawGame()
 		}
 
 
-	 	if(keyWentDown('m'))
-	 	{
-			miniMap.createDots(enemyGroup);
-		}
-
-		if(keyDown('m'))
-		{
-			console.log("Showing map");
-
-			miniMap.sprite.visible = true;
-			miniMap.update();
-			miniMap.show();
-		}
-
-		else{
-
-
-
-			miniMap.sprite.visible = false;
-			miniMap.delete();
-
-		}
-
-
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -448,19 +442,6 @@ function drawGame()
 		}
 
 		localFighter.update(enemyGroup);
-		
-		for (var i=0; i<chestArr.length; i++)
-		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen))
-			{
-				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
-
-			}
-		}
 
 	}
 	else
@@ -494,7 +475,7 @@ function drawGame()
 		}
 		else if(keyDown(190))
 		{
-			camera.zoom = 0.4;
+			camera.zoom = 0.3;
 		}
 		else
 		{
@@ -531,7 +512,44 @@ function drawGame()
 
 	if(isPlayer)
 	{
-		drawHud();
+		if(keyWentDown('m'))
+	 	{
+			miniMap.createDots(enemyGroup);
+		}
+		if(keyDown('m'))
+		{
+			miniMap.sprite.visible = true;
+			miniMap.sprite.depth = 1500;
+			miniMap.update();
+			miniMap.show();
+			deleteHud();
+			hudNeedReset = true;
+
+		}
+		else {
+			if(hudNeedReset){
+				createHud();
+				hudNeedReset = false;
+
+			}
+			miniMap.sprite.visible = false;
+			miniMap.delete();
+			drawHud();
+		}
+
+		for (var i=0; i<chestArr.length; i++)
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
+
+
+
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+
+			}
+		}
 	}
 
 

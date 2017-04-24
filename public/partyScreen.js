@@ -66,7 +66,7 @@ partyScreen.prototype.show = function(){
 	for(var i = 0; i < healthBars.length; i++){
 
 		healthBars[i].visible = true;
-		console.log(healthBars[i].position.x);
+		
 	}
 
 };
@@ -102,7 +102,7 @@ partyScreen.prototype.addNames = function(playerArr){
 
 	for(var i = 0; i < playerArr.length; i++){
 
-		text("knight", camera.position.x - 400, (camera.position.y - 200 + (50*i)));
+		text(globalType, camera.position.x - 400, (camera.position.y - 200 + (50*i)));
 
 	}
 	

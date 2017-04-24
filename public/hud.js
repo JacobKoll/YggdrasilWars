@@ -7,13 +7,13 @@ var itemSelectedSpriteX = -150;
 function createHud(){
 
 
-  emptyHealthBar = createSprite(10,100,135,23);
+  emptyHealthBar = createSprite(10,100,localFighter.sprite.maxHealth,23);
   emptyHealthBar.depth = 1500;
-  fullHealthBar = createSprite(10,10,135,23);
+  fullHealthBar = createSprite(10,10,localFighter.sprite.maxHealth,23);
   fullHealthBar.depth = 1501;
-  emptyStaminaBar = createSprite(10,200,135,23);
+  emptyStaminaBar = createSprite(10,200,localFighter.sprite.maxStamina,23);
   emptyStaminaBar.depth = 1502;
-  fullStaminaBar = createSprite(10,200,135,23);
+  fullStaminaBar = createSprite(10,200,localFighter.sprite.maxStamina,23);
   fullStaminaBar.depth = 1503;
 
   fullHealthBar.shapeColor = color("red");
@@ -73,7 +73,8 @@ function changeItemPosition(xPos,yPos){
 
 function reduceHealthWidth(newWidth){
 
-  // fullHealthBar.width -= newWidth;
+  fullHealthBar.width -= newWidth;
+  
   if(fullHealthBar.width <= 0){
     fullHealthBar.width = 0;
 
@@ -84,7 +85,7 @@ function reduceHealthWidth(newWidth){
 function reduceStaminaWidth(){
 
 
-  // fullStaminaBar.width -= .9;
+  fullStaminaBar.width -= localFighter.sprite.staminaRate;
 
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
@@ -94,13 +95,14 @@ function reduceStaminaWidth(){
 }
 
 
+
 function restoreHealthWidth(){
 
   fullHealthBar.width += .2;
   localFighter.sprite.health += .2;
-  if(fullHealthBar.width >= 135)
+  if(fullHealthBar.width >= localFighter.sprite.maxHealth)
   {
-    fullHealthBar.width = 135;
+    fullHealthBar.width = localFighter.sprite.maxHealth;
     localFighter.sprite.health = localFighter.sprite.maxHealth;
   }
 
@@ -108,11 +110,21 @@ function restoreHealthWidth(){
 
 function restoreStaminaWidth(){
 
-  fullStaminaBar.width += 1;
-  if(fullStaminaBar.width > 300){
-    fullStaminaBar.width = 300;
+  fullStaminaBar.width += .5;
+  if(fullStaminaBar.width > localFighter.sprite.maxStamina){
+    fullStaminaBar.width = localFighter.sprite.maxStamina;
+
 
   }
+
+}
+function deleteHud(){
+  emptyHealthBar.remove();
+  fullHealthBar.remove();
+  emptyStaminaBar.remove();
+  fullStaminaBar.remove();
+  itemSelectedSprite.remove();
+  itemsBar.removeSprites();
 
 }
 
@@ -126,7 +138,7 @@ function drawHud()
   changeItemSelectedPosition(camera.position.x+itemSelectedSpriteX, camera.position.y+310);
 
   changeItemPosition(camera.position.x-150, camera.position.y+310);
-  changeHealthPosition(camera.position.x-420, camera.position.y-335);
-  changeStaminaPosition(camera.position.x-270, camera.position.y-335);
+  changeHealthPosition((camera.position.x - 500) + (localFighter.sprite.maxHealth) , camera.position.y-335);
+  changeStaminaPosition((camera.position.x - 470) + localFighter.sprite.maxHealth + localFighter.sprite.maxStamina, camera.position.y-335);
   text("Score: " + score, camera.position.x+343, camera.position.y-330);
 }

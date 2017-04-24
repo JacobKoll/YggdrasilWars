@@ -45,7 +45,7 @@ app.use(express.static("../public"));
  * @param {int} limit     The maximum amount of Enemies that this spawner will emit
  * @param {Image} image     The image for the EnemySpawner sprite
  */
-function EnemySpawner(x, y, rate, limit) 
+function EnemySpawner(x, y, rate, limit)
 {
 	this.x = x;
 	this.y = y;
@@ -57,14 +57,14 @@ function EnemySpawner(x, y, rate, limit)
 	this.enemyArr = [];
 	this.spawn;
 	this.timer = 0;
-}	
+}
 
 /**
  * Spawns Enemies given the values initialized in the constructor function
  * @function
- * 
+ *
  */
-EnemySpawner.prototype.spawn = function(enemyGroup) 
+EnemySpawner.prototype.spawn = function(enemyGroup)
 {
 	if((this.timer % (100/this.rate)) == 0 && this.enemyArr.length < this.limit)
 	{
@@ -77,13 +77,13 @@ EnemySpawner.prototype.spawn = function(enemyGroup)
 		enemyGroup.push(tempEnemy.sprite);
 
 	}
-	
+
 	this.timer++;
 };
 
-EnemySpawner.prototype.updateAll = function(fighterArr) 
+EnemySpawner.prototype.updateAll = function(fighterArr)
 {
-	for (var i = 0; i < this.enemyArr.length; i++) 
+	for (var i = 0; i < this.enemyArr.length; i++)
 	{
 		this.enemyArr[i].update(fighterArr);
 	}
@@ -205,6 +205,7 @@ function onSocketConnect(client)
 	});
 
 	client.on('checkDB',function(data){
+
 		db.query('select Pass from Login where UserName = ?', data.UserName, function(err, result){
 			if(err){
 				console.error(err);

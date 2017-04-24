@@ -49,7 +49,16 @@ function Fighter(x, y, type, id)
 	this.sprite.health = type.health; //Amount of health.
 	this.sprite.maxHealth = type.health; //Amount of health.
 
+
+	this.sprite.stamina = type.stamina;
+	this.sprite.maxStamina = type.stamina;
+
+	this.sprite.staminaRate = type.staminaRate;
+
+	//this.sprite.addAnimation('walk', type.walkAnimation);
+	//this.sprite.addAnimation('death', type.deathAnimation);
 	this.sprite.addAnimation('walk', type.walkAnimation);
+
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
 	this.sprite.sword = createSprite(x, y, 138, 96);
