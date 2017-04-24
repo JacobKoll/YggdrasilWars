@@ -45,7 +45,7 @@ function heartbeat()
 io.sockets.on('connection', function(client)
 {
 
-    console.log('New Connection ' + client.id);
+    console.log('New Connection: ', client.id);
 
     client.on('disconnect', function(){
       console.log("client disconnected");
@@ -58,7 +58,51 @@ io.sockets.on('connection', function(client)
 
     //client.on('openChest')
 
+    client.on('checkUserDB',function(data){
+  		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			else if(result[0] == null){
+  				data = false;
+  			}
+  			io.sockets.emit('checkedUserDB', data);
 
+  		});
+  	});
+
+  	client.on('checkDB',function(data){
+
+  		db.query('select Pass from Login where UserName = ?', data.UserName, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			else if(result[0] == null || result[0].Pass != data.Pass){
+  				data = false;
+  			}
+  			io.sockets.emit('checkedDB', data);
+
+  		});
+  	});
+
+  	client.on('insertDB',function(data){
+  		var query = db.query('insert into Login set ?', data, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			console.error(result);
+  		});
+  	});
+
+
+
+
+    client.on('disconnect', function(){
+      console.log("  ", client.id, " disconnected.");
+    });
 });
 
 function generateMap()
