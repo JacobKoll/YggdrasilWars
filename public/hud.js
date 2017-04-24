@@ -133,4 +133,5 @@ function drawHud()
   changeHealthPosition((camera.position.x - 500) + (localFighter.sprite.maxHealth) , camera.position.y-335);
   changeStaminaPosition((camera.position.x - 470) + localFighter.sprite.maxHealth + localFighter.sprite.maxStamina, camera.position.y-335);
   text("Score: " + score, camera.position.x+343, camera.position.y-330);
+  text("Time:  " + time, camera.position.x+343, camera.position.y - 300);
 }

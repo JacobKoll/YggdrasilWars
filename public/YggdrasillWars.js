@@ -26,7 +26,8 @@ var calvaryWalkAnimation;
 var calvarySwingAnimation;
 var calvaryIdleAnimation;
 
-
+var time = 7;
+var counter;
 
 var customCursor;
 var spawnerImage;
@@ -399,7 +400,10 @@ function setupGame()
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
+	time = 7;
+	counter=setInterval(timer, 1000);
 	setChestsCode();
+	
 
 }
 
@@ -409,7 +413,8 @@ function mouseReleased(){
 
 
 function drawGame()
-{
+{	
+	
 	background(55,75,30);
 
 	cursorSprite.position.x = mouseX;
@@ -623,9 +628,7 @@ function drawGame()
 	if(isPlayer)
 	{
 		drawHud();
-	}
-
-
+	
 	if(keyWentDown('p'))
 	{
 		partyScreen.draw();
@@ -688,11 +691,6 @@ function drawGame()
 		}
 	}
 
-
-
-
-
-
 	var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
 	var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
 
@@ -709,10 +707,18 @@ function drawGame()
 	strokeWeight(2);
 	line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
 	text("R", rightX, rightY);	
-	
+}	
 	// stroke("grey");
 	// strokeWeight(1);
 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
+
+	if(time == 0){
+		textSize(80);
+		text("Press 'R' to return to the title screen.", localFighter.sprite.position.x, localFighter.sprite.position.y);
+		if(keyDown('r')){
+		location.reload();
+	}
+	}
 
 }
 
