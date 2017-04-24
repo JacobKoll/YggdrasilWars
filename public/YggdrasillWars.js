@@ -171,6 +171,13 @@ function becomePlayer(playerType)
 	globalType = playerType;
 
 	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
+
+	if(playerType == "Calvary")
+	{
+		localFighter.sprite.rotateToDirection = true;
+		localFighter.sprite.sword.rotateToDirection = true;
+	}
+
 	numTeamMates++;
 
 	fighterArray.push(localFighter);

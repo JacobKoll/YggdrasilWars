@@ -110,7 +110,7 @@ function restoreHealthWidth(){
 
 function restoreStaminaWidth(){
 
-  fullStaminaBar.width += .5;
+  fullStaminaBar.width += .7;
   if(fullStaminaBar.width > localFighter.sprite.maxStamina){
     fullStaminaBar.width = localFighter.sprite.maxStamina;
 
