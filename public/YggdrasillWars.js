@@ -1,47 +1,7 @@
-
-var enemyWalkAnimation;
-var enemyAttackAnimation;
-var enemyIdleAnimation;
-
-var fighterSwingAnimation;
-var fighterDeathAnimation;
-var fighterIdleAnimation;
-
-var knightWalkAnimation;
-var knightSwingAnimation;
-var knightIdleAnimation;
-
-var rogueWalkAnimation;
-var rogueSwingAnimation;
-var rogueIdleAnimation;
-
-var mercWalkAnimation;
-var mercSwingAnimation;
-var mercIdleAnimation;
-
-var barbWalkAnimation;
-var barbSwingAnimation;
-var barbIdleAnimation;
-
-var calvaryWalkAnimation;
-var calvarySwingAnimation;
-var calvaryIdleAnimation;
-
 var time = 7;
 var counter;
 
 var customCursor;
-var spawnerImage;
-var landscape;
-
-var emptyInventoryImage;
-var basicSwordImage;
-
-var bronzeSwordImage;
-var silverSwordImage;
-var goldSwordImage;
-
-var characterImages = [];
 
 var initializedObs;
 var initializedChe;
@@ -52,7 +12,6 @@ var chestArr = [];
 
 var obstaclesArr = [];
 
-
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
 var swordGroup;
@@ -60,6 +19,14 @@ var obstacleGroup;
 var chestGroup;
 var spawnerGroup;
 var enemySymbols;
+
+// To be used later
+var ruinsGroup;
+var treesGroup;
+var foodGroup;
+var pointsGroup;
+var flysGroup;
+var iceGroup;
 
 var enemyArray = [];
 var fighterArray = [];
@@ -69,20 +36,17 @@ var spawnerArray = [];
 var SCENE_H = 4000;
 var SCENE_W = 4000;
 
-var score = 10;
+var score = 0;
 var partyScreen;
-
-
 
 /* TODO: delete this after testing. */
 var testSpawner;
 var testSpawner2;
 
 /* Enemy Types */
-var goblin;
+var enemyTypeArray = [];
 
 /* Player Types */
-
 var playerTypeArray;
 
 var globalType;
@@ -102,117 +66,14 @@ var lockProgress = 0;
 
 var hudNeedReset = false;
 
-/* Assigns values to the various types of Enemies and Fighters that we have. */
-function assignTypes()
-{
-	goblin = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-		health: 100,
-		damage: .83,
-		speed: 1.8,
-		detectionRadius: 225,
-		scale: .75,
-		friction: 0.5
-	};
-
-	var knight = {
-		walkAnimation: knightWalkAnimation,
-		idleAnimation: knightIdleAnimation,
-		swingAnimation: knightSwingAnimation,
-		stamina: 120,
-		staminaRate: 2,
-		health: 135,
-		speed: 3,
-		scale: 1,
-		damage: 1.2,
-		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
-		weaponCollider: [0, 0, 104],
-		leftConeAngle: -32,
-		rightConeAngle: 28
-	};
-
-	var calvary = {
-		walkAnimation: calvaryWalkAnimation,
-		idleAnimation: calvaryIdleAnimation,
-		swingAnimation: calvarySwingAnimation,
-		stamina: 135,
-		staminaRate: 2,
-		health: 120,
-		speed: 4,
-		damage: 1.1,
-		scale: 1.3,
-		spriteCollider: [0,0,25],
-		weaponCollider: [0,0,53],
-		leftConeAngle: 35,
-		rightConeAngle: 112
-	};
-
-	var barb = {
-		walkAnimation: barbWalkAnimation,
-		idleAnimation: barbIdleAnimation,
-		swingAnimation: barbSwingAnimation,
-		stamina: 300,
-		staminaRate: 2,
-		health: 150,
-		speed: 2,
-		damage: 1.5,
-		scale: 1.5,
-		spriteCollider: [0,0,22.5],
-		weaponCollider: [0,0,60],
-		leftConeAngle: -38,
-		rightConeAngle: 42
-	};
-
-	var mercenary = {
-		walkAnimation: mercWalkAnimation,
-		idleAnimation: mercIdleAnimation,
-		swingAnimation: mercSwingAnimation,
-		stamina: 145,
-		staminaRate: 2,
-		health: 125,
-		speed: 3.2,
-		scale: 1.15,
-		damage: 1.15,
-		spriteCollider: [0,0,24],
-		weaponCollider: [0,0,64],
-		leftConeAngle: -8,
-		rightConeAngle: 45
-	};
-
-	var rogue = {
-		walkAnimation: rogueWalkAnimation,
-		idleAnimation: rogueIdleAnimation,
-		swingAnimation: rogueSwingAnimation,
-		stamina: 120,
-		staminaRate: 2,
-		health: 100,
-		speed: 3.4,
-		scale: .8,
-		damage: 1,
-		spriteCollider: [0,0,23],
-		weaponCollider: [0,0,71],
-		leftConeAngle: 10,
-		rightConeAngle: 38
-	};
-
-	playerTypeArray = {
-		"Knight" : knight,
-		"Calvary" : calvary,
-		"Barbarian" : barb,
-		"Mercenary" : mercenary,
-		"Rogue" : rogue,
-	};
-}
-
 function becomePlayer(playerType)
 {
 	isPlayer = true;
 
 	globalType = playerType;
 
-	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
 
 	if(playerType == "Calvary")
 	{
@@ -303,10 +164,10 @@ function setupGame()
 	noCursor(); // Hides the system's cursor when inside the canvas
 
 
-	testSpawner = new EnemySpawner(400, 163, goblin, .5, 1, spawnerImage);
+	testSpawner = new EnemySpawner(400, 163, enemyTypeArray[1], .5, 1, spawnerImage);
 	testSpawner.sprite.depth = 1;
 	spawnerArray.push(testSpawner);
-	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 1, spawnerImage);
+	testSpawner2 = new EnemySpawner(930, 827, enemyTypeArray[1], .5, 1, spawnerImage);
 	testSpawner2.sprite.depth = 1;
 	spawnerArray.push(testSpawner2);
 
