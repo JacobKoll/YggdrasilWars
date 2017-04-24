@@ -39,22 +39,9 @@ var SCENE_W = 4000;
 var score = 0;
 var partyScreen;
 
-<<<<<<< HEAD
-/* TODO: delete this after testing. */
-var testSpawner;
-var testSpawner2;
-
-/* Enemy Types */
-var enemyTypeArray = [];
-
-/* Player Types */
-=======
-
-
-var spawner;
+ar spawner;
 var numSpawners;
 
->>>>>>> 7f3463ffda361c86d99c9be67749d97e2156f2a3
 var playerTypeArray;
 var enemyTypeArray;
 
@@ -489,8 +476,6 @@ function drawGame()
 	{
 		partyScreen.draw();
 	}
-
-
 
 	if(keyDown('p'))
 	{
