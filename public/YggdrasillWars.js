@@ -559,30 +559,6 @@ function drawGame()
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
-
-	var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) + radians(localFighter.sprite.sword.rightCone));
-	var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) + radians(localFighter.sprite.sword.rightCone));
-
-	var rightX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) + radians(localFighter.sprite.sword.leftCone));
-	var rightY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) + radians(localFighter.sprite.sword.leftCone));
-
-	textSize(6);
-	stroke("red");
-	strokeWeight(2);
-	line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
-	text("L", rightX, rightY);	
-		
-	stroke("blue");
-	strokeWeight(2);
-	line(localFighter.sprite.position.x, localFighter.sprite.position.y, leftX, leftY);
-	text("R", leftX, leftY);	
-
-	stroke("black");
-	strokeWeight(1);
-	line(localFighter.sprite.position.x, localFighter.sprite.position.y - 200, localFighter.sprite.position.x, localFighter.sprite.position.y + 200);
-	line(localFighter.sprite.position.x - 200, localFighter.sprite.position.y, localFighter.sprite.position.x + 200, localFighter.sprite.position.y);
-
-
 }
 
 
