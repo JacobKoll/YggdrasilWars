@@ -95,8 +95,6 @@ EnemySpawner.prototype.updateAll = function(fighterArr)
  * This handles the events that occur whenever someone joins the server.
  * @param  {socket} client [The socket that the client uses to connect to the server]
  */
-
-
 function onSocketConnect(client)
 {
 
