@@ -89,7 +89,6 @@ EnemySpawner.prototype.updateAll = function(fighterArr)
 	}
 };
 
-var chestArr;
 /**
  * Initializes everything that the server will need.
  */
@@ -117,7 +116,7 @@ function init()
 	 for (var i=0; i<10; i++) {
 		var a = Math.floor((Math.random())*4000/45)*(45);
 		var b = Math.floor((Math.random())*4000/45)*(45);
-		var chestData = {x: a, y: b};
+		var chestData = {x: a, y: b, isOpen: false};
 		chestArr.push(chestData);
 	}
 	console.log("Chests Generated");
@@ -159,7 +158,7 @@ function onSocketConnect(client)
 	{
 		/* Fighter data */
 		var gameData = {
-
+			chests: chestArr
 		};
 		io.sockets.emit('updateFighters' , fighterArr);
 		io.sockets.emit('updateSpawners' , spawnerArr);
@@ -173,12 +172,19 @@ function onSocketConnect(client)
 
 	}
 
+	client.on('updateClient', function(gameData) {
+		for (var i=0; i<chestArr.length; i++) {
+			chestArr[i].isOpen = gameData.chests[i];
+		}
+	});
+
 	console.log(client.id + " has connected to the server.\n");
 
 	client.on('addChest', function(givenX, givenY)
 	{
-		var chestData = {x: givenX, y: givenY};
+		var chestData = {x: givenX, y: givenY, isOpen: false};
 		chestArr.push(chestData);
+		io.sockets.emit('newChest', chestData);
 		console.log(client.id + " added a chest at (" + givenX + ", " + givenY + ")\n");
 	});
 

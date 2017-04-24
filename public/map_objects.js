@@ -68,6 +68,12 @@ function Chest(x, y, openImage, closedImage, unlockCode, lockStrength) {
 		chestItemDrop(this.itemStash);
 		this.itemStash = gameItems[0];
 	}
+
+	this.setOpen = function() {
+		this.sprite.addImage('image', this.openImage);
+		this.image = openImage;
+		this.isOpen = true;
+	}
 }
 
 Chest.prototype.update = function() {
@@ -83,7 +89,6 @@ Chest.prototype.open = function() {
 
 Chest.prototype.setUnlockCode = function(){
 	for(var i = 0; i< 3; i++){
-
 
 	this.unlockCode[i] = setRandomLetter();
 }
