@@ -64,6 +64,8 @@ function initPrepScreen()
 	}
 
 	changeLeft();
+	changeLeft();
+	changeLeft();
 }
 
 function changeRight()
