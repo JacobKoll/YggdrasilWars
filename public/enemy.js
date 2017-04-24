@@ -83,7 +83,7 @@ Enemy.prototype.update = function(playerArr)
 		{
 			currDist = dist(playerArr[i].sprite.position.x, playerArr[i].sprite.position.y, this.sprite.position.x, this.sprite.position.y);
 
-			if(currDist < chasedDist)
+			if(currDist < chasedDist && playerArr[i].isVisible)
 			{
 				this.playerToChase = playerArr[i].sprite;
 			}
@@ -95,7 +95,7 @@ Enemy.prototype.update = function(playerArr)
 
 			this.sprite.collide(chestGroup);
 
-			if(chasedDist < this.detectionRadius && !(playerArr[i].sprite.overlap(obstacleGroup)))
+			if(chasedDist < this.detectionRadius && !(playerArr[i].sprite.overlap(obstacleGroup)) && playerArr[i].isVisible)
 			{
 				this.playerToChase = playerArr[i].sprite;
 				this.sprite.attractionPoint(this.speed, playerArr[i].sprite.position.x, playerArr[i].sprite.position.y);

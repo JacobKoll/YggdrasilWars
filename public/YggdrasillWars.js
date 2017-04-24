@@ -370,7 +370,10 @@ function drawGame()
 
 		if(keyDown(16))
 		{
-			localFighter.activateSpecial();
+			localFighter.activateSpecial(true);
+		}
+		else {
+			localFighter.activateSpecial(false);
 		}
 
 		if(keyWentDown(49))
