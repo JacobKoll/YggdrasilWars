@@ -7,10 +7,10 @@ function Obstacle(x, y, scale) {
 
 function Chest(id, x, y) 
 {
-	this.isOpen = false;
-	
+	this.id = id;
 	this.x = x;
 	this.y = y;
+	this.isOpen = false;
 }
 
 

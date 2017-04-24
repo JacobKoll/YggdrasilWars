@@ -6,7 +6,7 @@ var customCursor;
 
 var localFighter;
 
-var chestArr = [];
+var chestArray = [];
 
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
@@ -96,15 +96,6 @@ function becomeMod()
 	isMod = true;
 }
 
-function setChestsCode()
-{
-	for(var i=0; i<chestArr.length; i++)
-	{
-		chestArr[i].setUnlockCode();
-	}
-}
-
-
 function setupGame()
 {
 	createCanvas(1000, 725);
@@ -143,10 +134,8 @@ function setupGame()
 
 	time = 120;
 	counter=setInterval(timer, 1000);
-	setChestsCode();
 
 	socket.emit('requestMap');
-
 }
 
 function mouseReleased()
@@ -163,7 +152,6 @@ function keyPressed()
 	}
 }
 
-
 function keyReleased()
 {
  	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68))
@@ -171,9 +159,7 @@ function keyReleased()
 		galloping.stop();
 		footsteps.stop();
 	}
-
 }
-
 
 function drawGame()
 {
@@ -204,24 +190,21 @@ function drawGame()
 		else
 		{
 			localFighter.speed = localFighter.maxSpeed;
-
 		}
 
 		localFighter.sprite.collide(chestGroup);
 
-		for (var i=0; i<chestArr.length; i++)
+		for (var key in chestArray)
 		{
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-
-				if (keyDown(chestArr[i].unlockCode[lockProgress]) && !(chestArr[i].isOpen)){
+			if (localFighter.sprite.sword.overlap(chestArray[key].sprite)) {
+				if(keyDown(chestArray[key].unlockCode[lockProgress]) && !(chestArray[key].isOpen)){
 
 					lockProgress+=1;
-					if(lockProgress == chestArr[i].lockStrength){
+					if(lockProgress == chestArray[key].lockStrength){
 						lockProgress = 0;
-						chestArr[i].setUnlockCode();
-						chestArr[i].open();
-						chestArr[i].update;
+						chestArray[key].setUnlockCode();
+						chestArray[key].open();
+						chestArray[key].update;
 
 					}
 				}
@@ -407,9 +390,8 @@ function drawGame()
 			{
 				socket.emit('addChest', camera.mouseX, camera.mouseY);
 				console.log("Added Chest");
-				initializedChe = false;
 			}
-			if(keyWentDown('o'))1
+			if(keyWentDown('o'))
 			{
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
@@ -435,9 +417,6 @@ function drawGame()
 		{
 			miniMap.createDots(enemyGroup);
 		}
-
-
-
 
 		if(enemyGroup.overlap(obstacleGroup))
 		{
@@ -474,13 +453,13 @@ function drawGame()
 			drawHud();
 		}
 
-		for (var i=0; i<chestArr.length; i++)
+		for (var key in chestArray)
 		{
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen))
+			if (localFighter.sprite.sword.overlap(chestArray[key].sprite) && !(chestArray[key].isOpen))
 			{
-				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
 
 			}
 		}
@@ -554,21 +533,44 @@ function borderCamera()
 /* Creates all the socket connection functions that will be used throughout the code */
 function initSocketFunctions()
 {
-	socket.on('initChests', function(chestArr)
+	socket.on('initChests', function(serverChestArr)
 	{
+		var tempChest;
+		for(var key in serverChestArr)
+		{
+			tempChest = new Chest(serverChestArr[key].id, serverChestArr[key].x, serverChestArr[key].y);
+			
+			if(serverChestArr[key].isOpen)
+			{
+				tempChest.isOpen = true;
+				tempChest.sprite.changeImage('open');
+			}
+			else
+			{
+				tempChest.setUnlockCode();
+			}
 
+			chestArray[key] = tempChest;
+			chestGroup.push(tempChest.sprite);
+		}
 	});
 
 	socket.on('initObstacles', function(obstacleArr)
 	{
-		console.log("new thingy!");
 		var tempObstacle;
 		for(var i = 0; i < obstacleArr.length; i++)
 		{
 			tempObstacle = new Obstacle(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].scale)
-			console.log(tempObstacle);
 			obstacleGroup.push(tempObstacle.sprite);
 		}
+	});
+
+
+	socket.on('updateChest', function(key)
+	{
+		chestArray[key].sprite.changeImage('open');
+		chestArray[key].isOpen = true;
+
 	});
 
 }

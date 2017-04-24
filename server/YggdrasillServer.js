@@ -54,9 +54,8 @@ io.sockets.on('connection', function(client)
    	client.on('requestMap', function()
    	{
    		client.emit('initObstacles', obstacleArray);
+   		client.emit('initChests', chestArray);		
    	});
-
-    //client.on('openChest')
 
     client.on('checkUserDB',function(data){
   		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
@@ -97,7 +96,11 @@ io.sockets.on('connection', function(client)
   		});
   	});
 
-
+  	client.on('openChest', function(key){
+  		chestArray[key].isOpen = true;
+  		console.log("The chest ", key, "has been opened.");
+  		io.sockets.emit('updateChest', key);
+  	});
 
 
     client.on('disconnect', function(){

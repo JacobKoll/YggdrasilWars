@@ -42,12 +42,15 @@ function Chest(id, x, y)
 	this.sprite = createSprite(x, y);
 	this.itemStash = gameItems[round(random(0,4))];
 
-	this.sprite.addImage('open', openChestImage);
 	this.sprite.addImage('closed', closedChestImage);
+	this.sprite.addImage('open', openChestImage);
+	this.sprite.changeImage('closed');
 	
 	this.sprite.immovable = true;
 	
 	this.isOpen = false;
+
+	this.unlockCode = [];
 	
 	this.lockStrength = 3;
 }
