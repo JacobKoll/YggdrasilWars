@@ -143,6 +143,11 @@ function knightSpecial()
 function calvarySpecial()
 {
 	console.log("You activated your special");
+
+	if(fullStaminaBar > 0)
+	{
+		console.log("Fuck you Jakie Poo.");
+	}
 	
 }
 

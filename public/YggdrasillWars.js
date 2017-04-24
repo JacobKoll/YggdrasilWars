@@ -501,7 +501,12 @@ function drawGame()
 			partyScreen.draw();
 		}
 
-<<<<<<< HEAD
+
+		if(keyWentDown('p'))
+		{
+			partyScreen.draw();
+		}
+
 		if(keyDown('p'))
 		{
 			partyScreen.show();
@@ -519,51 +524,9 @@ function drawGame()
 			partyScreen.sprite.visible = false;
 			partyScreen.delete();
 		}
-		
-		for (var i=0; i<chestArr.length; i++)
-		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-=======
-	if(keyWentDown('p'))
-	{
-		partyScreen.draw();
-	}
-
-	if(keyDown('p'))
-	{
-		partyScreen.show();
-		partyScreen.sprite.visible = true;
-
-		partyScreen.move(camera.position.x + 200,camera.position.y - 200);
-		text("Character", camera.position.x - 400, camera.position.y - 250);
-		text("Health", camera.position.x + 130, camera.position.y - 250);
-		text("Points", camera.position.x - 100, camera.position.y-250);
-		partyScreen.addNames(fighterArray);
-		partyScreen.addPoints(fighterArray);
-	}
-	else
-	{
-		partyScreen.sprite.visible = false;
-		partyScreen.delete();
-	}
->>>>>>> 68dfc85fef97fcf2fc8dbff5cbb9f4b4d4a6e3ed
-
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
-				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
-
-			}
-		}
 
 		updateClient();
 	}
-
-	// stroke("grey");
-	// strokeWeight(1);
-	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
 
 	if(time == 0){
 		noLoop();
