@@ -11,9 +11,9 @@ function createHud(){
   emptyHealthBar.depth = 1500;
   fullHealthBar = createSprite(10,10,localFighter.sprite.maxHealth,23);
   fullHealthBar.depth = 1501;
-  emptyStaminaBar = createSprite(10,200,localFighter.sprite.maxStamina,23);
+  emptyStaminaBar = createSprite(10,200,150,23);
   emptyStaminaBar.depth = 1502;
-  fullStaminaBar = createSprite(10,200,localFighter.sprite.maxStamina,23);
+  fullStaminaBar = createSprite(10,200,150,23);
   fullStaminaBar.depth = 1503;
 
   fullHealthBar.shapeColor = color("red");
@@ -75,17 +75,17 @@ function reduceHealthWidth(newWidth){
 
   fullHealthBar.width -= newWidth;
   
-  if(fullHealthBar.width <= 0){
+  if(fullHealthBar.width <= 0)
+  {
     fullHealthBar.width = 0;
-
   }
 
 }
 
-function reduceStaminaWidth(){
+function reduceStaminaWidth()
+{
 
-
-  fullStaminaBar.width -= localFighter.sprite.staminaRate;
+  fullStaminaBar.width -= 150 / localFighter.sprite.stamina;
 
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
@@ -110,9 +110,10 @@ function restoreHealthWidth(){
 
 function restoreStaminaWidth(){
 
-  fullStaminaBar.width += .7;
-  if(fullStaminaBar.width > localFighter.sprite.maxStamina){
-    fullStaminaBar.width = localFighter.sprite.maxStamina;
+  fullStaminaBar.width += localFighter.sprite.staminaRate;
+
+  if(fullStaminaBar.width > 150){
+    fullStaminaBar.width = 150;
 
 
   }
@@ -139,6 +140,6 @@ function drawHud()
 
   changeItemPosition(camera.position.x-150, camera.position.y+310);
   changeHealthPosition((camera.position.x - 500) + (localFighter.sprite.maxHealth) , camera.position.y-335);
-  changeStaminaPosition((camera.position.x - 470) + localFighter.sprite.maxHealth + localFighter.sprite.maxStamina, camera.position.y-335);
+  changeStaminaPosition((camera.position.x - 470) + localFighter.sprite.maxHealth + 150, camera.position.y-335);
   text("Score: " + score, camera.position.x+343, camera.position.y-330);
 }

@@ -51,7 +51,6 @@ var isSpectator;
 var isPlayer;
 var paused = false;
 
-
 var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
@@ -109,7 +108,7 @@ function assignTypes()
 		walkAnimation: barbWalkAnimation,
 		idleAnimation: barbIdleAnimation,
 		swingAnimation: barbSwingAnimation,
-		stamina: 150,
+		stamina: 300,
 		staminaRate: 2,
 		health: 150,
 		speed: 2,
@@ -164,13 +163,11 @@ function assignTypes()
 
 function becomePlayer(playerType)
 {
-	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
-
 	isPlayer = true;
 
 	globalType = playerType;
 
-	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
+	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
 
 	if(playerType == "Calvary")
 	{

@@ -51,7 +51,6 @@ function Fighter(x, y, type, id)
 
 
 	this.sprite.stamina = type.stamina;
-	this.sprite.maxStamina = type.stamina;
 
 	this.sprite.staminaRate = type.staminaRate;
 

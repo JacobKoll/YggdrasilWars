@@ -152,7 +152,7 @@ function setup()
 {
 	createCanvas(1000, 725);
 
-	frameRate(45);
+	frameRate(60);
 
 	startGame = false;
 
