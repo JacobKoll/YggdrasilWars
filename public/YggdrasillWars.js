@@ -72,7 +72,7 @@ function becomePlayer(playerType)
 	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
 	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
 
-	if(playerType == "Calvary")
+	if(playerType == "Cavalry")
 	{
 		localFighter.sprite.rotateToDirection = true;
 		localFighter.sprite.sword.rotateToDirection = true;
@@ -220,7 +220,7 @@ function drawGame()
 		{
 			if(!galloping.isPlaying() && !footsteps.isPlaying())
 			{
-				if(globalType == "Calvary")
+				if(globalType == "Cavalry")
 				{
 					galloping.loop();
 				}
@@ -237,7 +237,7 @@ function drawGame()
 		}
 		if(keyWentDown('s')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Calvary"){
+			if(globalType == "Cavalry"){
 					galloping.loop();
 				}
 			else{
@@ -253,7 +253,7 @@ function drawGame()
 		}
 		if(keyWentDown('a')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Calvary"){
+			if(globalType == "Cavalry"){
 					galloping.loop();
 				}
 			else{
@@ -270,7 +270,7 @@ function drawGame()
 		}
 		if(keyWentDown('d')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Calvary"){
+			if(globalType == "Cavalry"){
 					galloping.loop();
 				}
 			else{
@@ -288,7 +288,10 @@ function drawGame()
 
 		if(keyDown(16))
 		{
-			localFighter.activateSpecial();
+			localFighter.activateSpecial(true);
+		}
+		else {
+			localFighter.activateSpecial(false);
 		}
 
 		if(keyWentDown(49))
