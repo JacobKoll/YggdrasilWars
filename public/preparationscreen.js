@@ -5,6 +5,7 @@ var current;
 var left;
 var right;
 
+
 var visibleInfo = false;
 
 var hasSelected;
@@ -22,7 +23,7 @@ var lastIndex;
 var mercDescription = ["A sellsword hailing from a common village. \nHis loyalty is to gold, and his price is steep. \n Through his training, and experience in the art of warefare, \n he has equipped himself properly with medium armor and his favorite sword. \n His well balanced fighting style is valued highly and worth the price."];
 var rogueDescription = ["An outcast forced out of the major city of Firnim. \n Her thievery skills have allowed her to open chests faster than most, \n though she is better at picking locks than fights,\n she uses a dagger for self defense."];
 var barbDescription = ["A ruffian looking to take advantage of the war by causing lawlessness and chaos.\n This melevolent man looks to get up close and hurt with his fists.\n  He can't take many hits but his health pool is incredible and one swing hurts massively"];
-var cavalryDescription = ["A mounted knight hailing from the village of Brynhildr.\n Raised in a family of farmer's his family's horses are the fastest in all the land,\n thanks to that he is faster than others, \nthough he can't hurt as much from horseback, his speed makes up for it."];
+var cavalryDescription = ["A mounted knight hailing from the village of Brynhildr.\n Raised in a family of farmer's his family's horses are the fastest in all the land,\n thanks to that he is faster than others, \nthough he can't hurt as much from horseback, his speed makes up for it.\n The horse's name is Bo'Jangles"];
 var knightDescription = ["Through dedication to his country,\n the knight has prided himself with an almost impenetrable suit of armor. \nTo wear such a suit encourages incredible strength to move and hurt as well.\n However, all of it comes at a cost of his speed."];
 
 var selectedCharacter;
@@ -43,6 +44,7 @@ function initPrepScreen()
 	currentSprite = createSprite(width/2, 455);
 	leftSprite = createSprite(leftPosX - 45, 440);
 	rightSprite = createSprite(rightPosX + 45, 440);
+
 
 	currentSprite.scale = 1.6;
 	leftSprite.scale = rightSprite.scale  = 1.4;

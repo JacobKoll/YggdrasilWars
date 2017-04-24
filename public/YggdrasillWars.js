@@ -1,4 +1,34 @@
-var time = 7;
+
+var enemyWalkAnimation;
+var enemyAttackAnimation;
+var enemyIdleAnimation;
+
+var fighterSwingAnimation;
+var fighterDeathAnimation;
+var fighterIdleAnimation;
+
+var knightWalkAnimation;
+var knightSwingAnimation;
+var knightIdleAnimation;
+
+var rogueWalkAnimation;
+var rogueSwingAnimation;
+var rogueIdleAnimation;
+
+var mercWalkAnimation;
+var mercSwingAnimation;
+var mercIdleAnimation;
+
+var barbWalkAnimation;
+var barbSwingAnimation;
+var barbIdleAnimation;
+
+var calvaryWalkAnimation;
+var calvarySwingAnimation;
+var calvaryIdleAnimation;
+
+var time;
+
 var counter;
 
 var customCursor;
@@ -19,6 +49,7 @@ var obstacleGroup;
 var chestGroup;
 var spawnerGroup;
 var enemySymbols;
+var greenDotGroup;
 
 // To be used later
 var ruinsGroup;
@@ -133,6 +164,7 @@ function setupGame()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 	healthBars = new Group();
+	greenDotGroup = new Group();
 
 	// becomePlayer();
 	// becomeSpectator();
@@ -170,6 +202,7 @@ function setupGame()
 		spawnerArray.push(spawner);
 	}
 
+
 	socket.on('newChest', function(newChestData){
 		var cheDepth = 1300 + chestArr.length;
 		var chest = new Chest(newChestData.x, newChestData.y, openChest, closedChest, tempUnlockCode,3);
@@ -181,6 +214,7 @@ function setupGame()
 		cheDepth++;
 		console.log("Received Chest");
 	});
+
 
 	socket.on('updateObstacles', function(data) {
 		var obsDepth = 1000;
@@ -227,7 +261,7 @@ function setupGame()
 
 
 
-	// miniMap = new miniMap(1000,1000);
+	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
 	time = 120;
@@ -240,12 +274,24 @@ function mouseReleased(){
 }
 
 function keyPressed(){
-	if(keyCode == 82 && time == 0){
+
+if(keyCode == 82 && time == 0){
 		loop();
 		location.reload();
 	}
 
+
+
 }
+
+function keyReleased(){
+ if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
+	galloping.stop();
+	footsteps.stop();
+	
+}
+}
+
 
 function drawGame()
 {
@@ -259,8 +305,8 @@ function drawGame()
 	cursorSprite.position.y = camera.mouseY;
 
 
-	// miniMap.sprite.position.x = camera.position.x;
-	// miniMap.sprite.position.y = camera.position.y;
+	miniMap.sprite.position.x = camera.position.x;
+	miniMap.sprite.position.y = camera.position.y;
 
 	partyScreen.sprite.position.x = camera.position.x;
 	partyScreen.sprite.position.y = camera.position.y;
@@ -302,33 +348,82 @@ function drawGame()
 					}
 				}
 			}
-		}
-
-
-
+		}	
 		if(keyDown('w'))
 		{
 			localFighter.walk("up");
 		}
+		if(keyWentDown('w')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+		}
+		}
+		
 		if(keyDown('s'))
 		{
+			
 			localFighter.walk("down");
 		}
+		if(keyWentDown('s')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+			}
+		}
+		
+
 		if(keyDown('a'))
 		{
 			localFighter.walk("left");
 		}
+		if(keyWentDown('a')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+			}
+		}
+		
+
 		if(keyDown('d'))
 		{
+			
 			localFighter.walk("right");
 		}
+		if(keyWentDown('d')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+			}
+		}
+
+
+		if(mouseDown(LEFT) && time < 120 && !swordSound.isPlaying()){
+			swordSound.loop();
+		}
+	
 
 
 		if(keyDown(16))
 		{
 			localFighter.activateSpecial();
 		}
-
 
 		if(keyWentDown(49))
 		{
@@ -456,6 +551,14 @@ function drawGame()
 	{
 
 
+		if(keyWentDown('m'))
+		{
+			miniMap.createDots(enemyGroup);
+		}
+
+
+
+
 		if(enemyGroup.overlap(obstacleGroup))
 		{
 			localFighter.speed = localFighter.maxSpeed - 1.213;
@@ -464,17 +567,16 @@ function drawGame()
 		{
 			localFighter.speed = localFighter.maxSpeed;
 		}
-		// if(keyWentDown('m'))
-		// 	{
-		// 	miniMap.createDots(enemyGroup);
-		// }
+
 		if(keyDown('m'))
 		{
-			// miniMap.sprite.visible = true;
-			// miniMap.sprite.depth = 1500;
-			// miniMap.update();
-			// miniMap.show();
-			camera.zoom = 0.3;
+
+			miniMap.sprite.visible = true;
+			miniMap.sprite.depth = 1500;
+			miniMap.update();
+			miniMap.show();
+			miniMap.move(camera.position.x - (width/2),  camera.position.y - (height/2));
+		
 			deleteHud();
 			hudNeedReset = true;
 
@@ -485,8 +587,8 @@ function drawGame()
 				hudNeedReset = false;
 
 			}
-			// miniMap.sprite.visible = false;
-			// miniMap.delete();
+			miniMap.sprite.visible = false;
+			miniMap.delete();
 			camera.zoom = 1;
 			drawHud();
 		}
@@ -545,10 +647,8 @@ function drawGame()
 		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
 
 	}
-
-
+	
 }
-
 
 function borderCamera()
 {
@@ -575,6 +675,7 @@ function borderCamera()
 		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
 }
+
 
 function updateClient() {
 	var chestData = [];
