@@ -89,7 +89,6 @@ EnemySpawner.prototype.updateAll = function(fighterArr)
 	}
 };
 
-var enemyTest = require('./enemy');
 /**
  * Initializes everything that the server will need.
  */
@@ -100,19 +99,7 @@ function init()
 	spawnerArr = [];
 	enemyArr = [];
 
-	var penis = new enemyTest(10,10, {
-		// walkAnimation: enemyWalkAnimation,
-		// idleAnimation: enemyIdleAnimation,
-		// attackAnimation: enemyAttackAnimation,
-		health: 100,
-		damage: .83,
-		speed: 1.8,
-		detectionRadius: 225,
-		scale: .75,
-		friction: 0.5
-	});
 
-	console.log(typeof(penis));
 
 	/**
 	 * Initialize obstacles3

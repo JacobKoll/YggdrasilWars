@@ -415,7 +415,7 @@ function drawGame()
 
 
 		if(mouseDown(LEFT) && time < 120 && !swordSound.isPlaying()){
-			swordSound.play();
+			swordSound.loop();
 		}
 	
 
@@ -550,10 +550,12 @@ function drawGame()
 	if(isPlayer)
 	{
 
+
 		if(keyWentDown('m'))
 		{
 			miniMap.createDots(enemyGroup);
 		}
+
 
 
 
@@ -565,7 +567,6 @@ function drawGame()
 		{
 			localFighter.speed = localFighter.maxSpeed;
 		}
-	
 
 		if(keyDown('m'))
 		{

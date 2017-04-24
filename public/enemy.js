@@ -2,7 +2,6 @@
  * @author Chandler Davis
  */
 
-module.exports = Enemy;	
 
 /**
  *
@@ -23,7 +22,7 @@ function Enemy(x, y, type)
 {
 	this.health = type.health;
 	this.speed = type.speed;
-	
+
 	this.detectionRadius = type.detectionRadius;
 
 	this.sprite = createSprite(x, y, 32, 32);
@@ -207,4 +206,3 @@ Enemy.prototype.attack = function(enemy, player)
 	}
 
 };
-

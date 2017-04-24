@@ -147,41 +147,41 @@ function calvarySpecial()
 		this.sprite.velocity.y -= 15;
 		this.sprite.sword.velocity.y -= 15;
 
-		reduceStaminaWidth(); 
-		reduceStaminaWidth(); 
+		reduceStaminaWidth();
+		reduceStaminaWidth();
 	}
 	else
 	{
 		this.speed = this.maxSpeed;
 		console.log("No stamina to use special.");
 	}
-	
+
 }
 
 function barbSpecial()
 {
 	console.log("You activated your special");
 
-	if(fullStaminaBar.width > 0 && this.activated = false)
-	{
-		this.sprite.scale = ;
-		this.sprite.sword.scale = ;
-
-		this.activated = true;
-
-		reduceStaminaWidth(); 
-		// reduceStaminaWidth(); 
-	}
-	else
-	{
-		console.log("No stamina to use special.");
-	}
+	// if(fullStaminaBar.width > 0 && this.activated == false)
+	// {
+	// 	this.sprite.scale = ;
+	// 	this.sprite.sword.scale = ;
+	//
+	// 	this.activated = true;
+	//
+	// 	reduceStaminaWidth();
+	// 	// reduceStaminaWidth();
+	// }
+	// else
+	// {
+	// 	console.log("No stamina to use special.");
+	// }
 }
 
 function mercenarySpecial()
 {
 	console.log("You activated your special");
-	
+
 }
 
 function rogueSpecial()
