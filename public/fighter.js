@@ -57,7 +57,7 @@ function Fighter(x, y, type, id)
 
 	//this.sprite.addAnimation('walk', type.walkAnimation);
 	//this.sprite.addAnimation('death', type.deathAnimation);
-	this.sprite.addAnimation('walk', type.walkAnimation);
+	// this.sprite.addAnimation('walk', type.walkAnimation);
 
 	this.sprite.addAnimation('idle', type.idleAnimation);
 

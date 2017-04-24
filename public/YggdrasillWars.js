@@ -78,16 +78,11 @@ var partyScreen;
 var footsteps;
 var swordSound;
 
-/* TODO: delete this after testing. */
-var testSpawner;
-var testSpawner2;
-
-/* Enemy Types */
-var goblin;
-
-/* Player Types */
+var spawner;
+var numSpawners;
 
 var playerTypeArray;
+var enemyTypeArray;
 
 var globalType;
 
@@ -159,8 +154,7 @@ function preloadGameAssets()
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
 {
-	// NOTE: Goblin is still global
-	goblin = {
+	var goblin = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
@@ -168,6 +162,26 @@ function assignTypes()
 		damage: .83,
 		speed: 1.8,
 		detectionRadius: 225
+	};
+
+	var spider = {
+		walkAnimation: enemyWalkAnimation,
+		idleAnimation: enemyIdleAnimation,
+		attackAnimation: enemyAttackAnimation,
+		health: 100,
+		damage: .50,
+		speed: 3,
+		detectionRadius: 300
+	};
+
+	var bat = {
+		walkAnimation: enemyWalkAnimation,
+		idleAnimation: enemyIdleAnimation,
+		attackAnimation: enemyAttackAnimation,
+		health: 50,
+		damage: .25,
+		speed: 9,
+		detectionRadius: 500
 	};
 
 	var knight = {
@@ -250,6 +264,12 @@ function assignTypes()
 		rightConeAngle: 28
 	};
 
+	enemyTypeArray = [
+		goblin,
+		spider,
+		bat
+	];
+
 	playerTypeArray = {
 		"Knight" : knight,
 		"Calvary" : calvary,
@@ -267,7 +287,7 @@ function becomePlayer(playerType)
 
 	globalType = playerType;
 
-	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
+	localFighter = new Fighter(random(SCENE_W), random(SCENE_H), playerTypeArray[playerType]);
 	numTeamMates++;
 
 	fighterArray.push(localFighter);
@@ -350,13 +370,12 @@ function setupGame()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-
-	testSpawner = new EnemySpawner(400, 163, goblin, .5, 7, spawnerImage);
-	testSpawner.sprite.depth = 1;
-	spawnerArray.push(testSpawner);
-	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 18, spawnerImage);
-	testSpawner2.sprite.depth = 1;
-	spawnerArray.push(testSpawner2);
+numSpawners = round(random(5, 20));
+for(var i = 0; i < numSpawners; i++){
+	spawner = new EnemySpawner(random(SCENE_W), random(SCENE_H), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
+	spawner.sprite.depth = i;
+	spawnerArray.push(spawner);
+}
 
 
 
