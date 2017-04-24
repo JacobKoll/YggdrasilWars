@@ -119,7 +119,7 @@ function setupGame()
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 
-	footsteps.setVolume(0.15);
+	footsteps.setVolume(0.10);
 
 	initGameItems();
 
@@ -153,8 +153,7 @@ function setupGame()
 		spawner.sprite.depth = i;
 		spawnerArray.push(spawner);
 	}
-
-
+	
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
@@ -190,6 +189,58 @@ function keyReleased()
 
 function drawGame()
 {
+
+	socket.on('newChest', function(newChestData){
+		var cheDepth = 1300 + chestArr.length;
+		var chest = new Chest(newChestData.x, newChestData.y, openChest, closedChest, tempUnlockCode,3);
+		chest.setUnlockCode();
+		chest.sprite.depth = cheDepth;
+		chestArr.push(chest);
+		chestGroup.add(chest.sprite);
+		chest.sprite.scale = .5;
+		cheDepth++;
+		console.log("Received Chest");
+	});
+
+
+	socket.on('updateObstacles', function(data) {
+		var obsDepth = 1000;
+		if (initializedObs == 0) {
+			console.log("Recieved Obstacles");
+			for (var i=0; i < data.length; i++) {
+				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, forest);
+				obstacle.sprite.depth = obsDepth;
+				obstaclesArr.push(obstacle);
+				obstacleGroup.add(obstacle.sprite);
+				obsDepth++;
+			}
+			initializedObs = 1;
+
+		}
+	});
+
+	socket.on('updateChests', function(chestData) {
+		for (var i=0; i<chestArr.length; i++) {
+			if (chestData[i].isOpen == true) {
+				chestArr[i].setOpen();
+			}
+		}
+	});
+
+	socket.on('generateChests', function(chestData) {
+		var cheDepth = 1300 + chestArr.length;
+		if (initializedChe == 0){
+			var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
+			chest.setUnlockCode();
+			chest.sprite.depth = cheDepth;
+			chestArr.push(chest);
+			chestGroup.add(chest.sprite);
+			chest.sprite.scale = .5;
+			cheDepth++;
+			//console.log("Recieved Chests");
+			initializedChe = 1;
+		}
+	});
 
 	background(55,75,30);
 
