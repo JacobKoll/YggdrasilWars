@@ -1,58 +1,58 @@
 /**
- * This is for drawing the screens before the player is placed into the game.
- */
- var enemyWalkAnimation;
- var enemyAttackAnimation;
- var enemyIdleAnimation;
+* This is for drawing the screens before the player is placed into the game.
+*/
+var enemyWalkAnimation;
+var enemyAttackAnimation;
+var enemyIdleAnimation;
 
- var fighterSwingAnimation;
- var fighterDeathAnimation;
- var fighterIdleAnimation;
+var fighterSwingAnimation;
+var fighterDeathAnimation;
+var fighterIdleAnimation;
 
- var knightWalkAnimation;
- var knightSwingAnimation;
- var knightIdleAnimation;
+var knightWalkAnimation;
+var knightSwingAnimation;
+var knightIdleAnimation;
 
- var rogueWalkAnimation;
- var rogueSwingAnimation;
- var rogueIdleAnimation;
+var rogueWalkAnimation;
+var rogueSwingAnimation;
+var rogueIdleAnimation;
 
- var mercWalkAnimation;
- var mercSwingAnimation;
- var mercIdleAnimation;
+var mercWalkAnimation;
+var mercSwingAnimation;
+var mercIdleAnimation;
 
- var barbWalkAnimation;
- var barbSwingAnimation;
- var barbIdleAnimation;
+var barbWalkAnimation;
+var barbSwingAnimation;
+var barbIdleAnimation;
 
- var calvaryWalkAnimation;
- var calvarySwingAnimation;
- var calvaryIdleAnimation;
+var calvaryWalkAnimation;
+var calvarySwingAnimation;
+var calvaryIdleAnimation;
 
  var footsteps;
  var swordSound;
  var galloping;
 
- var cursorSprite;
 
- var forest;
+var cursorSprite;
+
+var forest;
 
 var openChest;
 var closedChest;
 
- var landscapeSprite;
+var landscapeSprite;
 
- var customCursor;
- var spawnerImage;
- var landscape;
+var customCursor;
+var spawnerImage;
+var landscape;
 
- var emptyInventoryImage;
- var basicSwordImage;
+var emptyInventoryImage;
+var basicSwordImage;
 
- var bronzeSwordImage;
- var silverSwordImage;
- var goldSwordImage;
-
+var bronzeSwordImage;
+var silverSwordImage;
+var goldSwordImage;
 
 var clickedButtonImage;
 var defaultButtonImage;
@@ -154,7 +154,7 @@ function setup()
 {
 	createCanvas(1000, 725);
 
-	frameRate(45);
+	frameRate(60);
 
 	startGame = false;
 

@@ -1,3 +1,4 @@
+
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
@@ -27,20 +28,10 @@ var calvarySwingAnimation;
 var calvaryIdleAnimation;
 
 var time;
+
 var counter;
 
 var customCursor;
-var spawnerImage;
-var landscape;
-
-var emptyInventoryImage;
-var basicSwordImage;
-
-var bronzeSwordImage;
-var silverSwordImage;
-var goldSwordImage;
-
-var characterImages = [];
 
 var initializedObs;
 var initializedChe;
@@ -51,7 +42,6 @@ var chestArr = [];
 
 var obstaclesArr = [];
 
-
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
 var swordGroup;
@@ -61,6 +51,14 @@ var spawnerGroup;
 var enemySymbols;
 var greenDotGroup;
 
+// To be used later
+var ruinsGroup;
+var treesGroup;
+var foodGroup;
+var pointsGroup;
+var flysGroup;
+var iceGroup;
+
 var enemyArray = [];
 var fighterArray = [];
 var spawnerArray = [];
@@ -69,25 +67,18 @@ var spawnerArray = [];
 var SCENE_H = 4000;
 var SCENE_W = 4000;
 
-var score = 10;
+var score = 0;
 var partyScreen;
 
-
-
-/* TODO: delete this after testing. */
-var testSpawner;
-var testSpawner2;
-
-/* Enemy Types */
-var goblin;
-
-/* Player Types */
+var spawner;
+var numSpawners;
 
 var playerTypeArray;
+var enemyTypeArray = [];
 
 var globalType;
 
-var miniMap;
+// var miniMap;
 
 var healthBars;
 
@@ -96,126 +87,23 @@ var isSpectator;
 var isPlayer;
 var paused = false;
 
-
 var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
 
 var hudNeedReset = false;
 
-/* Assigns values to the various types of Enemies and Fighters that we have. */
-function assignTypes()
-{
-	goblin = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-		health: 100,
-		damage: .83,
-		speed: 1.8,
-		detectionRadius: 225,
-		scale: .75,
-		friction: 0.5
-	};
 
-	var knight = {
-		walkAnimation: knightWalkAnimation,
-		idleAnimation: knightIdleAnimation,
-		swingAnimation: knightSwingAnimation,
-		stamina: 120,
-		staminaRate: 2,
-		health: 135,
-		speed: 3,
-		scale: 1,
-		damage: 1.2,
-		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
-		weaponCollider: [0, 0, 104],
-		leftConeAngle: -32,
-		rightConeAngle: 28
-	};
-
-	var calvary = {
-		walkAnimation: calvaryWalkAnimation,
-		idleAnimation: calvaryIdleAnimation,
-		swingAnimation: calvarySwingAnimation,
-		stamina: 135,
-		staminaRate: 2,
-		health: 120,
-		speed: 4,
-		damage: 1.1,
-		scale: 1.3,
-		spriteCollider: [0,0,25],
-		weaponCollider: [0,0,53],
-		leftConeAngle: 35,
-		rightConeAngle: 112
-	};
-
-	var barb = {
-		walkAnimation: barbWalkAnimation,
-		idleAnimation: barbIdleAnimation,
-		swingAnimation: barbSwingAnimation,
-		stamina: 150,
-		staminaRate: 2,
-		health: 150,
-		speed: 2,
-		damage: 1.5,
-		scale: 1.5,
-		spriteCollider: [0,0,22.5],
-		weaponCollider: [0,0,60],
-		leftConeAngle: -38,
-		rightConeAngle: 42
-	};
-
-	var mercenary = {
-		walkAnimation: mercWalkAnimation,
-		idleAnimation: mercIdleAnimation,
-		swingAnimation: mercSwingAnimation,
-		stamina: 145,
-		staminaRate: 2,
-		health: 125,
-		speed: 3.2,
-		scale: 1.15,
-		damage: 1.15,
-		spriteCollider: [0,0,24],
-		weaponCollider: [0,0,64],
-		leftConeAngle: -8,
-		rightConeAngle: 45
-	};
-
-	var rogue = {
-		walkAnimation: rogueWalkAnimation,
-		idleAnimation: rogueIdleAnimation,
-		swingAnimation: rogueSwingAnimation,
-		stamina: 120,
-		staminaRate: 2,
-		health: 100,
-		speed: 3.4,
-		scale: .8,
-		damage: 1,
-		spriteCollider: [0,0,23],
-		weaponCollider: [0,0,71],
-		leftConeAngle: 10,
-		rightConeAngle: 38
-	};
-
-	playerTypeArray = {
-		"Knight" : knight,
-		"Calvary" : calvary,
-		"Barbarian" : barb,
-		"Mercenary" : mercenary,
-		"Rogue" : rogue,
-	};
-}
 
 function becomePlayer(playerType)
 {
-	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
-
 	isPlayer = true;
 
 	globalType = playerType;
 
-	localFighter = new Fighter(random(1450), random(960), playerTypeArray[playerType]);
+
+
+	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
 
 	if(playerType == "Calvary")
 	{
@@ -306,15 +194,26 @@ function setupGame()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
+	numSpawners = round(random(5, 20));
+	for(var i = 0; i < numSpawners; i++)
+	{
+		spawner = new EnemySpawner(random(300, SCENE_W - 300), random(300, SCENE_H - 300), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
+		spawner.sprite.depth = i;
+		spawnerArray.push(spawner);
+	}
 
-	testSpawner = new EnemySpawner(400, 163, goblin, .5, 1, spawnerImage);
-	testSpawner.sprite.depth = 1;
-	spawnerArray.push(testSpawner);
-	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 1, spawnerImage);
-	testSpawner2.sprite.depth = 2;
-	spawnerArray.push(testSpawner2);
 
-
+	socket.on('newChest', function(newChestData){
+		var cheDepth = 1300 + chestArr.length;
+		var chest = new Chest(newChestData.x, newChestData.y, openChest, closedChest, tempUnlockCode,3);
+		chest.setUnlockCode();
+		chest.sprite.depth = cheDepth;
+		chestArr.push(chest);
+		chestGroup.add(chest.sprite);
+		chest.sprite.scale = .5;
+		cheDepth++;
+		console.log("Received Chest");
+	});
 
 
 	socket.on('updateObstacles', function(data) {
@@ -334,21 +233,29 @@ function setupGame()
 	});
 
 	socket.on('updateChests', function(chestData) {
-		var cheDepth = 1300;
-		if (initializedChe == 0){
-			console.log("Recieved Chests");
-			for (i=0; i<chestData.length; i++) {
-				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
-				chest.setUnlockCode();
-				chest.sprite.depth = cheDepth;
-				chestArr.push(chest);
-				chestGroup.add(chest.sprite);
-				chest.sprite.scale = .5;
-				cheDepth++;
+		for (var i=0; i<chestArr.length; i++) {
+			if (chestData[i].isOpen == true) {
+				chestArr[i].setOpen();
 			}
-			initializedChe = 1;
 		}
 	});
+
+	// socket.on('updateChests', function(chestData) {
+	// 	var cheDepth = 1300 + chestArr.length;
+	// 	if (initializedChe == 0){
+	// 		var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
+	// 		chest.setUnlockCode();
+	// 		chest.sprite.depth = cheDepth;
+	// 		chestArr.push(chest);
+	// 		chestGroup.add(chest.sprite);
+	// 		chest.sprite.scale = .5;
+	// 		cheDepth++;
+	// 		//console.log("Recieved Chests");
+	// 		for (i=0; i<chestData.length; i++) {
+	// 		}
+	// 		initializedChe = 1;
+	// 	}
+	// });
 
 
 
@@ -360,8 +267,6 @@ function setupGame()
 	time = 120;
 	counter=setInterval(timer, 1000);
 	setChestsCode();
-	
-
 }
 
 function mouseReleased(){
@@ -389,8 +294,8 @@ function keyReleased(){
 
 
 function drawGame()
-{	
-	
+{
+
 	background(55,75,30);
 
 	cursorSprite.position.x = mouseX;
@@ -508,10 +413,18 @@ function drawGame()
 			}
 		}
 
+
 		if(mouseDown(LEFT) && time < 120 && !swordSound.isPlaying()){
 			swordSound.play();
 		}
 	
+
+
+		if(keyDown(16))
+		{
+			localFighter.activateSpecial();
+		}
+
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -628,6 +541,15 @@ function drawGame()
 		spawnerArray[i].updateAll(fighterArray);
 	}
 
+	if(enemyGroup.overlap(obstacleGroup))
+	{
+		localFighter.speed = localFighter.maxSpeed - 1.213;
+	}
+	else
+	{
+		localFighter.speed = localFighter.maxSpeed;
+	}
+
 	drawSprites();
 	drawSprite(cursorSprite);
 
@@ -636,16 +558,18 @@ function drawGame()
 	if(isPlayer)
 	{
 		if(keyWentDown('m'))
-	 	{
+			{
 			miniMap.createDots(enemyGroup);
 		}
 		if(keyDown('m'))
 		{
+
 			miniMap.sprite.visible = true;
 			miniMap.sprite.depth = 1500;
 			miniMap.update();
 			miniMap.show();
 			miniMap.move(camera.position.x - (width/2),  camera.position.y - (height/2));
+		
 			deleteHud();
 			hudNeedReset = true;
 
@@ -656,8 +580,9 @@ function drawGame()
 				hudNeedReset = false;
 
 			}
-			miniMap.sprite.visible = false;
-			miniMap.delete();
+			// miniMap.sprite.visible = false;
+			// miniMap.delete();
+			camera.zoom = 1;
 			drawHud();
 		}
 
@@ -674,54 +599,38 @@ function drawGame()
 
 			}
 		}
-	}
 
-
-	if(keyWentDown('p'))
-	{
-		partyScreen.draw();
-	}
-
-
-
-	if(keyDown('p'))
-	{
-		partyScreen.show();
-		partyScreen.sprite.visible = true;
-
-		partyScreen.move(camera.position.x + 200,camera.position.y - 200);
-		text("Character", camera.position.x - 400, camera.position.y - 250);
-		text("Health", camera.position.x + 130, camera.position.y - 250);
-		text("Points", camera.position.x - 100, camera.position.y-250);
-		partyScreen.addNames(fighterArray);
-		partyScreen.addPoints(fighterArray);
-	}
-	else
-	{
-		partyScreen.sprite.visible = false;
-		partyScreen.delete();
-	}
-
-	
-	for (var i=0; i<chestArr.length; i++)
-	{
-		localFighter.sprite.collide(chestArr[i].sprite);
-
-
-
-		if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
-			text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-			text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-			text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
-
+		if(keyWentDown('p'))
+		{
+			partyScreen.draw();
 		}
-	}
 
-	
-	
-	// stroke("grey");
-	// strokeWeight(1);
-	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
+
+		if(keyWentDown('p'))
+		{
+			partyScreen.draw();
+		}
+
+		if(keyDown('p'))
+		{
+			partyScreen.show();
+			partyScreen.sprite.visible = true;
+
+			partyScreen.move(camera.position.x + 200,camera.position.y - 200);
+			text("Character", camera.position.x - 400, camera.position.y - 250);
+			text("Health", camera.position.x + 130, camera.position.y - 250);
+			text("Points", camera.position.x - 100, camera.position.y-250);
+			partyScreen.addNames(fighterArray);
+			partyScreen.addPoints(fighterArray);
+		}
+		else
+		{
+			partyScreen.sprite.visible = false;
+			partyScreen.delete();
+		}
+
+		updateClient();
+	}
 
 	if(time == 0){
 		noLoop();
@@ -758,4 +667,18 @@ function borderCamera()
 	{
 		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
+}
+
+
+function updateClient() {
+	var chestData = [];
+	for (var i=0; i<chestArr.length; i++) {
+		chestData[i] = chestArr[i].isOpen;
+	}
+
+	var gameData = {
+		chests: chestData
+	}
+
+	socket.emit('updateClient', gameData);
 }

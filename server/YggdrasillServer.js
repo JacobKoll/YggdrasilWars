@@ -89,7 +89,7 @@ EnemySpawner.prototype.updateAll = function(fighterArr)
 	}
 };
 
-var chestArr;
+var enemyTest = require('./enemy');
 /**
  * Initializes everything that the server will need.
  */
@@ -100,8 +100,22 @@ function init()
 	spawnerArr = [];
 	enemyArr = [];
 
+	var penis = new enemyTest(10,10, {
+		// walkAnimation: enemyWalkAnimation,
+		// idleAnimation: enemyIdleAnimation,
+		// attackAnimation: enemyAttackAnimation,
+		health: 100,
+		damage: .83,
+		speed: 1.8,
+		detectionRadius: 225,
+		scale: .75,
+		friction: 0.5
+	});
+
+	console.log(typeof(penis));
+
 	/**
-	 * Initialize obstacles
+	 * Initialize obstacles3
 	 */
 	for (var i=0; i<60; i++) {
 		var a = Math.floor((Math.random())*4000/45)*(45);
@@ -117,7 +131,7 @@ function init()
 	 for (var i=0; i<10; i++) {
 		var a = Math.floor((Math.random())*4000/45)*(45);
 		var b = Math.floor((Math.random())*4000/45)*(45);
-		var chestData = {x: a, y: b};
+		var chestData = {x: a, y: b, isOpen: false};
 		chestArr.push(chestData);
 	}
 	console.log("Chests Generated");
@@ -126,7 +140,7 @@ function init()
 	 * Initialize spawners
 	 */
 	 for (i=0; i<numSpawners; i++) {
-	 	spawnerArr[i] = new EnemySpawner()
+	 	spawnerArr[i] = new EnemySpawner();
 	 }
 
 	console.log("The Yggdrasill Wars server is open and running... \n");
@@ -159,7 +173,7 @@ function onSocketConnect(client)
 	{
 		/* Fighter data */
 		var gameData = {
-
+			chests: chestArr
 		};
 		io.sockets.emit('updateFighters' , fighterArr);
 		io.sockets.emit('updateSpawners' , spawnerArr);
@@ -173,12 +187,19 @@ function onSocketConnect(client)
 
 	}
 
+	client.on('updateClient', function(gameData) {
+		for (var i=0; i<chestArr.length; i++) {
+			chestArr[i].isOpen = gameData.chests[i];
+		}
+	});
+
 	console.log(client.id + " has connected to the server.\n");
 
 	client.on('addChest', function(givenX, givenY)
 	{
-		var chestData = {x: givenX, y: givenY};
+		var chestData = {x: givenX, y: givenY, isOpen: false};
 		chestArr.push(chestData);
+		io.sockets.emit('newChest', chestData);
 		console.log(client.id + " added a chest at (" + givenX + ", " + givenY + ")\n");
 	});
 

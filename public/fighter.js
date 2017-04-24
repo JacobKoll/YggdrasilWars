@@ -51,13 +51,12 @@ function Fighter(x, y, type, id)
 
 
 	this.sprite.stamina = type.stamina;
-	this.sprite.maxStamina = type.stamina;
 
 	this.sprite.staminaRate = type.staminaRate;
 
 	//this.sprite.addAnimation('walk', type.walkAnimation);
 	//this.sprite.addAnimation('death', type.deathAnimation);
-	this.sprite.addAnimation('walk', type.walkAnimation);
+	// this.sprite.addAnimation('walk', type.walkAnimation);
 
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
@@ -80,6 +79,8 @@ function Fighter(x, y, type, id)
 
 	this.sprite.sword.leftCone = type.leftConeAngle;
 	this.sprite.sword.rightCone = type.rightConeAngle;
+
+	this.activateSpecial = type.specialAbility;
 }
 
 /**
