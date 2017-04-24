@@ -126,3 +126,30 @@ function assignTypes()
 		"Rogue" : rogue,
 	};
 }
+
+
+
+function Special()
+{
+	
+}
+
+function Special()
+{
+	
+}
+
+function Special()
+{
+	
+}
+
+function Special()
+{
+	
+}
+
+function Special()
+{
+
+}
