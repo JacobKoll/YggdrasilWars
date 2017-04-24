@@ -541,14 +541,6 @@ function drawGame()
 		spawnerArray[i].updateAll(fighterArray);
 	}
 
-	if(enemyGroup.overlap(obstacleGroup))
-	{
-		localFighter.speed = localFighter.maxSpeed - 1.213;
-	}
-	else
-	{
-		localFighter.speed = localFighter.maxSpeed;
-	}
 
 	drawSprites();
 	drawSprite(cursorSprite);
@@ -557,10 +549,24 @@ function drawGame()
 
 	if(isPlayer)
 	{
+
 		if(keyWentDown('m'))
-			{
+		{
 			miniMap.createDots(enemyGroup);
 		}
+
+
+
+		if(enemyGroup.overlap(obstacleGroup))
+		{
+			localFighter.speed = localFighter.maxSpeed - 1.213;
+		}
+		else
+		{
+			localFighter.speed = localFighter.maxSpeed;
+		}
+	
+
 		if(keyDown('m'))
 		{
 
@@ -580,8 +586,8 @@ function drawGame()
 				hudNeedReset = false;
 
 			}
-			// miniMap.sprite.visible = false;
-			// miniMap.delete();
+			miniMap.sprite.visible = false;
+			miniMap.delete();
 			camera.zoom = 1;
 			drawHud();
 		}
