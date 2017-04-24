@@ -6,34 +6,31 @@ function assignTypes()
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
-		damage: 1.3,
-		speed: 1.8,
-		detectionRadius: 225,
-		scale: .75,
-		friction: 0.5
-	};
-	var spider = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-		health: 100,
-		damage: 1.3,
+		damage: .83,
 		speed: 1.8,
 		detectionRadius: 225,
 		scale: .75,
 		friction: 0.5
 	};
 
-	var bat = {
+	var spider = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
 		health: 100,
-		damage: 1.3,
-		speed: 1.8,
-		detectionRadius: 225,
-		scale: .75,
-		friction: 0.5
+		damage: .50,
+		speed: 3,
+		detectionRadius: 300
+	};
+
+	var bat = {
+		walkAnimation: enemyWalkAnimation,
+		idleAnimation: enemyIdleAnimation,
+		attackAnimation: enemyAttackAnimation,
+		health: 50,
+		damage: .25,
+		speed: 9,
+		detectionRadius: 500
 	};
 
 	enemyTypeArray.push(goblin);

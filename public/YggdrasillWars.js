@@ -39,6 +39,7 @@ var SCENE_W = 4000;
 var score = 0;
 var partyScreen;
 
+<<<<<<< HEAD
 /* TODO: delete this after testing. */
 var testSpawner;
 var testSpawner2;
@@ -47,11 +48,19 @@ var testSpawner2;
 var enemyTypeArray = [];
 
 /* Player Types */
+=======
+
+
+var spawner;
+var numSpawners;
+
+>>>>>>> 7f3463ffda361c86d99c9be67749d97e2156f2a3
 var playerTypeArray;
+var enemyTypeArray;
 
 var globalType;
 
-var miniMap;
+// var miniMap;
 
 var healthBars;
 
@@ -66,14 +75,17 @@ var lockProgress = 0;
 
 var hudNeedReset = false;
 
+
+
 function becomePlayer(playerType)
 {
 	isPlayer = true;
 
 	globalType = playerType;
 
-	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
-	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
+
+
+	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
 
 	if(playerType == "Calvary")
 	{
@@ -163,16 +175,13 @@ function setupGame()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
-
-	testSpawner = new EnemySpawner(400, 163, enemyTypeArray[1], .5, 1, spawnerImage);
-	testSpawner.sprite.depth = 1;
-	spawnerArray.push(testSpawner);
-	testSpawner2 = new EnemySpawner(930, 827, enemyTypeArray[1], .5, 1, spawnerImage);
-	testSpawner2.sprite.depth = 1;
-	spawnerArray.push(testSpawner2);
-
-
-
+	numSpawners = round(random(5, 20));
+	for(var i = 0; i < numSpawners; i++)
+	{
+		spawner = new EnemySpawner(random(SCENE_W), random(SCENE_H), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
+		spawner.sprite.depth = i;
+		spawnerArray.push(spawner);
+	}
 
 	socket.on('updateObstacles', function(data) {
 		var obsDepth = 1000;
@@ -211,13 +220,13 @@ function setupGame()
 
 
 
-	miniMap = new miniMap(1000,1000);
+	// miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
 	time = 120;
 	counter=setInterval(timer, 1000);
 	setChestsCode();
-	
+
 
 }
 
@@ -234,8 +243,8 @@ function keyPressed(){
 }
 
 function drawGame()
-{	
-	
+{
+
 	background(55,75,30);
 
 	cursorSprite.position.x = mouseX;
@@ -245,8 +254,8 @@ function drawGame()
 	cursorSprite.position.y = camera.mouseY;
 
 
-	miniMap.sprite.position.x = camera.position.x;
-	miniMap.sprite.position.y = camera.position.y;
+	// miniMap.sprite.position.x = camera.position.x;
+	// miniMap.sprite.position.y = camera.position.y;
 
 	partyScreen.sprite.position.x = camera.position.x;
 	partyScreen.sprite.position.y = camera.position.y;
@@ -433,16 +442,17 @@ function drawGame()
 
 	if(isPlayer)
 	{
-		if(keyWentDown('m'))
-	 	{
-			miniMap.createDots(enemyGroup);
-		}
+		// if(keyWentDown('m'))
+		// 	{
+		// 	miniMap.createDots(enemyGroup);
+		// }
 		if(keyDown('m'))
 		{
-			miniMap.sprite.visible = true;
-			miniMap.sprite.depth = 1500;
-			miniMap.update();
-			miniMap.show();
+			// miniMap.sprite.visible = true;
+			// miniMap.sprite.depth = 1500;
+			// miniMap.update();
+			// miniMap.show();
+			camera.zoom = 0.3;
 			deleteHud();
 			hudNeedReset = true;
 
@@ -453,8 +463,9 @@ function drawGame()
 				hudNeedReset = false;
 
 			}
-			miniMap.sprite.visible = false;
-			miniMap.delete();
+			// miniMap.sprite.visible = false;
+			// miniMap.delete();
+			camera.zoom = 1;
 			drawHud();
 		}
 
@@ -499,23 +510,10 @@ function drawGame()
 		partyScreen.delete();
 	}
 
-	
-	for (var i=0; i<chestArr.length; i++)
-	{
-		localFighter.sprite.collide(chestArr[i].sprite);
 
 
 
-		if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
-			text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-			text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-			text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
 
-		}
-	}
-
-	
-	
 	// stroke("grey");
 	// strokeWeight(1);
 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
