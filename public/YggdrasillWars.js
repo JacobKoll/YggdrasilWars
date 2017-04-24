@@ -1,3 +1,48 @@
+
+var enemyWalkAnimation;
+var enemyAttackAnimation;
+var enemyIdleAnimation;
+
+var fighterSwingAnimation;
+var fighterDeathAnimation;
+var fighterIdleAnimation;
+
+var knightWalkAnimation;
+var knightSwingAnimation;
+var knightIdleAnimation;
+
+var rogueWalkAnimation;
+var rogueSwingAnimation;
+var rogueIdleAnimation;
+
+var mercWalkAnimation;
+var mercSwingAnimation;
+var mercIdleAnimation;
+
+var barbWalkAnimation;
+var barbSwingAnimation;
+var barbIdleAnimation;
+
+var calvaryWalkAnimation;
+var calvarySwingAnimation;
+var calvaryIdleAnimation;
+
+var time = 7;
+var counter;
+
+var customCursor;
+var spawnerImage;
+var landscape;
+
+var emptyInventoryImage;
+var basicSwordImage;
+
+var bronzeSwordImage;
+var silverSwordImage;
+var goldSwordImage;
+
+var characterImages = [];
+
 var initializedObs;
 var initializedChe;
 
@@ -308,7 +353,10 @@ function setupGame()
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
+	time = 120;
+	counter=setInterval(timer, 1000);
 	setChestsCode();
+	
 
 }
 
@@ -316,9 +364,17 @@ function mouseReleased(){
 	swordSound.stop();
 }
 
+function keyPressed(){
+	if(keyCode == 82 && time == 0){
+		loop();
+		location.reload();
+	}
+
+}
 
 function drawGame()
-{
+{	
+	
 	background(55,75,30);
 
 	cursorSprite.position.x = mouseX;
@@ -581,6 +637,38 @@ function drawGame()
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
+
+	
+	for (var i=0; i<chestArr.length; i++)
+	{
+		localFighter.sprite.collide(chestArr[i].sprite);
+
+
+
+		if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+			text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+			text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+			text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+
+		}
+	}
+
+	
+	
+	// stroke("grey");
+	// strokeWeight(1);
+	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
+
+	if(time == 0){
+		noLoop();
+		textSize(80);
+		textAlign(CENTER);
+		text("Press 'R' \n to return to the title screen.", camera.position.x, camera.position.y);
+		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
+
+	}
+
+
 }
 
 
