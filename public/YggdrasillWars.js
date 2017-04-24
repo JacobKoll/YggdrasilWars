@@ -1,31 +1,4 @@
 
-var enemyWalkAnimation;
-var enemyAttackAnimation;
-var enemyIdleAnimation;
-
-var fighterSwingAnimation;
-var fighterDeathAnimation;
-var fighterIdleAnimation;
-
-var knightWalkAnimation;
-var knightSwingAnimation;
-var knightIdleAnimation;
-
-var rogueWalkAnimation;
-var rogueSwingAnimation;
-var rogueIdleAnimation;
-
-var mercWalkAnimation;
-var mercSwingAnimation;
-var mercIdleAnimation;
-
-var barbWalkAnimation;
-var barbSwingAnimation;
-var barbIdleAnimation;
-
-var cavalryWalkAnimation;
-var cavalrySwingAnimation;
-var cavalryIdleAnimation;
 
 var time;
 
@@ -202,13 +175,15 @@ function keyPressed()
 	}
 }
 
+
 function keyReleased()
 {
  	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68))
  	{
 		galloping.stop();
-		footsteps.stop();	
+		footsteps.stop();
 	}
+
 }
 
 
@@ -296,7 +271,7 @@ function drawGame()
 			localFighter.speed = localFighter.maxSpeed;
 
 		}
-		
+
 		localFighter.sprite.collide(chestGroup);
 
 		for (var i=0; i<chestArr.length; i++)
@@ -316,7 +291,8 @@ function drawGame()
 					}
 				}
 			}
-		}	
+
+		}
 
 		if(keyDown('w'))
 		{
@@ -336,7 +312,7 @@ function drawGame()
 				}
 			}
 		}
-		
+
 		if(keyDown('s'))
 		{
 			localFighter.walk("down");
@@ -351,7 +327,7 @@ function drawGame()
 			}
 			}
 		}
-		
+
 
 		if(keyDown('a'))
 		{
@@ -367,11 +343,11 @@ function drawGame()
 			}
 			}
 		}
-		
+
 
 		if(keyDown('d'))
 		{
-			
+
 			localFighter.walk("right");
 		}
 		if(keyWentDown('d')){
@@ -389,7 +365,7 @@ function drawGame()
 		if(mouseDown(LEFT) && time < 120 && !swordSound.isPlaying()){
 			swordSound.loop();
 		}
-	
+
 
 
 		if(keyDown(16))
@@ -547,7 +523,7 @@ function drawGame()
 			miniMap.update();
 			miniMap.show();
 			miniMap.move(camera.position.x - (width/2),  camera.position.y - (height/2));
-		
+
 			deleteHud();
 			hudNeedReset = true;
 
@@ -566,7 +542,7 @@ function drawGame()
 
 		for (var i=0; i<chestArr.length; i++)
 		{
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) 
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen))
 			{
 				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
 				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
@@ -615,7 +591,7 @@ function drawGame()
 		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
 
 	}
-	
+
 }
 
 function borderCamera()

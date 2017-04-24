@@ -35,9 +35,49 @@ io.sockets.on('connection', function(socket){
     console.log('New Connection ' + socket.id);
 
 
+    socket.on('checkUserDB',function(data){
+  		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			else if(result[0] == null){
+  				data = false;
+  			}
+  			io.sockets.emit('checkedUserDB', data);
+
+  		});
+  	});
+
+  	socket.on('checkDB',function(data){
+
+  		db.query('select Pass from Login where UserName = ?', data.UserName, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			else if(result[0] == null || result[0].Pass != data.Pass){
+  				data = false;
+  			}
+  			io.sockets.emit('checkedDB', data);
+
+  		});
+  	});
+
+  	socket.on('insertDB',function(data){
+  		var query = db.query('insert into Login set ?', data, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			console.error(result);
+  		});
+  	});
+
+
 
 
     socket.on('disconnect', function(){
-      console.log("client disconnected");
+      console.log("socket disconnected");
     });
 });

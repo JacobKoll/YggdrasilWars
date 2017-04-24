@@ -108,7 +108,7 @@ function onSocketConnect(client)
 		console.log(client.id + " added it's fighter\n");
 	});
 
-	
+
 
 	client.on('updateClient', function(gameData) {
 		for (var i=0; i<chestArr.length; i++) {
