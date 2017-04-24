@@ -68,6 +68,7 @@ var testButton;
 var prepScreen;
 
 var titleScreenFinished = false;
+var prepScreenInit = false;
 
 var characterImages = [];
 var characterNames  = [];
@@ -144,15 +145,12 @@ function preload()
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
 
-
 	forest = loadImage("assets/obstacles/forest.png");
 }
 
 function setup()
 {
 	createCanvas(1000, 725);
-	initPrepScreen();
-	initMainMenu();
 
 	frameRate(45);
 
@@ -170,7 +168,11 @@ function draw()
 	{
 		if(titleScreenFinished)
 		{
-
+			if(!prepScreenInit)
+			{
+				initPrepScreen();
+				prepScreenInit = true;
+			}
 			switch(drawMainMenu())
 			{
 				case 1: // Go to preparation screen
@@ -200,7 +202,6 @@ function draw()
 					setupGame();
 					startGame = true;
 
-					console.log("This hasn't been implemented yet! (Might be removed)");
 					break;
 				case 4: //Go to the options page (Just changes css)
 					break;
@@ -217,6 +218,8 @@ function draw()
 			{
 				console.log("Moving past the title screen");
 				titleScreenFinished = true;
+				initMainMenu();
+				
 			}
 		}
 	}

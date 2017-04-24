@@ -57,7 +57,6 @@ var lockProgress = 0;
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
 {
-	// NOTE: Goblin is still global 
 	goblin = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
@@ -65,7 +64,8 @@ function assignTypes()
 		health: 100,
 		damage: .83,
 		speed: 1.8,
-		detectionRadius: 225
+		detectionRadius: 225,
+		scale: .75
 	};
 
 	var knight = {
@@ -77,7 +77,7 @@ function assignTypes()
 		scale: 1.06,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
-		weaponCollider: [0, 0, 107],
+		weaponCollider: [0, 0, 104],
 		leftConeAngle: -32,
 		rightConeAngle: 28
 	};
@@ -89,7 +89,7 @@ function assignTypes()
 		health: 120,
 		speed: 4,
 		damage: 1.1,
-		scale: 1.8,
+		scale: 1.3,
 		spriteCollider: [0,0,25],
 		weaponCollider: [0,0,53],
 		leftConeAngle: 35,
@@ -106,8 +106,8 @@ function assignTypes()
 		scale: 1.5,
 		spriteCollider: [0,0,22.5],
 		weaponCollider: [0,0,60],
-		leftConeAngle: 38,
-		rightConeAngle: -42
+		leftConeAngle: -38,
+		rightConeAngle: 42
 	};
 
 	var mercenary = {
@@ -120,8 +120,8 @@ function assignTypes()
 		damage: 1.15,
 		spriteCollider: [0,0,24],
 		weaponCollider: [0,0,64],
-		leftConeAngle: 8,
-		rightConeAngle: -45
+		leftConeAngle: -8,
+		rightConeAngle: 45
 	};
 
 	var rogue = {
@@ -134,8 +134,8 @@ function assignTypes()
 		damage: 3,
 		spriteCollider: [0,0,23],
 		weaponCollider: [0,0,71],
-		leftConeAngle: -10,
-		rightConeAngle: -38
+		leftConeAngle: 10,
+		rightConeAngle: 38
 	};
 
 	playerTypeArray = {
