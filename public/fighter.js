@@ -79,6 +79,8 @@ function Fighter(x, y, type, id)
 
 	this.sprite.sword.leftCone = type.leftConeAngle;
 	this.sprite.sword.rightCone = type.rightConeAngle;
+
+	this.activateSpecial = type.specialAbility;
 }
 
 /**

@@ -39,11 +39,11 @@ var SCENE_W = 4000;
 var score = 0;
 var partyScreen;
 
-ar spawner;
+var spawner;
 var numSpawners;
 
 var playerTypeArray;
-var enemyTypeArray;
+var enemyTypeArray = [];
 
 var globalType;
 
@@ -303,6 +303,12 @@ function drawGame()
 		if(keyDown('d'))
 		{
 			localFighter.walk("right");
+		}
+
+
+		if(keyDown(16))
+		{
+			localFighter.activateSpecial();
 		}
 
 

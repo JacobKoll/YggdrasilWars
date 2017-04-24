@@ -51,7 +51,8 @@ function assignTypes()
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
 		weaponCollider: [0, 0, 104],
 		leftConeAngle: -32,
-		rightConeAngle: 28
+		rightConeAngle: 28,
+		specialAbility: knightSpecial
 	};
 
 	var calvary = {
@@ -67,7 +68,8 @@ function assignTypes()
 		spriteCollider: [0,0,25],
 		weaponCollider: [0,0,53],
 		leftConeAngle: 35,
-		rightConeAngle: 112
+		rightConeAngle: 112,
+		specialAbility: calvarySpecial
 	};
 
 	var barb = {
@@ -83,7 +85,8 @@ function assignTypes()
 		spriteCollider: [0,0,22.5],
 		weaponCollider: [0,0,60],
 		leftConeAngle: -38,
-		rightConeAngle: 42
+		rightConeAngle: 42,
+		specialAbility: barbSpecial
 	};
 
 	var mercenary = {
@@ -99,7 +102,8 @@ function assignTypes()
 		spriteCollider: [0,0,24],
 		weaponCollider: [0,0,64],
 		leftConeAngle: -8,
-		rightConeAngle: 45
+		rightConeAngle: 45,
+		specialAbility: mercenarySpecial
 	};
 
 	var rogue = {
@@ -115,7 +119,8 @@ function assignTypes()
 		spriteCollider: [0,0,23],
 		weaponCollider: [0,0,71],
 		leftConeAngle: 10,
-		rightConeAngle: 38
+		rightConeAngle: 38,
+		specialAbility: rogueSpecial
 	};
 
 	playerTypeArray = {
@@ -129,27 +134,32 @@ function assignTypes()
 
 
 
-function Special()
+function knightSpecial()
 {
+	console.log("You activated your special");
+
+}
+
+function calvarySpecial()
+{
+	console.log("You activated your special");
 	
 }
 
-function Special()
+function barbSpecial()
 {
+	console.log("You activated your special");
 	
 }
 
-function Special()
+function mercenarySpecial()
 {
+	console.log("You activated your special");
 	
 }
 
-function Special()
+function rogueSpecial()
 {
-	
-}
-
-function Special()
-{
+	console.log("You activated your special");
 
 }
