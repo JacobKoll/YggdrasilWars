@@ -22,6 +22,7 @@ function Enemy(x, y, type)
 {
 	this.health = type.health;
 	this.speed = type.speed;
+
 	this.detectionRadius = type.detectionRadius;
 
 	this.sprite = createSprite(x, y, 32, 32);
@@ -29,8 +30,8 @@ function Enemy(x, y, type)
 	// this.sprite.debug = true;
 	this.sprite.rotateToDirection = true;
 	this.sprite.gravity = .5;
-	this.sprite.maxSpeed = type.speed;
 	this.sprite.health = type.health;
+	this.sprite.maxSpeed = type.speed;
 
 	this.sprite.addAnimation('idle', type.idleAnimation);
 	this.sprite.addAnimation('walk', type.walkAnimation);
@@ -65,8 +66,9 @@ Enemy.prototype.update = function(playerArr)
 	var currDist;
 	var chasedDist;
 
-	if(playerArr.length > 0)
+	this.sprite.overlap(obstacleGroup);
 
+	if(playerArr.length > 0)
 	{
 		if(!this.playerToChase)
 		{
@@ -90,8 +92,8 @@ Enemy.prototype.update = function(playerArr)
 				chasedDist = currDist;
 			}
 
-			this.sprite.collide(obstacleGroup)
-			this.sprite.collide(chestGroup)
+
+			this.sprite.collide(chestGroup);
 
 			if(chasedDist < this.detectionRadius && !(playerArr[i].sprite.overlap(obstacleGroup)))
 			{
@@ -102,13 +104,6 @@ Enemy.prototype.update = function(playerArr)
 			{
 				this.sprite.setSpeed(this.speed / 2.3);
 				this.sprite.rotationSpeed += random(-3.6, 3);
-
-				if (this.sprite.overlap(obstacleGroup)) {
-					this.sprite.bounce(obstacleGroup);
-				}
-				if (this.sprite.overlap(chestGroup)) {
-					this.sprite.bounce(chestGroup);
-				}
 
 				if((this.turnCounter % 9) == 0)
 				{
@@ -176,10 +171,6 @@ Enemy.prototype.update = function(playerArr)
 	this.sprite.bar.position.y = this.sprite.position.y - 50;
 	this.sprite.bar.shapeColor = "yellow";
 	this.sprite.bar.width = this.sprite.health;
-
-
-
-
 };
 
 /**

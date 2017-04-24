@@ -99,8 +99,10 @@ function init()
 	spawnerArr = [];
 	enemyArr = [];
 
+
+
 	/**
-	 * Initialize obstacles
+	 * Initialize obstacles3
 	 */
 	for (var i=0; i<60; i++) {
 		var a = Math.floor((Math.random())*4000/45)*(45);
@@ -125,7 +127,7 @@ function init()
 	 * Initialize spawners
 	 */
 	 for (i=0; i<numSpawners; i++) {
-	 	spawnerArr[i] = new EnemySpawner()
+	 	spawnerArr[i] = new EnemySpawner();
 	 }
 
 	console.log("The Yggdrasill Wars server is open and running... \n");
