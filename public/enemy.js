@@ -42,7 +42,9 @@ function Enemy(x, y, type)
 
 	this.turnCounter = 0;
 
-	this.sprite.scale = .62
+	this.sprite.scale = type.scale;
+
+	this.sprite.friction = type.friction;
 
 	this.playerToChase;
 
@@ -204,7 +206,7 @@ Enemy.prototype.attack = function(enemy, player)
 		player.position.y = random(50, height - 50);
 		player.health = player.maxHealth;
 		fullHealthBar.width = player.maxHealth;
-		fullStaminaBar.width = player.maxStamina;
+		fullStaminaBar.width = player.stamina;
 		player.alive = true;
 
 		console.log("You died!");

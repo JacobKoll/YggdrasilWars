@@ -1,3 +1,4 @@
+
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
@@ -26,7 +27,8 @@ var calvaryWalkAnimation;
 var calvarySwingAnimation;
 var calvaryIdleAnimation;
 
-
+var time = 7;
+var counter;
 
 var customCursor;
 var spawnerImage;
@@ -47,14 +49,9 @@ var initializedChe;
 var localFighter;
 
 var chestArr = [];
-var openChest;
-var closedChest;
-
 
 var obstaclesArr = [];
-var forest;
 
-var landscapeSprite;
 
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
@@ -68,15 +65,14 @@ var enemyArray = [];
 var fighterArray = [];
 var spawnerArray = [];
 
-var cursorSprite;
+
 var SCENE_H = 4000;
 var SCENE_W = 4000;
 
 var score = 10;
 var partyScreen;
 
-var footsteps;
-var swordSound;
+
 
 var spawner;
 var numSpawners;
@@ -86,7 +82,7 @@ var enemyTypeArray;
 
 var globalType;
 
-var miniMap;
+// var miniMap;
 
 var healthBars;
 
@@ -95,61 +91,11 @@ var isSpectator;
 var isPlayer;
 var paused = false;
 
-var footsteps;
-var swordSound;
-
 var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
 
 var hudNeedReset = false;
-
-
-function preloadGameAssets()
-{
-	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
-	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
-	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
-
-	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
-	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
-	knightIdleAnimation = loadAnimation("assets/fighter/fighter_idle.png");
-
-	rogueWalkAnimation = loadAnimation("assets/rogue/walk/roguewalk0.png","assets/rogue/walk/roguewalk7.png");
-	rogueSwingAnimation = loadAnimation("assets/rogue/attack/rogueattack0.png","assets/rogue/attack/rogueattack6.png");
-	rogueIdleAnimation = loadAnimation("assets/rogue/walk/roguewalk3.png");
-
-	mercWalkAnimation = loadAnimation("assets/mercenary/walk/mercwalk00.png","assets/mercenary/walk/mercwalk11.png");
-	mercSwingAnimation = loadAnimation("assets/mercenary/attack/mercattack0.png","assets/mercenary/attack/mercattack5.png");
-	mercIdleAnimation = loadAnimation("assets/mercenary/walk/mercwalk00.png");
-
-	barbWalkAnimation = loadAnimation("assets/barbarian/walk/barbwalk0.png","assets/barbarian/walk/barbwalk7.png");
-	barbSwingAnimation = loadAnimation("assets/barbarian/attack/barbattack0.png","assets/barbarian/attack/barbattack5.png");
-	barbIdleAnimation = loadAnimation("assets/barbarian/walk/barbwalk2.png");
-
-	calvaryWalkAnimation = loadAnimation("assets/calvary/walk/calvarywalk0.png","assets/calvary/walk/calvarywalk3.png");
-	calvarySwingAnimation = loadAnimation("assets/calvary/swing/calvaryswing0.png","assets/calvary/swing/calvaryswing5.png");
-	calvaryIdleAnimation = loadAnimation("assets/calvary/walk/calvarywalk3.png");
-
-	customCursor = loadImage("assets/cursor.png");
-	spawnerImage = loadImage("assets/spawner.png");
-
-	openChest = loadImage("assets/obstacles/chest_open.png");
-	closedChest = loadImage("assets/obstacles/chest_closed.png");
-
-	landscape = loadImage("assets/map.png");
-	emptyInventoryImage = loadImage("assets/inventory/emptyInventory.png");
-	basicSwordImage = loadImage("assets/inventory/basicSword.png");
-	bronzeSwordImage = loadImage("assets/inventory/bronzeSword.png");
-	silverSwordImage = loadImage("assets/inventory/silverSword.png");
-	goldSwordImage = loadImage("assets/inventory/goldSword.png");
-
-	footsteps = loadSound("assets/sounds/Marching.wav");
-	swordSound = loadSound("assets/sounds/Woosh.wav");
-
-
-	forest = loadImage("assets/obstacles/forest.png");
-}
 
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
@@ -161,7 +107,9 @@ function assignTypes()
 		health: 100,
 		damage: .83,
 		speed: 1.8,
-		detectionRadius: 225
+		detectionRadius: 225,
+		scale: .75,
+		friction: 0.5
 	};
 
 	var spider = {
@@ -195,7 +143,7 @@ function assignTypes()
 		scale: 1,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
-		weaponCollider: [0, 0, 107],
+		weaponCollider: [0, 0, 104],
 		leftConeAngle: -32,
 		rightConeAngle: 28
 	};
@@ -209,27 +157,27 @@ function assignTypes()
 		health: 120,
 		speed: 4,
 		damage: 1.1,
-		scale: 2.5,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -32,
-		rightConeAngle: 28
+		scale: 1.3,
+		spriteCollider: [0,0,25],
+		weaponCollider: [0,0,53],
+		leftConeAngle: 35,
+		rightConeAngle: 112
 	};
 
 	var barb = {
 		walkAnimation: barbWalkAnimation,
 		idleAnimation: barbIdleAnimation,
 		swingAnimation: barbSwingAnimation,
-		stamina: 150,
+		stamina: 300,
 		staminaRate: 2,
 		health: 150,
 		speed: 2,
 		damage: 1.5,
-		scale: 2,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -42,
-		rightConeAngle: 38
+		scale: 1.5,
+		spriteCollider: [0,0,22.5],
+		weaponCollider: [0,0,60],
+		leftConeAngle: -38,
+		rightConeAngle: 42
 	};
 
 	var mercenary = {
@@ -240,12 +188,12 @@ function assignTypes()
 		staminaRate: 2,
 		health: 125,
 		speed: 3.2,
-		scale: 1.5,
+		scale: 1.15,
 		damage: 1.15,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -32,
-		rightConeAngle: 28
+		spriteCollider: [0,0,24],
+		weaponCollider: [0,0,64],
+		leftConeAngle: -8,
+		rightConeAngle: 45
 	};
 
 	var rogue = {
@@ -258,10 +206,10 @@ function assignTypes()
 		speed: 3.4,
 		scale: .8,
 		damage: 1,
-		spriteCollider: [0,0,30],
-		weaponCollider: [0,0,107],
-		leftConeAngle: -32,
-		rightConeAngle: 28
+		spriteCollider: [0,0,23],
+		weaponCollider: [0,0,71],
+		leftConeAngle: 10,
+		rightConeAngle: 38
 	};
 
 	enemyTypeArray = [
@@ -281,13 +229,19 @@ function assignTypes()
 
 function becomePlayer(playerType)
 {
-	console.log("When implemented, you will become the type " + playerType + ", but for now, it's still just a knight.");
-
 	isPlayer = true;
 
 	globalType = playerType;
 
-	localFighter = new Fighter(random(SCENE_W), random(SCENE_H), playerTypeArray[playerType]);
+
+	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+
+	if(playerType == "Calvary")
+	{
+		localFighter.sprite.rotateToDirection = true;
+		localFighter.sprite.sword.rotateToDirection = true;
+	}
+
 	numTeamMates++;
 
 	fighterArray.push(localFighter);
@@ -370,12 +324,14 @@ function setupGame()
 
 	noCursor(); // Hides the system's cursor when inside the canvas
 
+
 numSpawners = round(random(5, 20));
 for(var i = 0; i < numSpawners; i++){
 	spawner = new EnemySpawner(random(SCENE_W), random(SCENE_H), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
 	spawner.sprite.depth = i;
 	spawnerArray.push(spawner);
 }
+
 
 
 
@@ -417,10 +373,13 @@ for(var i = 0; i < numSpawners; i++){
 
 
 
-	miniMap = new miniMap(1000,1000);
+	// miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
+	time = 120;
+	counter=setInterval(timer, 1000);
 	setChestsCode();
+
 
 }
 
@@ -428,9 +387,17 @@ function mouseReleased(){
 	swordSound.stop();
 }
 
+function keyPressed(){
+	if(keyCode == 82 && time == 0){
+		loop();
+		location.reload();
+	}
+
+}
 
 function drawGame()
 {
+
 	background(55,75,30);
 
 	cursorSprite.position.x = mouseX;
@@ -440,8 +407,8 @@ function drawGame()
 	cursorSprite.position.y = camera.mouseY;
 
 
-	miniMap.sprite.position.x = camera.position.x;
-	miniMap.sprite.position.y = camera.position.y;
+	// miniMap.sprite.position.x = camera.position.x;
+	// miniMap.sprite.position.y = camera.position.y;
 
 	partyScreen.sprite.position.x = camera.position.x;
 	partyScreen.sprite.position.y = camera.position.y;
@@ -559,7 +526,6 @@ function drawGame()
 
 		localFighter.update(enemyGroup);
 
-
 	}
 	else
 	{
@@ -629,16 +595,17 @@ function drawGame()
 
 	if(isPlayer)
 	{
-		if(keyWentDown('m'))
-	 	{
-			miniMap.createDots(enemyGroup);
-		}
+		// if(keyWentDown('m'))
+		// 	{
+		// 	miniMap.createDots(enemyGroup);
+		// }
 		if(keyDown('m'))
 		{
-			miniMap.sprite.visible = true;
-			miniMap.sprite.depth = 1500;
-			miniMap.update();
-			miniMap.show();
+			// miniMap.sprite.visible = true;
+			// miniMap.sprite.depth = 1500;
+			// miniMap.update();
+			// miniMap.show();
+			camera.zoom = 0.3;
 			deleteHud();
 			hudNeedReset = true;
 
@@ -649,8 +616,9 @@ function drawGame()
 				hudNeedReset = false;
 
 			}
-			miniMap.sprite.visible = false;
-			miniMap.delete();
+			// miniMap.sprite.visible = false;
+			// miniMap.delete();
+			camera.zoom = 1;
 			drawHud();
 		}
 
@@ -696,31 +664,23 @@ function drawGame()
 	}
 
 
-//
-//
-//
-//
-	// var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
-	// var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
-	//
-	// var rightX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
-	// var rightY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
-	//
-	// textSize(6);
-	// stroke("red");
-	// strokeWeight(2);
-	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, leftX, leftY);
-	// text("L", leftX, leftY);
-	//
-	// stroke("blue");
-	// strokeWeight(2);
-	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
-	// text("R", rightX, rightY);
-//
-// 	// stroke("grey");
-// 	// strokeWeight(1);
-// 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
-//
+
+
+
+	// stroke("grey");
+	// strokeWeight(1);
+	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
+
+	if(time == 0){
+		noLoop();
+		textSize(80);
+		textAlign(CENTER);
+		text("Press 'R' \n to return to the title screen.", camera.position.x, camera.position.y);
+		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
+
+	}
+
+
 }
 
 
