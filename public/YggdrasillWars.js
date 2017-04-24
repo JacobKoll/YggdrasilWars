@@ -108,6 +108,8 @@ var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
 
+var hudNeedReset = false;
+
 
 function preloadGameAssets()
 {
@@ -158,7 +160,7 @@ function preloadGameAssets()
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
 {
-	// NOTE: Goblin is still global 
+	// NOTE: Goblin is still global
 	goblin = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
@@ -176,7 +178,7 @@ function assignTypes()
 		stamina: 120,
 		staminaRate: 2,
 		health: 135,
-		speed: 3,		
+		speed: 3,
 		scale: 1,
 		damage: 1.2,
 		spriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}
@@ -223,7 +225,7 @@ function assignTypes()
 		swingAnimation: mercSwingAnimation,
 		stamina: 145,
 		staminaRate: 2,
-		health: 125, 
+		health: 125,
 		speed: 3.2,
 		scale: 1.5,
 		damage: 1.15,
@@ -400,7 +402,7 @@ function setupGame()
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
-	time = 7;
+	time = 120;
 	counter=setInterval(timer, 1000);
 	setChestsCode();
 	
@@ -411,6 +413,13 @@ function mouseReleased(){
 	swordSound.stop();
 }
 
+function keyPressed(){
+	if(keyCode == 82 && time == 0){
+		loop();
+		location.reload();
+	}
+
+}
 
 function drawGame()
 {	
@@ -489,9 +498,6 @@ function drawGame()
 		}
 
 
-	 	
-
-
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -545,18 +551,7 @@ function drawGame()
 		}
 
 		localFighter.update(enemyGroup);
-		
-		for (var i=0; i<chestArr.length; i++)
-		{
-			localFighter.sprite.collide(chestArr[i].sprite);
 
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
-				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
-
-			}
-		}
 
 	}
 	else
@@ -590,7 +585,7 @@ function drawGame()
 		}
 		else if(keyDown(190))
 		{
-			camera.zoom = 0.4;
+			camera.zoom = 0.3;
 		}
 		else
 		{
@@ -627,8 +622,47 @@ function drawGame()
 
 	if(isPlayer)
 	{
-		drawHud();
-	
+		if(keyWentDown('m'))
+	 	{
+			miniMap.createDots(enemyGroup);
+		}
+		if(keyDown('m'))
+		{
+			miniMap.sprite.visible = true;
+			miniMap.sprite.depth = 1500;
+			miniMap.update();
+			miniMap.show();
+			deleteHud();
+			hudNeedReset = true;
+
+		}
+		else {
+			if(hudNeedReset){
+				createHud();
+				hudNeedReset = false;
+
+			}
+			miniMap.sprite.visible = false;
+			miniMap.delete();
+			drawHud();
+		}
+
+		for (var i=0; i<chestArr.length; i++)
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
+
+
+
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+
+			}
+		}
+	}
+
+
 	if(keyWentDown('p'))
 	{
 		partyScreen.draw();
@@ -654,29 +688,7 @@ function drawGame()
 		partyScreen.delete();
 	}
 
-	if(keyWentDown('m'))
-	 	{
-			miniMap.createDots(enemyGroup);
-		}
-
-		if(keyDown('m'))
-		{
-			console.log("Showing map");
-
-			miniMap.sprite.visible = true;
-			miniMap.update();
-			miniMap.show();
-		}
-
-		else{
-
-
-
-			miniMap.sprite.visible = false;
-			miniMap.delete();
-
-		}
-
+	
 	for (var i=0; i<chestArr.length; i++)
 	{
 		localFighter.sprite.collide(chestArr[i].sprite);
@@ -707,19 +719,45 @@ function drawGame()
 	strokeWeight(2);
 	line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
 	text("R", rightX, rightY);	
-}	
+	
 	// stroke("grey");
 	// strokeWeight(1);
 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
 
 	if(time == 0){
+		noLoop();
 		textSize(80);
-		text("Press 'R' to return to the title screen.", localFighter.sprite.position.x, localFighter.sprite.position.y);
-		if(keyDown('r')){
-		location.reload();
-	}
+		textAlign(CENTER);
+		text("Press 'R' \n to return to the title screen.", camera.position.x, camera.position.y);
+		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
+
 	}
 
+//
+//
+//
+//
+	// var leftX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
+	// var leftY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.rightCone));
+	//
+	// var rightX = localFighter.sprite.position.x + localFighter.sprite.sword.collider.radius * cos(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
+	// var rightY = localFighter.sprite.position.y + localFighter.sprite.sword.collider.radius * sin(radians(localFighter.sprite.rotation) - radians(localFighter.sprite.sword.leftCone));
+	//
+	// textSize(6);
+	// stroke("red");
+	// strokeWeight(2);
+	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, leftX, leftY);
+	// text("L", leftX, leftY);
+	//
+	// stroke("blue");
+	// strokeWeight(2);
+	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, rightX, rightY);
+	// text("R", rightX, rightY);
+//
+// 	// stroke("grey");
+// 	// strokeWeight(1);
+// 	// line(localFighter.sprite.position.x, localFighter.sprite.position.y, camera.mouseX, camera.mouseY);
+//
 }
 
 

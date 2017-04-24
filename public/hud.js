@@ -119,6 +119,15 @@ function restoreStaminaWidth(){
   }
 
 }
+function deleteHud(){
+  emptyHealthBar.remove();
+  fullHealthBar.remove();
+  emptyStaminaBar.remove();
+  fullStaminaBar.remove();
+  itemSelectedSprite.remove();
+  itemsBar.removeSprites();
+
+}
 
 function drawHud()
 {

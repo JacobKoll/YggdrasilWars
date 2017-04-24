@@ -45,6 +45,8 @@ function Enemy(x, y, type)
 	this.sprite.scale = .62
 
 	this.playerToChase;
+
+	this.sprite.bar.depth = 150;
 }
 
 /**
