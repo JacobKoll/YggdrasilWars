@@ -170,6 +170,18 @@ function setupGame()
 		spawnerArray.push(spawner);
 	}
 
+	socket.on('newChest', function(newChestData){
+		var cheDepth = 1300 + chestArr.length;
+		var chest = new Chest(newChestData.x, newChestData.y, openChest, closedChest, tempUnlockCode,3);
+		chest.setUnlockCode();
+		chest.sprite.depth = cheDepth;
+		chestArr.push(chest);
+		chestGroup.add(chest.sprite);
+		chest.sprite.scale = .5;
+		cheDepth++;
+		console.log("Received Chest");
+	});
+
 	socket.on('updateObstacles', function(data) {
 		var obsDepth = 1000;
 		if (initializedObs == 0) {
@@ -187,21 +199,29 @@ function setupGame()
 	});
 
 	socket.on('updateChests', function(chestData) {
-		var cheDepth = 1300;
-		if (initializedChe == 0){
-			console.log("Recieved Chests");
-			for (i=0; i<chestData.length; i++) {
-				var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
-				chest.setUnlockCode();
-				chest.sprite.depth = cheDepth;
-				chestArr.push(chest);
-				chestGroup.add(chest.sprite);
-				chest.sprite.scale = .5;
-				cheDepth++;
+		for (var i=0; i<chestArr.length; i++) {
+			if (chestData[i].isOpen == true) {
+				chestArr[i].setOpen();
 			}
-			initializedChe = 1;
 		}
 	});
+
+	// socket.on('updateChests', function(chestData) {
+	// 	var cheDepth = 1300 + chestArr.length;
+	// 	if (initializedChe == 0){
+	// 		var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
+	// 		chest.setUnlockCode();
+	// 		chest.sprite.depth = cheDepth;
+	// 		chestArr.push(chest);
+	// 		chestGroup.add(chest.sprite);
+	// 		chest.sprite.scale = .5;
+	// 		cheDepth++;
+	// 		//console.log("Recieved Chests");
+	// 		for (i=0; i<chestData.length; i++) {
+	// 		}
+	// 		initializedChe = 1;
+	// 	}
+	// });
 
 
 
@@ -475,9 +495,36 @@ function drawGame()
 
 			}
 		}
-	}
 
+		if(keyWentDown('p'))
+		{
+			partyScreen.draw();
+		}
 
+<<<<<<< HEAD
+		if(keyDown('p'))
+		{
+			partyScreen.show();
+			partyScreen.sprite.visible = true;
+
+			partyScreen.move(camera.position.x + 200,camera.position.y - 200);
+			text("Character", camera.position.x - 400, camera.position.y - 250);
+			text("Health", camera.position.x + 130, camera.position.y - 250);
+			text("Points", camera.position.x - 100, camera.position.y-250);
+			partyScreen.addNames(fighterArray);
+			partyScreen.addPoints(fighterArray);
+		}
+		else
+		{
+			partyScreen.sprite.visible = false;
+			partyScreen.delete();
+		}
+		
+		for (var i=0; i<chestArr.length; i++)
+		{
+			localFighter.sprite.collide(chestArr[i].sprite);
+
+=======
 	if(keyWentDown('p'))
 	{
 		partyScreen.draw();
@@ -500,10 +547,19 @@ function drawGame()
 		partyScreen.sprite.visible = false;
 		partyScreen.delete();
 	}
+>>>>>>> 68dfc85fef97fcf2fc8dbff5cbb9f4b4d4a6e3ed
 
 
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
 
+			}
+		}
 
+		updateClient();
+	}
 
 	// stroke("grey");
 	// strokeWeight(1);
@@ -546,4 +602,17 @@ function borderCamera()
 	{
 		camera.position.x = SCENE_W	- (width * 1/camera.zoom)/2;
 	}
+}
+
+function updateClient() {
+	var chestData = [];
+	for (var i=0; i<chestArr.length; i++) {
+		chestData[i] = chestArr[i].isOpen;
+	}
+
+	var gameData = {
+		chests: chestData
+	}
+
+	socket.emit('updateClient', gameData);
 }
