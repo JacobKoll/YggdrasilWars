@@ -1,4 +1,3 @@
-
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
@@ -27,7 +26,7 @@ var calvaryWalkAnimation;
 var calvarySwingAnimation;
 var calvaryIdleAnimation;
 
-var time = 7;
+var time;
 var counter;
 
 var customCursor;
@@ -60,6 +59,7 @@ var obstacleGroup;
 var chestGroup;
 var spawnerGroup;
 var enemySymbols;
+var greenDotGroup;
 
 var enemyArray = [];
 var fighterArray = [];
@@ -276,6 +276,7 @@ function setupGame()
 	spawnerGroup = new Group();
 	enemySymbols = new Group();
 	healthBars = new Group();
+	greenDotGroup = new Group();
 
 	// becomePlayer();
 	// becomeSpectator();
@@ -310,7 +311,7 @@ function setupGame()
 	testSpawner.sprite.depth = 1;
 	spawnerArray.push(testSpawner);
 	testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 1, spawnerImage);
-	testSpawner2.sprite.depth = 1;
+	testSpawner2.sprite.depth = 2;
 	spawnerArray.push(testSpawner2);
 
 
@@ -368,12 +369,24 @@ function mouseReleased(){
 }
 
 function keyPressed(){
-	if(keyCode == 82 && time == 0){
+
+if(keyCode == 82 && time == 0){
 		loop();
 		location.reload();
 	}
 
+
+
 }
+
+function keyReleased(){
+ if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
+	galloping.stop();
+	footsteps.stop();
+	
+}
+}
+
 
 function drawGame()
 {	
@@ -430,28 +443,75 @@ function drawGame()
 					}
 				}
 			}
-		}
-
-
-
+		}	
 		if(keyDown('w'))
 		{
 			localFighter.walk("up");
 		}
+		if(keyWentDown('w')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+		}
+		}
+		
 		if(keyDown('s'))
 		{
+			
 			localFighter.walk("down");
 		}
+		if(keyWentDown('s')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+			}
+		}
+		
+
 		if(keyDown('a'))
 		{
 			localFighter.walk("left");
 		}
+		if(keyWentDown('a')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+			}
+		}
+		
+
 		if(keyDown('d'))
 		{
+			
 			localFighter.walk("right");
 		}
+		if(keyWentDown('d')){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(globalType == "Calvary"){
+					galloping.loop();
+				}
+			else{
+				footsteps.loop();
+			}
+			}
+		}
 
-
+		if(mouseDown(LEFT) && time < 120 && !swordSound.isPlaying()){
+			swordSound.play();
+		}
+	
 		if(keyWentDown(49))
 		{
 			localFighter.itemSelected = 0;
@@ -585,6 +645,7 @@ function drawGame()
 			miniMap.sprite.depth = 1500;
 			miniMap.update();
 			miniMap.show();
+			miniMap.move(camera.position.x - (width/2),  camera.position.y - (height/2));
 			deleteHud();
 			hudNeedReset = true;
 
@@ -670,10 +731,8 @@ function drawGame()
 		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
 
 	}
-
-
+	
 }
-
 
 function borderCamera()
 {

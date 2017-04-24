@@ -31,6 +31,7 @@
 
  var footsteps;
  var swordSound;
+ var galloping;
 
  var cursorSprite;
 
@@ -144,6 +145,7 @@ function preload()
 
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
+	galloping = loadSound("assets/sounds/Galloping.wav");
 
 	forest = loadImage("assets/obstacles/forest.png");
 }
