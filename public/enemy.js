@@ -42,7 +42,9 @@ function Enemy(x, y, type)
 
 	this.turnCounter = 0;
 
-	this.sprite.scale = .62
+	this.sprite.scale = type.scale;
+
+	this.sprite.friction = type.friction;
 
 	this.playerToChase;
 

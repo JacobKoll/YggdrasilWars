@@ -74,6 +74,7 @@ function changeItemPosition(xPos,yPos){
 function reduceHealthWidth(newWidth){
 
   fullHealthBar.width -= newWidth;
+  
   if(fullHealthBar.width <= 0){
     fullHealthBar.width = 0;
 
@@ -84,9 +85,7 @@ function reduceHealthWidth(newWidth){
 function reduceStaminaWidth(){
 
 
-
   fullStaminaBar.width -= localFighter.sprite.staminaRate;
-
 
   if(fullStaminaBar.width < 0){
     fullStaminaBar.width = 0;
@@ -111,7 +110,7 @@ function restoreHealthWidth(){
 
 function restoreStaminaWidth(){
 
-  fullStaminaBar.width += .5;
+  fullStaminaBar.width += .7;
   if(fullStaminaBar.width > localFighter.sprite.maxStamina){
     fullStaminaBar.width = localFighter.sprite.maxStamina;
 

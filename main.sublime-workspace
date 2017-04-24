@@ -4,12 +4,92 @@
 		"selected_items":
 		[
 			[
-				"int",
-				"int32_t"
+				"lastI",
+				"lastIndex"
+			],
+			[
+				"chara",
+				"characterImages"
+			],
+			[
+				"char",
+				"characterImages"
+			],
+			[
+				"cure",
+				"currentSprite"
+			],
+			[
+				"selec",
+				"selectButton"
+			],
+			[
+				"draw",
+				"drawGame"
+			],
+			[
+				"se",
+				"setupGame"
+			],
+			[
+				"prel",
+				"preloadGameAssets"
+			],
+			[
+				"menu",
+				"menuChoice"
+			],
+			[
+				"titleS",
+				"titleScreenImage"
+			],
+			[
+				"t",
+				"titleImage"
+			],
+			[
+				"title",
+				"titleScreenFinished"
+			],
+			[
+				"sle",
+				"selectedCharacter"
+			],
+			[
+				"right",
+				"rightPosX"
+			],
+			[
+				"left",
+				"leftPosX"
+			],
+			[
+				"image",
+				"imageArray"
+			],
+			[
+				"current",
+				"currentSprite"
+			],
+			[
+				"ch",
+				"characterImages"
+			],
+			[
+				"for",
+				"for\tfor (…) {…}"
 			],
 			[
 				"c",
-				"const"
+				"characterImages"
+			],
+			[
+				"curren",
+				"currentSprite"
+			],
+			[
+				"int",
+				"int32_t"
 			],
 			[
 				"di",
@@ -216,36 +296,67 @@
 	"buffers":
 	[
 		{
+			"file": "public/pregamescreens.js",
+			"settings":
+			{
+				"buffer_size": 2568,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "public/fighter.js",
 			"settings":
 			{
-				"buffer_size": 3877,
-				"encoding": "UTF-8",
+				"buffer_size": 4118,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/screenelements.js",
+			"file": "public/enemy.js",
 			"settings":
 			{
-				"buffer_size": 1000,
+				"buffer_size": 5373,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/hud.js",
+			"file": "public/map_objects.js",
 			"settings":
 			{
-				"buffer_size": 2938,
-				"encoding": "UTF-8",
+				"buffer_size": 2349,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/inventory.js",
+			"file": "public/mainmenu.js",
 			"settings":
 			{
-				"buffer_size": 1045,
+				"buffer_size": 1055,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/partyScreen.js",
+			"settings":
+			{
+				"buffer_size": 1974,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/index.html",
+			"settings":
+			{
+				"buffer_size": 1341,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/preparationscreen.js",
+			"settings":
+			{
+				"buffer_size": 2987,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -254,35 +365,56 @@
 			"file": "public/YggdrasillWars.js",
 			"settings":
 			{
-				"buffer_size": 10768,
-				"encoding": "UTF-8",
+				"buffer_size": 16634,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/pregamescreens.js",
+			"file": "README",
 			"settings":
 			{
-				"buffer_size": 600,
+				"buffer_size": 634,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/preparationscreen.js",
+			"file": "public/minimap.js",
 			"settings":
 			{
-				"buffer_size": 1273,
-				"encoding": "UTF-8",
+				"buffer_size": 7795,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/index.html",
+			"contents": "#include \"move.h\"\n\n#include <unistd.h>\n#include <stdlib.h>\n#include <assert.h>\n\n#include \"dungeon.h\"\n#include \"heap.h\"\n#include \"move.h\"\n#include \"npc.h\"\n#include \"pc.h\"\n#include \"character.h\"\n#include \"utils.h\"\n#include \"path.h\"\n#include \"event.h\"\n#include \"io.h\"\n#include \"object.h\"\n\nvoid do_combat(dungeon_t *d, character *atk, character *def)\n{\n  uint32_t damage, i;\n\n  if (character_is_alive(def)) {\n    if (atk != d->PC) \n    {\n      damage = atk->damage->roll();\n      io_queue_message(\"The %s hits you for %d.\", atk->name, damage);\n    } \n    else \n    {\n      for (i = damage = 0; i < num_eq_slots; i++) {\n        if (i == eq_slot_weapon && !d->PC->eq[i]) {\n          damage += atk->damage->roll();\n        } else if (d->PC->eq[i]) {\n          damage += d->PC->eq[i]->roll_dice();\n        }\n      }\n      io_queue_message(\"You hit the %s for %d.\", def->name, damage);\n    }\n\n    if (damage >= def->hp) {\n      if (atk != d->PC) {\n        io_queue_message(\"You die.\");\n        io_queue_message(\"\"); /* Extra message to force pause on \"more\" */\n      } else {\n        io_queue_message(\"The %s dies.\", def->name);\n      }\n      def->hp = 0;\n      def->alive = 0;\n      character_increment_dkills(atk);\n      character_increment_ikills(atk, (character_get_dkills(def) +\n                                       character_get_ikills(def)));\n      if (def != d->PC) {\n        d->num_monsters--;\n      }\n      charpair(def->position) = NULL;\n    } else {\n      def->hp -= damage;\n    }\n\n    if (def != d->PC) {\n      d->num_monsters--;\n    }\n  }\n}\n\nvoid move_character(dungeon_t *d, character *c, pair_t next)\n{\n    pair_t displacement;\n  uint32_t found_cell;\n  pair_t order[9] = {\n    { -1, -1 },\n    { -1,  0 },\n    { -1,  1 },\n    {  0, -1 },\n    {  0,  0 },\n    {  0,  1 },\n    {  1, -1 },\n    {  1,  0 },\n    {  1,  1 },\n  };\n  uint32_t s, i;\n\n  if (charpair(next) &&\n      ((next[dim_y] != c->position[dim_y]) ||\n       (next[dim_x] != c->position[dim_x]))) {\n    if ((charpair(next) == d->PC) ||\n        c == d->PC) {\n      do_combat(d, c, charpair(next));\n    } else {\n      /* Easiest way for a monster to displace another monster is *\n       * to swap them.  This could lead to some strangeness where *\n       * two monsters of the exact same speed continually         *\n       * displace each other and never make progress, but I don't *\n       * have any real problem with that.  When we have better    *\n       * game balance, weaker monsters should not be able to      *\n       * displace stronger monsters.                              */\n      /* Turns out I don't like swapping them after all.  We'll   *\n       * instead select a random square from the 8 surrounding    *\n       * the target cell.  Keep doing it until either we swap or  *\n       * find an empty one for the displacement.                  */\n      for (s = rand() % 9, found_cell = i = 0;\n           i < 9 && !found_cell; i++) {\n        displacement[dim_y] = next[dim_y] + order[s % 9][dim_y];\n        displacement[dim_x] = next[dim_x] + order[s % 9][dim_x];\n        if (((npc *) charpair(next))->characteristics & NPC_PASS_WALL) {\n          if (!charpair(displacement) ||\n              (charpair(displacement) == c)) {\n            found_cell = 1;\n          }\n        } else {\n          if ((!charpair(displacement) &&\n               (mappair(displacement) >= ter_floor)) ||\n              (charpair(displacement) == c)) {\n            found_cell = 1;\n          }\n        }\n      }\n\n      if (!found_cell) {\n        return;\n      }\n\n      assert(charpair(next));\n\n      charpair(c->position) = NULL;\n      charpair(displacement) = charpair(next);\n      charpair(next) = c;\n      charpair(displacement)->position[dim_y] = displacement[dim_y];\n      charpair(displacement)->position[dim_x] = displacement[dim_x];\n      c->position[dim_y] = next[dim_y];\n      c->position[dim_x] = next[dim_x];\n    }\n  } else {\n    /* No character in new position. */\n\n    d->character_map[c->position[dim_y]][c->position[dim_x]] = NULL;\n    c->position[dim_y] = next[dim_y];\n    c->position[dim_x] = next[dim_x];\n    d->character_map[c->position[dim_y]][c->position[dim_x]] = c;\n  }\n\n  if (c == d->PC) {\n    pc_reset_visibility((pc *) c);\n    pc_observe_terrain((pc *) c, d);\n  }\n}\n\nvoid do_moves(dungeon_t *d)\n{\n  pair_t next;\n  character *c;\n  event_t *e;\n\n  /* Remove the PC when it is PC turn.  Replace on next call.  This allows *\n   * use to completely uninit the heap when generating a new level without *\n   * worrying about deleting the PC.                                       */\n\n  if (pc_is_alive(d)) {\n    /* The PC always goes first one a tie, so we don't use new_event().  *\n     * We generate one manually so that we can set the PC sequence       *\n     * number to zero.                                                   */\n    e = (event_t *) malloc(sizeof (*e));\n    e->type = event_character_turn;\n    /* The next line is buggy.  Monsters get first turn before PC.  *\n     * Monster gen code always leaves PC in a monster-free room, so *\n     * not a big issue, but it needs a better solution.             */\n    e->time = d->time + (1000 / character_get_speed(d->PC));\n    e->sequence = 0;\n    e->c = d->PC;\n    heap_insert(&d->events, e);\n  }\n\n  while (pc_is_alive(d) &&\n         (e = (event_t *) heap_remove_min(&d->events)) &&\n         ((e->type != event_character_turn) || (e->c != d->PC))) {\n    d->time = e->time;\n    if (e->type == event_character_turn) {\n      c = e->c;\n    }\n    if (!character_is_alive(c)) {\n      if (d->character_map[character_get_y(c)][character_get_x(c)] == c) {\n        d->character_map[character_get_y(c)][character_get_x(c)] = NULL;\n      }\n      if (c != d->PC) {\n        event_delete(e);\n      }\n      continue;\n    }\n\n    npc_next_pos(d, (npc *) c, next);\n    move_character(d, c, next);\n\n    heap_insert(&d->events, update_event(d, e, 1000 / character_get_speed(c)));\n  }\n\n  io_display(d);\n  if (pc_is_alive(d) && e->c == d->PC) {\n    c = e->c;\n    d->time = e->time;\n    /* Kind of kludgey, but because the PC is never in the queue when   *\n     * we are outside of this function, the PC event has to get deleted *\n     * and recreated every time we leave and re-enter this function.    */\n    e->c = NULL;\n    event_delete(e);\n    io_handle_input(d);\n  }\n}\n\nvoid dir_nearest_wall(dungeon_t *d, character *c, pair_t dir)\n{\n  dir[dim_x] = dir[dim_y] = 0;\n\n  if (character_get_x(c) != 1 && character_get_x(c) != DUNGEON_X - 2) {\n    dir[dim_x] = (character_get_x(c) > DUNGEON_X - character_get_x(c) ? 1 : -1);\n  }\n  if (character_get_y(c) != 1 && character_get_y(c) != DUNGEON_Y - 2) {\n    dir[dim_y] = (character_get_y(c) > DUNGEON_Y - character_get_y(c) ? 1 : -1);\n  }\n}\n\nuint32_t against_wall(dungeon_t *d, character *c)\n{\n  return ((mapxy(character_get_x(c) - 1,\n                 character_get_y(c)    ) == ter_wall_immutable) ||\n          (mapxy(character_get_x(c) + 1,\n                 character_get_y(c)    ) == ter_wall_immutable) ||\n          (mapxy(character_get_x(c)    ,\n                 character_get_y(c) - 1) == ter_wall_immutable) ||\n          (mapxy(character_get_x(c)    ,\n                 character_get_y(c) + 1) == ter_wall_immutable));\n}\n\nuint32_t in_corner(dungeon_t *d, character *c)\n{\n  uint32_t num_immutable;\n\n  num_immutable = 0;\n\n  num_immutable += (mapxy(character_get_x(c) - 1,\n                          character_get_y(c)    ) == ter_wall_immutable);\n  num_immutable += (mapxy(character_get_x(c) + 1,\n                          character_get_y(c)    ) == ter_wall_immutable);\n  num_immutable += (mapxy(character_get_x(c)    ,\n                          character_get_y(c) - 1) == ter_wall_immutable);\n  num_immutable += (mapxy(character_get_x(c)    ,\n                          character_get_y(c) + 1) == ter_wall_immutable);\n\n  return num_immutable > 1;\n}\n\n\nstatic void new_dungeon_level(dungeon_t *d, uint32_t dir)\n{\n  /* Eventually up and down will be independantly meaningful. *\n   * For now, simply generate a new dungeon.                  */\n\n  switch (dir) {\n  case '<':\n  case '>':\n    new_dungeon(d);\n    break;\n  default:\n    break;\n  }\n}\n\n\nuint32_t move_pc(dungeon_t *d, uint32_t dir)\n{\n  pair_t next;\n  uint32_t was_stairs = 0;\n\n  next[dim_y] = character_get_y(d->PC);\n  next[dim_x] = character_get_x(d->PC);\n\n\n  switch (dir) {\n  case 1:\n  case 2:\n  case 3:\n    next[dim_y]++;\n    break;\n  case 4:\n  case 5:\n  case 6:\n    break;\n  case 7:\n  case 8:\n  case 9:\n    next[dim_y]--;\n    break;\n  }\n  switch (dir) {\n  case 1:\n  case 4:\n  case 7:\n    next[dim_x]--;\n    break;\n  case 2:\n  case 5:\n  case 8:\n    break;\n  case 3:\n  case 6:\n  case 9:\n    next[dim_x]++;\n    break;\n  case '<':\n    if (mappair(character_get_pos(d->PC)) == ter_stairs_up) {\n      was_stairs = 1;\n      new_dungeon_level(d, '<');\n    }\n    break;\n  case '>':\n    if (mappair(character_get_pos(d->PC)) == ter_stairs_down) {\n      was_stairs = 1;\n      new_dungeon_level(d, '>');\n    }\n    break;\n  }\n\n  if (was_stairs) {\n    return 0;\n  }\n\n  if ((dir != '>') && (dir != '<') && (mappair(next) >= ter_floor)) {\n    move_character(d, d->PC, next);\n    io_update_offset(d);\n    dijkstra(d);\n    dijkstra_tunnel(d);\n    d->PC->pick_up(d);\n\n    return 0;\n  }\n\n  return 1;\n}\n",
+			"file": "/C/Users/Owner/Desktop/cs327/assignment2/move.cpp",
+			"file_size": 9186,
+			"file_write_time": 131365674710000000,
 			"settings":
 			{
-				"buffer_size": 1461,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
+				"buffer_size": 9201,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#include <unistd.h>\n#include <ncurses.h>\n#include <ctype.h>\n#include <stdlib.h>\n\n#include \"io.h\"\n#include \"move.h\"\n#include \"path.h\"\n#include \"pc.h\"\n#include \"utils.h\"\n#include \"dungeon.h\"\n#include \"object.h\"\n\n/* Same ugly hack we did in path.c */\nstatic dungeon_t *dungeon;\n\ntypedef struct battleMessages\n{\n\n}; \n\nstatic io_message_t *io_head, *io_tail;\n\nvoid io_init_terminal(void)\n{\n  initscr();\n  raw();\n  noecho();\n  curs_set(0);\n  keypad(stdscr, TRUE);\n  start_color();\n  init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);\n  init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);\n  init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);\n  init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);\n  init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);\n  init_pair(COLOR_CYAN, COLOR_CYAN, COLOR_BLACK);\n  init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);\n}\n\nvoid io_reset_terminal(void)\n{\n  endwin();\n\n  while (io_head) {\n    io_tail = io_head;\n    io_head = io_head->next;\n    free(io_tail);\n  }\n  io_tail = NULL;\n}\n\nvoid io_queue_message(const char *format, ...)\n{\n  io_message_t *tmp;\n  va_list ap;\n\n  if (!(tmp = (io_message_t *) malloc(sizeof (*tmp)))) {\n    perror(\"malloc\");\n    exit(1);\n  }\n\n  tmp->next = NULL;\n\n  va_start(ap, format);\n\n  vsnprintf(tmp->msg, sizeof (tmp->msg), format, ap);\n\n  va_end(ap);\n\n  if (!io_head) {\n    io_head = io_tail = tmp;\n  } else {\n    io_tail->next = tmp;\n    io_tail = tmp;\n  }\n}\n\nstatic void io_print_message_queue(uint32_t y, uint32_t x)\n{\n  while (io_head) {\n    io_tail = io_head;\n    attron(COLOR_PAIR(COLOR_CYAN));\n    mvprintw(y, x, \"%-80s\", io_head->msg);\n    attroff(COLOR_PAIR(COLOR_CYAN));\n    io_head = io_head->next;\n    if (io_head) {\n      attron(COLOR_PAIR(COLOR_CYAN));\n      mvprintw(y, x + 70, \"%10s\", \" --more-- \");\n      attroff(COLOR_PAIR(COLOR_CYAN));\n      refresh();\n      getch();\n    }\n    free(io_tail);\n  }\n  io_tail = NULL;\n}\n\n/* Possible offsets:\n *   ( 0,  0), (20,  0), (40,  0), (60,  0), (80,  0) *\n *   ( 0,  7), (20,  7), (40,  7), (60,  7), (80,  7) *\n *   ( 0, 14), (20, 14), (40, 14), (60, 14), (80, 14) *\n *   ( 0, 21), (20, 21), (40, 21), (60, 21), (80, 21) *\n *   ( 0, 28), (20, 28), (40, 28), (60, 28), (80, 28) *\n *   ( 0, 35), (20, 35), (40, 35), (60, 35), (80, 35) *\n *   ( 0, 42), (20, 42), (40, 42), (60, 42), (80, 42) *\n *   ( 0, 49), (20, 49), (40, 49), (60, 49), (80, 49) *\n *   ( 0, 56), (20, 56), (40, 56), (60, 56), (80, 56) *\n *   ( 0, 63), (20, 63), (40, 63), (60, 63), (80, 63) *\n *   ( 0, 70), (20, 70), (40, 70), (60, 70), (80, 70) *\n *   ( 0, 77), (20, 77), (40, 77), (60, 77), (80, 77) *\n *   ( 0, 84), (20, 84), (40, 84), (60, 84), (80, 84) */\n\nvoid io_calculate_offset(dungeon_t *d)\n{\n  d->io_offset[dim_x] = ((character_get_x(d->PC) - 10) / 20) * 20;\n  if (d->io_offset[dim_x] < 0) {\n    d->io_offset[dim_x] = 0;\n  }\n  if (d->io_offset[dim_x] > 80) {\n    d->io_offset[dim_x] = 80;\n  }\n  d->io_offset[dim_y] = ((character_get_y(d->PC) - 4) / 7) * 7;\n  if (d->io_offset[dim_y] < 0) {\n    d->io_offset[dim_y] = 0;\n  }\n  if (d->io_offset[dim_y] > 84) {\n    d->io_offset[dim_y] = 84;\n  }\n}\n\nvoid io_update_offset(dungeon_t *d)\n{\n  int32_t x, y;\n\n  x = (40 + d->io_offset[dim_x]) - character_get_x(d->PC);\n  y = (11 + d->io_offset[dim_y]) - character_get_y(d->PC);\n\n  if (x >= 15 && d->io_offset[dim_x]) {\n    d->io_offset[dim_x] -= 20;\n  }\n  if (x <= -15 && d->io_offset[dim_x] != 80) {\n    d->io_offset[dim_x] += 20;\n  }\n  if (y >= 5 && d->io_offset[dim_y]) {\n    d->io_offset[dim_y] -= 7;\n  }\n  if (y <= -5 && d->io_offset[dim_y] != 84) {\n    d->io_offset[dim_y] += 7;\n  }\n}\n\nvoid io_display_tunnel(dungeon_t *d)\n{\n  uint32_t y, x;\n  clear();\n  for (y = 0; y < DUNGEON_Y; y++) {\n    for (x = 0; x < DUNGEON_X; x++) {\n      mvaddch(y + 1, x, '0' + (d->pc_tunnel[y][x] % 10));\n    }\n  }\n  refresh();\n}\n\nvoid io_display_distance(dungeon_t *d)\n{\n  uint32_t y, x;\n  clear();\n  for (y = 0; y < DUNGEON_Y; y++) {\n    for (x = 0; x < DUNGEON_X; x++) {\n      mvaddch(y + 1, x, '0' + (d->pc_distance[y][x] % 10));\n    }\n  }\n  refresh();\n}\n\nstatic char hardness_to_char[] =\n  \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\";\n\nvoid io_display_hardness(dungeon_t *d)\n{\n  uint32_t y, x;\n  clear();\n  for (y = 0; y < DUNGEON_Y; y++) {\n    for (x = 0; x < DUNGEON_X; x++) {\n      /* Maximum hardness is 255.  We have 62 values to display it, but *\n       * we only want one zero value, so we need to cover [1,255] with  *\n       * 61 values, which gives us a divisor of 254 / 61 = 4.164.       *\n       * Generally, we want to avoid floating point math, but this is   *\n       * not gameplay, so we'll make an exception here to get maximal   *\n       * hardness display resolution.                                   */\n      mvaddch(y + 1, x, (d->hardness[y][x]                             ?\n                         hardness_to_char[1 + (d->hardness[y][x] / 5)] :\n                         '0'));\n    }\n  }\n  refresh();\n}\n\nstatic void io_redisplay_visible_monsters(dungeon_t *d)\n{\n  /* This was initially supposed to only redisplay visible monsters.  After *\n   * implementing that (comparitivly simple) functionality and testing, I   *\n   * discovered that it resulted to dead monsters being displayed beyond    *\n   * their lifetimes.  So it became necessary to implement the function for *\n   * everything in the light radius.  In hindsight, it would be better to   *\n   * keep a static array of the things in the light radius, generated in    *\n   * io_display() and referenced here to accelerate this.  The whole point  *\n   * of this is to accelerate the rendering of multi-colored monsters, and  *\n   * it is *significantly* faster than that (it eliminates flickering       *\n   * artifacts), but it's still significantly slower than it could be.  I   *\n   * will revisit this in the future to add the acceleration matrix.        */\n  pair_t pc_offset;\n  pair_t pos;\n  uint32_t color;\n  uint32_t illuminated;\n\n  pc_offset[dim_y] = d->PC->position[dim_y] - d->io_offset[dim_y] + 1;\n  pc_offset[dim_x] = d->PC->position[dim_x] - d->io_offset[dim_x];\n  \n\n  for (pos[dim_y] = -PC_VISUAL_RANGE;\n       pos[dim_y] <= PC_VISUAL_RANGE;\n       pos[dim_y]++) {\n    for (pos[dim_x] = -PC_VISUAL_RANGE;\n         pos[dim_x] <= PC_VISUAL_RANGE;\n         pos[dim_x]++) {\n      if ((d->io_offset[dim_y] + pc_offset[dim_y] + pos[dim_y] < 0) ||\n          (d->io_offset[dim_y] + pc_offset[dim_y] + pos[dim_y] >= DUNGEON_Y) ||\n          (d->io_offset[dim_x] + pc_offset[dim_x] + pos[dim_x] < 0) ||\n          (d->io_offset[dim_x] + pc_offset[dim_x] + pos[dim_x] >= DUNGEON_X)) {\n        continue;\n      }\n      if ((illuminated = is_illuminated(d->PC,\n                                        d->io_offset[dim_y] +\n                                        pc_offset[dim_y]    +\n                                        pos[dim_y],\n                                        d->io_offset[dim_x] +\n                                        pc_offset[dim_x]    +\n                                        pos[dim_x]))) {\n        attron(A_BOLD);\n      }\n      if (d->character_map[d->io_offset[dim_y] +\n                           pc_offset[dim_y]    +\n                           pos[dim_y]]\n                          [d->io_offset[dim_x] +\n                           pc_offset[dim_x]    +\n                           pos[dim_x]]           &&\n          can_see(d,\n                  d->PC->position,\n                  d->character_map[d->io_offset[dim_y] +\n                                   pc_offset[dim_y] +\n                                   pos[dim_y]]\n                                  [d->io_offset[dim_x] +\n                                   pc_offset[dim_x] +\n                                   pos[dim_x]]->position,\n                  1, 0)) {\n        attron(COLOR_PAIR((color =\n                           d->character_map[d->io_offset[dim_y] +\n                                            pc_offset[dim_y] +\n                                            pos[dim_y]]\n                                           [d->io_offset[dim_x] +\n                                            pc_offset[dim_x] +\n                                            pos[dim_x]]->get_color())));\n        mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                pc_offset[dim_x] + pos[dim_x],\n                character_get_symbol(d->character_map[d->io_offset[dim_y] +\n                                                      pc_offset[dim_y] +\n                                                      pos[dim_y]]\n                                                     [d->io_offset[dim_x] +\n                                                      pc_offset[dim_x] +\n                                                      pos[dim_x]]));\n        attroff(COLOR_PAIR(color));\n      } else if (d->objmap[d->io_offset[dim_y] +\n                           pc_offset[dim_y]    +\n                           pos[dim_y]]\n                          [d->io_offset[dim_x] +\n                           pc_offset[dim_x]    +\n                           pos[dim_x]]                           &&\n                 (can_see(d,\n                          d->PC->position,\n                          d->objmap[d->io_offset[dim_y] +\n                                    pc_offset[dim_y] +\n                                    pos[dim_y]]\n                                   [d->io_offset[dim_x] +\n                                    pc_offset[dim_x] +\n                                    pos[dim_x]]->get_position(),\n                          1, 0)                                  ||\n                 d->objmap[d->io_offset[dim_y] +\n                                    pc_offset[dim_y] +\n                                    pos[dim_y]]\n                                   [d->io_offset[dim_x] +\n                                    pc_offset[dim_x] +\n                                    pos[dim_x]]->have_seen())) {\n        attron(COLOR_PAIR(d->objmap[d->io_offset[dim_y] +\n                                    pc_offset[dim_y]    +\n                                    pos[dim_y]]\n                                   [d->io_offset[dim_x] +\n                                    pc_offset[dim_x]    +\n                                    pos[dim_x]]->get_color()));\n        mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                pc_offset[dim_x] + pos[dim_x],\n                d->objmap[d->io_offset[dim_y] + pc_offset[dim_y] + pos[dim_y]]\n                         [d->io_offset[dim_x] +\n                          pc_offset[dim_x] +\n                          pos[dim_x]]->get_symbol());\n        attroff(COLOR_PAIR(d->objmap[d->io_offset[dim_y] +\n                                     pc_offset[dim_y]    +\n                                     pos[dim_y]]\n                                    [d->io_offset[dim_x] +\n                                     pc_offset[dim_x]    +\n                                     pos[dim_x]]->get_color()));\n      } else {\n        switch (pc_learned_terrain(d->PC,\n                                   d->io_offset[dim_y] +\n                                   pc_offset[dim_y] + pos[dim_y],\n                                   d->io_offset[dim_x] + pc_offset[dim_x] +\n                                   pos[dim_x])) {\n        case ter_wall:\n        case ter_wall_immutable:\n        case ter_unknown:\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], ' ');\n          break;\n        case ter_floor:\n        case ter_floor_room:\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], '.');\n          break;\n        case ter_floor_hall:\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], '#');\n          break;\n        case ter_debug:\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], '*');\n          break;\n        case ter_stairs_up:\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], '<');\n          break;\n        case ter_stairs_down:\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], '>');\n          break;\n        default:\n /* Use zero as an error symbol, since it stands out somewhat, and it's *\n  * not otherwise used.                                                 */\n          mvaddch(pc_offset[dim_y] + pos[dim_y] + 1,\n                  pc_offset[dim_x] + pos[dim_x], '0');\n        }\n      }\n      attroff(A_BOLD);\n    }\n  }\n\n  refresh();\n}\n\nvoid io_display(dungeon_t *d)\n{\n  pair_t pos;\n  uint32_t illuminated;\n  uint32_t color;\n\n  clear();\n  for (pos[dim_y] = 0; pos[dim_y] < 21; pos[dim_y]++) {\n    for (pos[dim_x] = 0; pos[dim_x] < 80; pos[dim_x]++) {\n      if ((illuminated = is_illuminated(d->PC,\n                                        d->io_offset[dim_y] + pos[dim_y],\n                                        d->io_offset[dim_x] + pos[dim_x]))) {\n        attron(A_BOLD);\n      }\n      if (d->character_map[d->io_offset[dim_y] + pos[dim_y]]\n                          [d->io_offset[dim_x] + pos[dim_x]] &&\n          can_see(d,\n                  character_get_pos(d->PC),\n                  character_get_pos(d->character_map[d->io_offset[dim_y] +\n                                                     pos[dim_y]]\n                                                    [d->io_offset[dim_x] +\n                                                     pos[dim_x]]), 1, 0)) {\n\n        attron(COLOR_PAIR((color =\n                           d->character_map[d->io_offset[dim_y] + pos[dim_y]]\n                                           [d->io_offset[dim_x] +\n                                            pos[dim_x]]->get_color())));\n        mvaddch(pos[dim_y] + 1, pos[dim_x],\n                character_get_symbol(d->character_map[d->io_offset[dim_y] +\n                                                      pos[dim_y]]\n                                                     [d->io_offset[dim_x] +\n                                                      pos[dim_x]]));\n        attroff(COLOR_PAIR(color));\n      } else if (d->objmap[d->io_offset[dim_y] + pos[dim_y]]\n                          [d->io_offset[dim_x] + pos[dim_x]] &&\n                 (d->objmap[d->io_offset[dim_y] + pos[dim_y]]\n                           [d->io_offset[dim_x] + pos[dim_x]]->have_seen() ||\n                  can_see(d, character_get_pos(d->PC), pos, 1, 0))) {\n        attron(COLOR_PAIR(d->objmap[d->io_offset[dim_y] + pos[dim_y]]\n                                   [d->io_offset[dim_x] +\n                                    pos[dim_x]]->get_color()));\n        mvaddch(pos[dim_y] + 1, pos[dim_x],\n                d->objmap[d->io_offset[dim_y] + pos[dim_y]]\n                         [d->io_offset[dim_x] + pos[dim_x]]->get_symbol());\n        attroff(COLOR_PAIR(d->objmap[d->io_offset[dim_y] + pos[dim_y]]\n                                    [d->io_offset[dim_x] +\n                                     pos[dim_x]]->get_color()));\n      } else {\n        switch (pc_learned_terrain(d->PC,\n                                   d->io_offset[dim_y] + pos[dim_y],\n                                   d->io_offset[dim_x] + pos[dim_x])) {\n        case ter_wall:\n        case ter_wall_immutable:\n        case ter_unknown:\n          mvaddch(pos[dim_y] + 1, pos[dim_x], ' ');\n          break;\n        case ter_floor:\n        case ter_floor_room:\n          mvaddch(pos[dim_y] + 1, pos[dim_x], '.');\n          break;\n        case ter_floor_hall:\n          mvaddch(pos[dim_y] + 1, pos[dim_x], '#');\n          break;\n        case ter_debug:\n          mvaddch(pos[dim_y] + 1, pos[dim_x], '*');\n          break;\n        case ter_stairs_up:\n          mvaddch(pos[dim_y] + 1, pos[dim_x], '<');\n          break;\n        case ter_stairs_down:\n          mvaddch(pos[dim_y] + 1, pos[dim_x], '>');\n          break;\n        default:\n /* Use zero as an error symbol, since it stands out somewhat, and it's *\n  * not otherwise used.                                                 */\n          mvaddch(pos[dim_y] + 1, pos[dim_x], '0');\n        }\n      }\n      if (illuminated) {\n        attroff(A_BOLD);\n      }\n    }\n  }\n\n  mvprintw(23, 0, \"PC position is (%3d,%2d); offset is (%3d,%2d).\",\n           character_get_x(d->PC), character_get_y(d->PC),\n           d->io_offset[dim_x], d->io_offset[dim_y]);\n\n  io_print_message_queue(0, 0);\n\n  refresh();\n}\n\nvoid io_look_mode(dungeon_t *d)\n{\n  int32_t key;\n\n  do {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_calculate_offset(d);\n      io_display(d);\n      return;\n    }\n    \n    switch (key) {\n    case '1':\n    case 'b':\n    case KEY_END:\n    case '2':\n    case 'j':\n    case KEY_DOWN:\n    case '3':\n    case 'n':\n    case KEY_NPAGE:\n      if (d->io_offset[dim_y] != 84) {\n        d->io_offset[dim_y] += 7;\n      }\n      break;\n    case '4':\n    case 'h':\n    case KEY_LEFT:\n    case '5':\n    case ' ':\n    case KEY_B2:\n    case '6':\n    case 'l':\n    case KEY_RIGHT:\n      break;\n    case '7':\n    case 'y':\n    case KEY_HOME:\n    case '8':\n    case 'k':\n    case KEY_UP:\n    case '9':\n    case 'u':\n    case KEY_PPAGE:\n      if (d->io_offset[dim_y]) {\n        d->io_offset[dim_y] -= 7;\n      }\n      break;\n    }\n    switch (key) {\n    case '1':\n    case 'b':\n    case KEY_END:\n    case '4':\n    case 'h':\n    case KEY_LEFT:\n    case '7':\n    case 'y':\n    case KEY_HOME:\n      if (d->io_offset[dim_x]) {\n        d->io_offset[dim_x] -= 20;\n      }\n      break;\n    case '2':\n    case 'j':\n    case KEY_DOWN:\n    case '5':\n    case ' ':\n    case KEY_B2:\n    case '8':\n    case 'k':\n    case KEY_UP:\n      break;\n    case '3':\n    case 'n':\n    case KEY_NPAGE:\n    case '6':\n    case 'l':\n    case KEY_RIGHT:\n    case '9':\n    case 'u':\n    case KEY_PPAGE:\n      if (d->io_offset[dim_x] != 80) {\n        d->io_offset[dim_x] += 20;\n      }\n      break;\n    }\n    io_display(d);\n  } while (1);\n}\n\nvoid io_display_monster_list(dungeon_t *d)\n{\n  mvprintw(11, 33, \" HP:    XXXXX \");\n  mvprintw(12, 33, \" Speed: XXXXX \");\n  mvprintw(14, 27, \" Hit any key to continue. \");\n  refresh();\n  getch();\n}\n\nuint32_t io_teleport_pc(dungeon_t *d)\n{\n  /* Just for fun. */\n  pair_t dest;\n\n  do {\n    dest[dim_x] = rand_range(1, DUNGEON_X - 2);\n    dest[dim_y] = rand_range(1, DUNGEON_Y - 2);\n  } while (charpair(dest));\n\n  d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = NULL;\n  d->character_map[dest[dim_y]][dest[dim_x]] = d->PC;\n\n  character_set_y(d->PC, dest[dim_y]);\n  character_set_x(d->PC, dest[dim_x]);\n\n  if (mappair(dest) < ter_floor) {\n    mappair(dest) = ter_floor;\n  }\n\n  pc_observe_terrain(d->PC, d);\n  io_calculate_offset(d);\n  dijkstra(d);\n  dijkstra_tunnel(d);\n\n  return 0;\n}\n/* Adjectives to describe our monsters */\nstatic const char *adjectives[] = {\n  \"A menacing \",\n  \"A threatening \",\n  \"A horrifying \",\n  \"An intimidating \",\n  \"An aggressive \",\n  \"A frightening \",\n  \"A terrifying \",\n  \"A terrorizing \",\n  \"An alarming \",\n  \"A frightening \",\n  \"A dangerous \",\n  \"A glowering \",\n  \"A glaring \",\n  \"A scowling \",\n  \"A chilling \",\n  \"A scary \",\n  \"A creepy \",\n  \"An eerie \",\n  \"A spooky \",\n  \"A slobbering \",\n  \"A drooling \",\n  \" A horrendous \",\n  \"An unnerving \",\n  \"A cute little \",  /* Even though they're trying to kill you, */\n  \"A teeny-weenie \", /* they can still be cute!                 */\n  \"A fuzzy \",\n  \"A fluffy white \",\n  \"A kawaii \",       /* For our otaku */\n  \"Hao ke ai de \"    /* And for our Chinese */\n  /* And there's one special case (see below) */\n};\n\nstatic void io_scroll_monster_list(char (*s)[40], uint32_t count)\n{\n  uint32_t offset;\n  uint32_t i;\n\n  offset = 0;\n\n  while (1) {\n    for (i = 0; i < 13; i++) {\n      mvprintw(i + 6, 19, \" %-40s \", s[i + offset]);\n    }\n    switch (getch()) {\n    case KEY_UP:\n      if (offset) {\n        offset--;\n      }\n      break;\n    case KEY_DOWN:\n      if (offset < (count - 13)) {\n        offset++;\n      }\n      break;\n    case 27:\n      return;\n    }\n\n  }\n}\n\nstatic bool is_vowel(const char c)\n{\n  return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ||\n          c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');\n}\n\nstatic void io_list_monsters_display(dungeon_t *d,\n                                     character **c,\n                                     uint32_t count)\n{\n  uint32_t i;\n  char (*s)[40]; /* pointer to array of 40 char */\n  (void) adjectives;\n\n  s = (char (*)[40]) malloc(count * sizeof (*s));\n\n  mvprintw(3, 19, \" %-40s \", \"\");\n  /* Borrow the first element of our array for this string: */\n  snprintf(s[0], 40, \"You know of %d monsters:\", count);\n  mvprintw(4, 19, \" %-40s \", s);\n  mvprintw(5, 19, \" %-40s \", \"\");\n\n  for (i = 0; i < count; i++) {\n    snprintf(s[i], 40, \"%3s%s (%c): %2d %s by %2d %s\",\n             (is_vowel(character_get_name(c[i])[0]) ? \"An \" : \"A \"),\n             character_get_name(c[i]),\n             character_get_symbol(c[i]),\n             abs(character_get_y(c[i]) - character_get_y(d->PC)),\n             ((character_get_y(c[i]) - character_get_y(d->PC)) <= 0 ?\n              \"North\" : \"South\"),\n             abs(character_get_x(c[i]) - character_get_x(d->PC)),\n             ((character_get_x(c[i]) - character_get_x(d->PC)) <= 0 ?\n              \"East\" : \"West\"));\n    if (count <= 13) {\n      /* Handle the non-scrolling case right here. *\n       * Scrolling in another function.            */\n      mvprintw(i + 6, 19, \" %-40s \", s[i]);\n    }\n  }\n\n  if (count <= 13) {\n    mvprintw(count + 6, 19, \" %-40s \", \"\");\n    mvprintw(count + 7, 19, \" %-40s \", \"Hit escape to continue.\");\n    while (getch() != 27 /* escape */)\n      ;\n  } else {\n    mvprintw(19, 19, \" %-40s \", \"\");\n    mvprintw(20, 19, \" %-40s \",\n             \"Arrows to scroll, escape to continue.\");\n    io_scroll_monster_list(s, count);\n  }\n\n  free(s);\n}\n\nstatic int compare_monster_distance(const void *v1, const void *v2)\n{\n  const character *const *c1 = (character **) v1;\n  const character *const *c2 = (character **) v2;\n\n  return (dungeon->pc_distance[character_get_y(*c1)][character_get_x(*c1)] -\n          dungeon->pc_distance[character_get_y(*c2)][character_get_x(*c2)]);\n}\n\nstatic void io_list_monsters(dungeon_t *d)\n{\n  character **c;\n  uint32_t x, y, count;\n\n  c = (character **) malloc(d->num_monsters * sizeof (*c));\n\n  /* Get a linear list of monsters */\n  for (count = 0, y = 1; y < DUNGEON_Y - 1; y++) {\n    for (x = 1; x < DUNGEON_X - 1; x++) {\n      if (d->character_map[y][x] && d->character_map[y][x] != d->PC) {\n        c[count++] = d->character_map[y][x];\n      }\n    }\n  }\n\n  /* Sort it by distance from PC */\n  dungeon = d;\n  qsort(c, count, sizeof (*c), compare_monster_distance);\n\n  /* Display it */\n  io_list_monsters_display(d, c, count);\n  free(c);\n\n  /* And redraw the dungeon */\n  io_display(d);\n}\n\nvoid io_display_ch(dungeon_t *d)\n{\n  mvprintw(11, 33, \" HP:    %5d \", d->PC->hp);\n  mvprintw(12, 33, \" Speed: %5d \", d->PC->speed);\n  mvprintw(14, 27, \" Hit any key to continue. \");\n  refresh();\n  getch();\n  io_display(d);\n}\n\nvoid io_object_to_string(object *o, char *s, uint32_t size)\n{\n  if (o) {\n    snprintf(s, size, \"%s (sp: %d, dmg: %d+%dd%d)\",\n             o->get_name(), o->get_speed(), o->get_damage_base(),\n             o->get_damage_number(), o->get_damage_sides());\n  } else {\n    *s = '\\0';\n  }\n}\n\nuint32_t io_wear_eq(dungeon_t *d)\n{\n  uint32_t i, key;\n  char s[61];\n\n  for (i = 0; i < MAX_INVENTORY; i++) {\n    /* We'll write 12 lines, 10 of inventory, 1 blank, and 1 prompt. *\n     * We'll limit width to 60 characters, so very long object names *\n     * will be truncated.  In an 80x24 terminal, this gives offsets  *\n     * at 10 x and 6 y to start printing things.  Same principal in  *\n     * other functions, below.                                       */\n    io_object_to_string(d->PC->in[i], s, 61);\n    mvprintw(i + 6, 10, \" %c) %-55s \", '0' + i, s);\n  }\n  mvprintw(16, 10, \" %-58s \", \"\");\n  mvprintw(17, 10, \" %-58s \", \"Wear which item (ESC to cancel)?\");\n  refresh();\n\n  while (1) {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_display(d);\n      return 1;\n    }\n\n    if (key < '0' || key > '9') {\n      if (isprint(key)) {\n        snprintf(s, 61, \"Invalid input: '%c'.  Enter 0-9 or ESC to cancel.\",\n                 key);\n        mvprintw(18, 10, \" %-58s \", s);\n      } else {\n        mvprintw(18, 10, \" %-58s \",\n                 \"Invalid input.  Enter 0-9 or ESC to cancel.\");\n      }\n      refresh();\n      continue;\n    }\n\n    if (!d->PC->in[key - '0']) {\n      mvprintw(18, 10, \" %-58s \", \"Empty inventory slot.  Try again.\");\n      continue;\n    }\n\n    if (!d->PC->wear_in(key - '0')) {\n      return 0;\n    }\n\n    snprintf(s, 61, \"Can't wear %s.  Try again.\",\n             d->PC->in[key - '0']->get_name());\n    mvprintw(18, 10, \" %-58s \", s);\n    refresh();\n  }\n\n  return 1;\n}\n\nvoid io_display_in(dungeon_t *d)\n{\n  uint32_t i;\n  char s[61];\n\n  for (i = 0; i < MAX_INVENTORY; i++) {\n    io_object_to_string(d->PC->in[i], s, 61);\n    mvprintw(i + 7, 10, \" %c) %-55s \", '0' + i, s);\n  }\n\n  mvprintw(17, 10, \" %-58s \", \"\");\n  mvprintw(18, 10, \" %-58s \", \"Hit any key to continue.\");\n\n  refresh();\n\n  getch();\n\n  io_display(d);\n}\n\nuint32_t io_remove_eq(dungeon_t *d)\n{\n  uint32_t i, key;\n  char s[61], t[61];\n\n  for (i = 0; i < num_eq_slots; i++) {\n    sprintf(s, \"[%s]\", eq_slot_name[i]);\n    io_object_to_string(d->PC->eq[i], t, 61);\n    mvprintw(i + 5, 10, \" %c %-9s) %-45s \", 'a' + i, s, t);\n  }\n  mvprintw(17, 10, \" %-58s \", \"\");\n  mvprintw(18, 10, \" %-58s \", \"Take off which item (ESC to cancel)?\");\n  refresh();\n\n  while (1) {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_display(d);\n      return 1;\n    }\n\n    if (key < 'a' || key > 'l') {\n      if (isprint(key)) {\n        snprintf(s, 61, \"Invalid input: '%c'.  Enter a-l or ESC to cancel.\",\n                 key);\n        mvprintw(18, 10, \" %-58s \", s);\n      } else {\n        mvprintw(18, 10, \" %-58s \",\n                 \"Invalid input.  Enter a-l or ESC to cancel.\");\n      }\n      refresh();\n      continue;\n    }\n\n    if (!d->PC->eq[key - 'a']) {\n      mvprintw(18, 10, \" %-58s \", \"Empty equipment slot.  Try again.\");\n      continue;\n    }\n\n    if (!d->PC->remove_eq(key - 'a')) {\n      return 0;\n    }\n\n    snprintf(s, 61, \"Can't take off %s.  Try again.\",\n             d->PC->eq[key - 'a']->get_name());\n    mvprintw(19, 10, \" %-58s \", s);\n  }\n\n  return 1;\n}\n\nvoid io_display_eq(dungeon_t *d)\n{\n  uint32_t i;\n  char s[61], t[61];\n\n  for (i = 0; i < num_eq_slots; i++) {\n    sprintf(s, \"[%s]\", eq_slot_name[i]);\n    io_object_to_string(d->PC->eq[i], t, 61);\n    mvprintw(i + 5, 10, \" %c %-9s) %-45s \", 'a' + i, s, t);\n  }\n  mvprintw(17, 10, \" %-58s \", \"\");\n  mvprintw(18, 10, \" %-58s \", \"Hit any key to continue.\");\n\n  refresh();\n\n  getch();\n\n  io_display(d);\n}\n\nuint32_t io_drop_in(dungeon_t *d)\n{\n  uint32_t i, key;\n  char s[61];\n\n  for (i = 0; i < MAX_INVENTORY; i++) {\n      mvprintw(i + 6, 10, \" %c) %-55s \", '0' + i,\n               d->PC->in[i] ? d->PC->in[i]->get_name() : \"\");\n  }\n  mvprintw(16, 10, \" %-58s \", \"\");\n  mvprintw(17, 10, \" %-58s \", \"Drop which item (ESC to cancel)?\");\n  refresh();\n\n  while (1) {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_display(d);\n      return 1;\n    }\n\n    if (key < '0' || key > '9') {\n      if (isprint(key)) {\n        snprintf(s, 61, \"Invalid input: '%c'.  Enter 0-9 or ESC to cancel.\",\n                 key);\n        mvprintw(18, 10, \" %-58s \", s);\n      } else {\n        mvprintw(18, 10, \" %-58s \",\n                 \"Invalid input.  Enter 0-9 or ESC to cancel.\");\n      }\n      refresh();\n      continue;\n    }\n\n    if (!d->PC->in[key - '0']) {\n      mvprintw(18, 10, \" %-58s \", \"Empty inventory slot.  Try again.\");\n      continue;\n    }\n\n    if (!d->PC->drop_in(d, key - '0')) {\n      return 0;\n    }\n\n    snprintf(s, 61, \"Can't drop %s.  Try again.\",\n             d->PC->in[key - '0']->get_name());\n    mvprintw(18, 10, \" %-58s \", s);\n    refresh();\n  }\n\n  return 1;\n}\n\nstatic uint32_t io_display_obj_info(object *o)\n{\n  char s[80];\n  uint32_t i, l;\n  uint32_t n;\n\n  for (i = 0; i < 79; i++) {\n    s[i] = ' ';\n  }\n  s[79] = '\\0';\n\n  l = strlen(o->get_description());\n  for (i = n = 0; i < l; i++) {\n    if (o->get_description()[i] == '\\n') {\n      n++;\n    }\n  }\n\n  for (i = 0; i < n + 4; i++) {\n    mvprintw(i, 0, s);\n  }\n\n  io_object_to_string(o, s, 80);\n  mvprintw(1, 0, s);\n  mvprintw(3, 0, o->get_description());\n\n  mvprintw(n + 5, 0, \"Hit any key to continue.\");\n\n  refresh();\n  getch();\n\n  return 0;  \n}\n\nstatic uint32_t io_inspect_eq(dungeon_t *d);\n\nstatic uint32_t io_inspect_in(dungeon_t *d)\n{\n  uint32_t i, key;\n  char s[61];\n\n  for (i = 0; i < MAX_INVENTORY; i++) {\n    io_object_to_string(d->PC->in[i], s, 61);\n    mvprintw(i + 6, 10, \" %c) %-55s \", '0' + i,\n             d->PC->in[i] ? d->PC->in[i]->get_name() : \"\");\n  }\n  mvprintw(16, 10, \" %-58s \", \"\");\n  mvprintw(17, 10, \" %-58s \", \"Inspect which item (ESC to cancel, '/' for equipment)?\");\n  refresh();\n\n  while (1) {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_display(d);\n      return 1;\n    }\n\n    if (key == '/') {\n      io_display(d);\n      io_inspect_eq(d);\n      return 1;\n    }\n\n    if (key < '0' || key > '9') {\n      if (isprint(key)) {\n        snprintf(s, 61, \"Invalid input: '%c'.  Enter 0-9 or ESC to cancel.\",\n                 key);\n        mvprintw(18, 10, \" %-58s \", s);\n      } else {\n        mvprintw(18, 10, \" %-58s \",\n                 \"Invalid input.  Enter 0-9 or ESC to cancel.\");\n      }\n      refresh();\n      continue;\n    }\n\n    if (!d->PC->in[key - '0']) {\n      mvprintw(18, 10, \" %-58s \", \"Empty inventory slot.  Try again.\");\n      refresh();\n      continue;\n    }\n\n    io_display(d);\n    io_display_obj_info(d->PC->in[key - '0']);\n    io_display(d);\n    return 1;\n  }\n\n  return 1;\n}\n\nstatic uint32_t io_inspect_eq(dungeon_t *d)\n{\n  uint32_t i, key;\n  char s[61], t[61];\n\n  for (i = 0; i < num_eq_slots; i++) {\n    sprintf(s, \"[%s]\", eq_slot_name[i]);\n    io_object_to_string(d->PC->eq[i], t, 61);\n    mvprintw(i + 5, 10, \" %c %-9s) %-45s \", 'a' + i, s, t);\n  }\n  mvprintw(17, 10, \" %-58s \", \"\");\n  mvprintw(18, 10, \" %-58s \", \"Inspect which item (ESC to cancel, '/' for inventory)?\");\n  refresh();\n\n  while (1) {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_display(d);\n      return 1;\n    }\n\n    if (key == '/') {\n      io_display(d);\n      io_inspect_in(d);\n      return 1;\n    }\n\n    if (key < 'a' || key > 'l') {\n      if (isprint(key)) {\n        snprintf(s, 61, \"Invalid input: '%c'.  Enter a-l or ESC to cancel.\",\n                 key);\n        mvprintw(18, 10, \" %-58s \", s);\n      } else {\n        mvprintw(18, 10, \" %-58s \",\n                 \"Invalid input.  Enter a-l or ESC to cancel.\");\n      }\n      refresh();\n      continue;\n    }\n\n    if (!d->PC->eq[key - 'a']) {\n      mvprintw(18, 10, \" %-58s \", \"Empty equipment slot.  Try again.\");\n      continue;\n    }\n\n    io_display(d);\n    io_display_obj_info(d->PC->eq[key - 'a']);\n    io_display(d);\n    return 1;\n  }\n\n  return 1;\n}\n\nuint32_t io_expunge_in(dungeon_t *d)\n{\n  uint32_t i, key;\n  char s[61];\n\n  for (i = 0; i < MAX_INVENTORY; i++) {\n    /* We'll write 12 lines, 10 of inventory, 1 blank, and 1 prompt. *\n     * We'll limit width to 60 characters, so very long object names *\n     * will be truncated.  In an 80x24 terminal, this gives offsets  *\n     * at 10 x and 6 y to start printing things.                     */\n      mvprintw(i + 6, 10, \" %c) %-55s \", '0' + i,\n               d->PC->in[i] ? d->PC->in[i]->get_name() : \"\");\n  }\n  mvprintw(16, 10, \" %-58s \", \"\");\n  mvprintw(17, 10, \" %-58s \", \"Destroy which item (ESC to cancel)?\");\n  refresh();\n\n  while (1) {\n    if ((key = getch()) == 27 /* ESC */) {\n      io_display(d);\n      return 1;\n    }\n\n    if (key < '0' || key > '9') {\n      if (isprint(key)) {\n        snprintf(s, 61, \"Invalid input: '%c'.  Enter 0-9 or ESC to cancel.\",\n                 key);\n        mvprintw(18, 10, \" %-58s \", s);\n      } else {\n        mvprintw(18, 10, \" %-58s \",\n                 \"Invalid input.  Enter 0-9 or ESC to cancel.\");\n      }\n      refresh();\n      continue;\n    }\n\n    if (!d->PC->in[key - '0']) {\n      mvprintw(18, 10, \" %-58s \", \"Empty inventory slot.  Try again.\");\n      continue;\n    }\n\n    if (!d->PC->destroy_in(key - '0')) {\n      io_display(d);\n\n      return 1;\n    }\n\n    snprintf(s, 61, \"Can't destroy %s.  Try again.\",\n             d->PC->in[key - '0']->get_name());\n    mvprintw(18, 10, \" %-58s \", s);\n    refresh();\n  }\n\n  return 1;\n}\n\nvoid io_handle_input(dungeon_t *d)\n{\n  uint32_t fail_code;\n  int key;\n  fd_set readfs;\n  struct timeval tv;\n\n  do {\n    do{\n      FD_ZERO(&readfs);\n      FD_SET(STDIN_FILENO, &readfs);\n\n      tv.tv_sec = 0;\n      tv.tv_usec = 125000; /* An eigth of a second */\n\n      io_redisplay_visible_monsters(d);\n    } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));\n\n    switch (key = getch()) {\n    case '7':\n    case 'y':\n    case KEY_HOME:\n      fail_code = move_pc(d, 7);\n      break;\n    case '8':\n    case 'k':\n    case KEY_UP:\n      fail_code = move_pc(d, 8);\n      break;\n    case '9':\n    case 'u':\n    case KEY_PPAGE:\n      fail_code = move_pc(d, 9);\n      break;\n    case '6':\n    case 'l':\n    case KEY_RIGHT:\n      fail_code = move_pc(d, 6);\n      break;\n    case '3':\n    case 'n':\n    case KEY_NPAGE:\n      fail_code = move_pc(d, 3);\n      break;\n    case '2':\n    case 'j':\n    case KEY_DOWN:\n      fail_code = move_pc(d, 2);\n      break;\n    case '1':\n    case 'b':\n    case KEY_END:\n      fail_code = move_pc(d, 1);\n      break;\n    case '4':\n    case 'h':\n    case KEY_LEFT:\n      fail_code = move_pc(d, 4);\n      break;\n    case '5':\n    case ' ':\n    case KEY_B2:\n      fail_code = 0;\n      break;\n    case '>':\n      fail_code = move_pc(d, '>');\n      break;\n    case '<':\n      fail_code = move_pc(d, '<');\n      break;\n    case 'Q':\n      d->quit = 1;\n      fail_code = 0;\n      break;\n#if 0\n    case 'T':\n      /* New command.  Display the distances for tunnelers.             */\n      io_display_tunnel(d);\n      fail_code = 1;\n      break;\n    case 'D':\n      /* New command.  Display the distances for non-tunnelers.         */\n      io_display_distance(d);\n      fail_code = 1;\n      break;\n    case 'H':\n      /* New command.  Display the hardnesses.                          */\n      io_display_hardness(d);\n      fail_code = 1;\n      break;\n    case 's':\n      /* New command.  Return to normal display after displaying some   *\n       * special screen.                                                */\n      io_display(d);\n      fail_code = 1;\n      break;\n#endif\n    case 'L':\n      io_look_mode(d);\n      fail_code = 1;\n      break;\n    case 'g':\n      /* Teleport the PC to a random place in the dungeon.              */\n      io_teleport_pc(d);\n      fail_code = 0;\n      break;\n    case 'm':\n      io_list_monsters(d);\n      fail_code = 1;\n      break;\n      break;\n    case 'w':\n      fail_code = io_wear_eq(d);\n      break;\n    case 't':\n      fail_code = io_remove_eq(d);\n      break;\n    case 'd':\n      fail_code = io_drop_in(d);\n      break;\n    case 'x':\n      fail_code = io_expunge_in(d);\n      break;\n    case 'i':\n      io_display_in(d);\n      fail_code = 1;\n      break;\n    case 'e':\n      io_display_eq(d);\n      fail_code = 1;\n      break;\n    case 'c':\n      io_display_ch(d);\n      fail_code = 1;\n      break;\n    case 'I':\n      io_inspect_in(d);\n      fail_code = 1;\n      break;\n    case 'q':\n      /* Demonstrate use of the message queue.  You can use this for *\n       * printf()-style debugging (though gdb is probably a better   *\n       * option.  Not that it matterrs, but using this command will  *\n       * waste a turn.  Set fail_code to 1 and you should be able to *\n       * figure out why I did it that way.                           */\n      io_queue_message(\"This is the first message.\");\n      io_queue_message(\"Since there are multiple messages, \"\n                       \"you will see \\\"more\\\" prompts.\");\n      io_queue_message(\"You can use any key to advance through messages.\");\n      io_queue_message(\"Normal gameplay will not resume until the queue \"\n                       \"is empty.\");\n      io_queue_message(\"Long lines will be truncated, not wrapped.\");\n      io_queue_message(\"io_queue_message() is variadic and handles \"\n                       \"all printf() conversion specifiers.\");\n      io_queue_message(\"Did you see %s?\", \"what I did there\");\n      io_queue_message(\"When the last message is displayed, there will \"\n                       \"be no \\\"more\\\" prompt.\");\n      io_queue_message(\"Have fun!  And happy printing!\");\n      fail_code = 0;\n      break;\n    default:\n      /* Also not in the spec.  It's not always easy to figure out what *\n       * key code corresponds with a given keystroke.  Print out any    *\n       * unhandled key here.  Not only does it give a visual error      *\n       * indicator, but it also gives an integer value that can be used *\n       * for that key in this (or other) switch statements.  Printed in *\n       * octal, with the leading zero, because ncurses.h lists codes in *\n       * octal, thus allowing us to do reverse lookups.  If a key has a *\n       * name defined in the header, you can use the name here, else    *\n       * you can directly use the octal value.                          */\n      mvprintw(0, 0, \"Unbound key: %#o \", key);\n      fail_code = 1;\n    }\n  } while (fail_code);\n}\n",
+			"file": "/C/Users/Owner/Desktop/cs327/assignment2/io.cpp",
+			"file_size": 37469,
+			"file_write_time": 131365674700000000,
+			"settings":
+			{
+				"buffer_size": 37266,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 1 file for \"lastIndex - 3\"\n\nC:\\Users\\Owner\\cs327\\assignment2:\n    ERROR: Unable to open file\n\n0 matches\n\nSearching 48 files for \"lastIndex - 3\"\n\n0 matches\n\nSearching 48 files for \"->alive\"\n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\character.cpp:\n   39  void character_die(character *c)\n   40  {\n   41:   c->alive = 0;\n   42  }\n   43  \n   44  int character_is_alive(const character *c)\n   45  {\n   46:   return c->alive;\n   47  }\n   48  \n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\move.cpp:\n   47        }\n   48        def->hp = 0;\n   49:       def->alive = 0;\n   50        character_increment_dkills(atk);\n   51        character_increment_ikills(atk, (character_get_dkills(def) +\n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\pc.cpp:\n   71  uint32_t pc_is_alive(dungeon_t *d)\n   72  {\n   73:   return d->PC->alive;\n   74  }\n   75  \n   ..\n  101  \n  102    d->PC->speed = PC_SPEED;\n  103:   d->PC->alive = 1;\n  104    d->PC->sequence_number = 0;\n  105    d->PC->kills[kill_direct] = d->PC->kills[kill_avenged] = 0;\n\n5 matches across 3 files\n\n\nSearching 48 files for \"player_is_alive\"\n\n0 matches\n\nSearching 48 files for \"player_is\"\n\n0 matches\n\nSearching 48 files for \"pc_is_alive\"\n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\move.cpp:\n  157     * worrying about deleting the PC.                                       */\n  158  \n  159:   if (pc_is_alive(d)) {\n  160      /* The PC always goes first one a tie, so we don't use new_event().  *\n  161       * We generate one manually so that we can set the PC sequence       *\n  ...\n  172    }\n  173  \n  174:   while (pc_is_alive(d) &&\n  175           (e = (event_t *) heap_remove_min(&d->events)) &&\n  176           ((e->type != event_character_turn) || (e->c != d->PC))) {\n  ...\n  196  \n  197    io_display(d);\n  198:   if (pc_is_alive(d) && e->c == d->PC) {\n  199      c = e->c;\n  200      d->time = e->time;\n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\pc.cpp:\n   69  }\n   70  \n   71: uint32_t pc_is_alive(dungeon_t *d)\n   72  {\n   73    return d->PC->alive;\n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\pc.h:\n   48  \n   49  void pc_delete(pc *pc);\n   50: uint32_t pc_is_alive(dungeon_t *d);\n   51  void config_pc(dungeon_t *d);\n   52  uint32_t pc_next_pos(dungeon_t *d, pair_t dir);\n\nC:\\Users\\Owner\\Desktop\\cs327\\assignment2\\rlg327.cpp:\n  237  \n  238    io_display(&d);\n  239:   while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {\n  240      do_moves(&d);\n  241    }\n  ...\n  252    }\n  253  \n  254:   printf(pc_is_alive(&d) ? victory : tombstone);\n  255    printf(\"\\nYou defended your life in the face of %u deadly beast%s.\\n\"\n  256           \"You avenged the cruel and untimely murders of %u \"\n  ...\n  261           character_get_ikills(d.PC) == 1 ? \"\" : \"s\");\n  262  \n  263:   if (pc_is_alive(&d)) {\n  264      /* If the PC is dead, it's in the move heap and will get automatically *\n  265       * deleted when the heap destructs.  In that case, we can't call       *\n\n8 matches across 4 files\n",
+			"settings":
+			{
+				"buffer_size": 2950,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
 			}
 		}
 	],
@@ -309,10 +441,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 250.0,
-		"last_filter": "pa in pa",
+		"height": 248.0,
+		"last_filter": "box",
 		"selected_items":
 		[
+			[
+				"box",
+				"Boxy Theme: Configuration"
+			],
 			[
 				"pa in pa",
 				"Package Control: Install Package"
@@ -340,10 +476,6 @@
 			[
 				"pack in pa",
 				"Package Control: Install Package"
-			],
-			[
-				"box",
-				"Boxy Theme: Extras"
 			],
 			[
 				"Package Control:  in ",
@@ -390,7 +522,7 @@
 				"LaTeXTools: Show toggles"
 			]
 		],
-		"width": 575.0
+		"width": 510.0
 	},
 	"console":
 	{
@@ -424,6 +556,16 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Owner/cs309/public/button.js",
+		"/C/Users/Owner/cs309/public/fighter.js",
+		"/C/Users/Owner/cs309/public/index.html",
+		"/C/Users/Owner/cs309/public/titlescreen.js",
+		"/C/Users/Owner/cs309/public/YggdrasillWars.js",
+		"/C/Users/Owner/cs309/public/hud.js",
+		"/C/Users/Owner/cs309/public/screenelements.js",
+		"/C/Users/Owner/cs309/public/inventory.js",
+		"/C/Users/Owner/cs309/public/pregamescreens.js",
+		"/C/Users/Owner/cs309/public/preparationscreen.js",
 		"/C/Users/Owner/cs309/public/item.js",
 		"/home/student/cs327/lectures/week9_s2017/string327.cpp",
 		"/home/student/cs327/ass6/pc.h",
@@ -505,16 +647,13 @@
 		"/C/Users/Owner/OneDrive/Documents/cs227ta/hw2Grading/hw2_grading.docx",
 		"/U/cfdavis/hw1/Beckett_Tyler/Beckett_Tyler.txt",
 		"/C/Users/Owner/cs309/server/simpleserver.js",
-		"/C/Users/Owner/cs309/public/index.html",
 		"/C/Users/Owner/cs309/public/enemy.js",
 		"/C/Users/Owner/cs309/public/YggdrasillWars.html",
-		"/C/Users/Owner/cs309/public/YggdrasillWars.js",
 		"/C/Users/Owner/cs309/public/assets/index.html",
 		"/C/Users/Owner/cs309/public/enemy_spawner_test.js",
 		"/C/Users/Owner/cs309/public/enemyspawner.js",
 		"/C/Users/Owner/cs309/Public/YggdrasillWars.html",
 		"/C/Users/Owner/cs309/Public/YggdrasillWars.js",
-		"/C/Users/Owner/cs309/public/fighter.js",
 		"/C/Users/Owner/cs309/public/enemy_spawner_test.html",
 		"/C/Users/Chand/cs309/asd.txt",
 		"/C/Users/Chand/cs309/server/server.js",
@@ -544,24 +683,19 @@
 		"/C/Users/Owner/Desktop/cs327/ass3/heap.h",
 		"/C/Users/Owner/Desktop/cs327/ass3/heap.c",
 		"/C/Users/Owner/Desktop/cs327/tests/dijkstra_test.c",
-		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/rlg327.c",
-		"/C/Users/Owner/AppData/Roaming/Sublime Text 3/Packages/User/GitGutter.sublime-settings",
-		"/C/Users/Owner/AppData/Roaming/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
-		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/heap.c",
-		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/heap.h",
-		"/C/Users/Owner/Desktop/cs327/ass3/rlg327",
-		"/C/Users/Owner/Desktop/cs327/tests/assignment0.c",
-		"/C/Users/Owner/OneDrive/Documents/ComS230HW3.tex"
+		"/C/Users/Owner/Desktop/cs327/ass3/rlg327-s2017-1.02/rlg327.c"
 	],
 	"find":
 	{
-		"height": 26.0
+		"height": 48.0
 	},
 	"find_in_files":
 	{
 		"height": 117.0,
 		"where_history":
 		[
+			"C:\\Users\\Owner\\Desktop\\cs327\\assignment2",
+			"C:/Users/Owner/cs327/assignment2",
 			"<current file>,<open files>,/home/student/cs327/ass6",
 			"<current file>,<open files>"
 		]
@@ -571,6 +705,62 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"pc_is_alive",
+			"player_is",
+			"player_is_alive",
+			"->alive",
+			"lastIndex - 3",
+			"lastIndex - 2",
+			"characterImages.length",
+			"characterImages.length - 1",
+			";",
+			"debug",
+			"preloadGameAssets();",
+			"initializedGame",
+			"removePrepScreen();",
+			":",
+			"return",
+			"null",
+			"charactercharacter",
+			"nameArray",
+			"charactercharacter",
+			"imageArray",
+			"// if(drawPrepScreen())\n\t\t// {\n\t\t// \tconsole.log(\"You will now be loaded into the game world.\");\n\t\t// \tnoLoop();\n\t\t// }",
+			";",
+			"223",
+			"623",
+			"520",
+			" 420",
+			"foreground",
+			"background",
+			"back",
+			"initializedObs",
+			"647.5",
+			"665",
+			"765",
+			"565",
+			"555",
+			"330",
+			"430",
+			"590",
+			"395",
+			"500",
+			"300);",
+			"(width/2) + 200",
+			"(width/2) - 200",
+			";",
+			", \n",
+			"== 0",
+			"center",
+			"\tconsole.log(left);\n\tconsole.log(current);\n\tconsole.log(right);",
+			"characterImageArray[i]",
+			"left",
+			"leftSprite",
+			"current",
+			");",
+			"s[i]",
+			"push(\"assets/",
+			"characterNames.push(\"\");",
 			"character",
 			"Character",
 			"character",
@@ -642,63 +832,7 @@
 			", x,y",
 			"('*', ",
 			"('*',",
-			", x,y",
-			"y, x",
-			"render_dun",
-			"mvaddch",
-			"\t\t\t\t  mvaddch",
-			"  ",
-			"addch",
-			"ddch",
-			"}\n",
-			"i",
-			"ender_tunnel_distance_map",
-			"y, x",
-			"y",
-			"y, ",
-			"y,",
-			"dim_x",
-			"x",
-			"y, ",
-			"y,",
-			"y",
-			"')",
-			"'",
-			"');",
-			"addch",
-			"pc_next_pos",
-			"npc_next_pos",
-			"npc",
-			"#",
-			"putchar",
-			"WINDOW *window",
-			"WINDOW",
-			"window",
-			"WINDOW",
-			"window",
-			"WINDOW",
-			"WINDOW *window",
-			"ncurses",
-			"s",
-			"render",
-			"yardsRanOrPass",
-			"syso",
-			"SingleTimeYards",
-			"Sys",
-			"main",
-			"team",
-			"a",
-			"bLoc",
-			"sT1",
-			"sT0",
-			"scores",
-			"o",
-			" y1",
-			"q",
-			"x",
-			"yardsToGoalLine",
-			"int",
-			"necessary"
+			", x,y"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -717,168 +851,16 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 12,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "public/fighter.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3877,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3783,
-								3783
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 238.0,
-						"translation.y": 2349.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "public/screenelements.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1000,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 304.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "public/hud.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2938,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1968,
-								1968
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": -0.0,
-						"translation.y": 1515.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "public/inventory.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1045,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								399,
-								399
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "public/YggdrasillWars.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10768,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7378,
-								7378
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 7392.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
 					"file": "public/pregamescreens.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 600,
+						"buffer_size": 2568,
 						"regions":
 						{
 						},
@@ -895,27 +877,57 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1122.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "public/preparationscreen.js",
+					"buffer": 1,
+					"file": "public/fighter.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1273,
+						"buffer_size": 4118,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								638,
-								638
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 528.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/enemy.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								966,
+								971
 							]
 						],
 						"settings":
@@ -925,27 +937,117 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": -0.0,
-						"translation.y": 24.0,
+						"translation.y": 198.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "public/index.html",
+					"buffer": 3,
+					"file": "public/map_objects.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1461,
+						"buffer_size": 2349,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1309,
-								1309
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 660.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public/mainmenu.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1055,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "public/partyScreen.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1974,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "public/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1341,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -955,10 +1057,285 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 380.0,
+						"translation.y": 66.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "public/preparationscreen.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2987,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "public/YggdrasillWars.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16634,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 10640.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "README",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 634,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								58
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "public/minimap.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7795,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/C/Users/Owner/Desktop/cs327/assignment2/move.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9201,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1965,
+								1965
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 594.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/C/Users/Owner/Desktop/cs327/assignment2/io.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37266,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								308,
+								308
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2950,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										315,
+										322
+									],
+									[
+										421,
+										428
+									],
+									[
+										556,
+										563
+									],
+									[
+										811,
+										818
+									],
+									[
+										899,
+										906
+									],
+									[
+										1341,
+										1352
+									],
+									[
+										1564,
+										1575
+									],
+									[
+										1772,
+										1783
+									],
+									[
+										1941,
+										1952
+									],
+									[
+										2109,
+										2120
+									],
+									[
+										2331,
+										2342
+									],
+									[
+										2462,
+										2473
+									],
+									[
+										2737,
+										2748
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								1146,
+								1146
+							]
+						],
+						"settings":
+						{
+							"default_dir": "C:\\Users\\Owner\\cs309",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 6,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1210.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1049,7 +1426,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 147.0,
+	"side_bar_width": 148.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
