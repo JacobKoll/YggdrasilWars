@@ -162,7 +162,7 @@ function barbSpecial()
 {
 	console.log("You activated your special");
 
-<<<<<<< HEAD
+
 	if(fullStaminaBar.width > 0 && !this.activated)
 	{
 		this.sprite.scale = 2;
@@ -171,28 +171,12 @@ function barbSpecial()
 		this.activated = true;
 
 		reduceStaminaWidth(); 
-		// reduceStaminaWidth(); 
 	}
 	else
 	{
 		console.log("No stamina to use special.");
 	}
-=======
-	// if(fullStaminaBar.width > 0 && this.activated == false)
-	// {
-	// 	this.sprite.scale = ;
-	// 	this.sprite.sword.scale = ;
-	//
-	// 	this.activated = true;
-	//
-	// 	reduceStaminaWidth();
-	// 	// reduceStaminaWidth();
-	// }
-	// else
-	// {
-	// 	console.log("No stamina to use special.");
-	// }
->>>>>>> 5e0238a312c307392e4da7e9e1422458d909e357
+
 }
 
 function mercenarySpecial()

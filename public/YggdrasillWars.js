@@ -78,7 +78,7 @@ var enemyTypeArray = [];
 
 var globalType;
 
-// var miniMap;
+var miniMap;
 
 var healthBars;
 
@@ -181,7 +181,7 @@ function setupGame()
 		spawnerArray.push(spawner);
 	}
 
-
+	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
 	time = 120;
@@ -222,7 +222,6 @@ function drawGame()
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
-
 
 	miniMap.sprite.position.x = camera.position.x;
 	miniMap.sprite.position.y = camera.position.y;
@@ -447,7 +446,7 @@ function drawGame()
 				console.log("Added Chest");
 				initializedChe = false;
 			}
-			if(keyWentDown('o'))
+			if(keyWentDown('o'))1
 			{
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
@@ -603,6 +602,4 @@ function updateClient() {
 	var gameData = {
 		chests: chestData
 	}
-
-	socket.emit('updateClient', gameData);
 }
