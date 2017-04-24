@@ -1,31 +1,4 @@
 
-var enemyWalkAnimation;
-var enemyAttackAnimation;
-var enemyIdleAnimation;
-
-var fighterSwingAnimation;
-var fighterDeathAnimation;
-var fighterIdleAnimation;
-
-var knightWalkAnimation;
-var knightSwingAnimation;
-var knightIdleAnimation;
-
-var rogueWalkAnimation;
-var rogueSwingAnimation;
-var rogueIdleAnimation;
-
-var mercWalkAnimation;
-var mercSwingAnimation;
-var mercIdleAnimation;
-
-var barbWalkAnimation;
-var barbSwingAnimation;
-var barbIdleAnimation;
-
-var calvaryWalkAnimation;
-var calvarySwingAnimation;
-var calvaryIdleAnimation;
 
 var time;
 
@@ -103,7 +76,8 @@ function becomePlayer(playerType)
 
 
 
-	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
 
 	if(playerType == "Calvary")
 	{
@@ -166,28 +140,6 @@ function setupGame()
 	healthBars = new Group();
 	greenDotGroup = new Group();
 
-	// becomePlayer();
-	// becomeSpectator();
-	// becomeMod();
-
-	if(isPlayer)
-	{
-		/* Send new local fighter data to the server */
-		var localFighterData = {
-			health: localFighter.health,
-
-			alive: localFighter.alive,
-			x: localFighter.sprite.position.x,
-			y: localFighter.sprite.position.y,
-			currAnimation: localFighter.sprite.getAnimationLabel(),
-			spriteDebug: localFighter.sprite.debug,
-			swordDebug: localFighter.sprite.sword.debug,
-			rot: localFighter.sprite.rotation
-		}
-		socket.emit('start', localFighterData);
-	}
-
-
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
@@ -203,10 +155,6 @@ function setupGame()
 	}
 
 
-
-
-
-
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
@@ -219,23 +167,24 @@ function mouseReleased(){
 	swordSound.stop();
 }
 
-function keyPressed(){
-
-if(keyCode == 82 && time == 0){
+function keyPressed()
+{
+	if(keyCode == 82 && time == 0)
+	{
 		loop();
 		location.reload();
 	}
-
-
-
 }
 
-function keyReleased(){
- if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
-	galloping.stop();
-	footsteps.stop();
 
-}
+function keyReleased()
+{
+ 	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68))
+ 	{
+		galloping.stop();
+		footsteps.stop();
+	}
+
 }
 
 
@@ -249,7 +198,6 @@ function drawGame()
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
-
 
 	miniMap.sprite.position.x = camera.position.x;
 	miniMap.sprite.position.y = camera.position.y;
@@ -273,14 +221,12 @@ function drawGame()
 
 		}
 
+		localFighter.sprite.collide(chestGroup);
+
 		for (var i=0; i<chestArr.length; i++)
 		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-
 
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-
 
 				if (keyDown(chestArr[i].unlockCode[lockProgress]) && !(chestArr[i].isOpen)){
 
@@ -294,25 +240,30 @@ function drawGame()
 					}
 				}
 			}
+
 		}
+
 		if(keyDown('w'))
 		{
 			localFighter.walk("up");
 		}
-		if(keyWentDown('w')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Calvary"){
+		if(keyWentDown('w'))
+		{
+			if(!galloping.isPlaying() && !footsteps.isPlaying())
+			{
+				if(globalType == "Calvary")
+				{
 					galloping.loop();
 				}
-			else{
-				footsteps.loop();
+				else
+				{
+					footsteps.loop();
+				}
 			}
-		}
 		}
 
 		if(keyDown('s'))
 		{
-
 			localFighter.walk("down");
 		}
 		if(keyWentDown('s')){
@@ -472,7 +423,7 @@ function drawGame()
 				console.log("Added Chest");
 				initializedChe = false;
 			}
-			if(keyWentDown('o'))
+			if(keyWentDown('o'))1
 			{
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
@@ -487,7 +438,6 @@ function drawGame()
 		spawnerArray[i].updateAll(fighterArray);
 	}
 
-
 	drawSprites();
 	drawSprite(cursorSprite);
 
@@ -495,7 +445,6 @@ function drawGame()
 
 	if(isPlayer)
 	{
-
 
 		if(keyWentDown('m'))
 		{
@@ -513,6 +462,7 @@ function drawGame()
 		{
 			localFighter.speed = localFighter.maxSpeed;
 		}
+
 
 		if(keyDown('m'))
 		{
@@ -541,11 +491,8 @@ function drawGame()
 
 		for (var i=0; i<chestArr.length; i++)
 		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen))
+			{
 				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
 				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
 				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
@@ -585,7 +532,7 @@ function drawGame()
 		updateClient();
 	}
 
-	if(time == 0){
+	if(false == true){//time == 0){
 		noLoop();
 		textSize(80);
 		textAlign(CENTER);
@@ -632,6 +579,4 @@ function updateClient() {
 	var gameData = {
 		chests: chestData
 	}
-
-	socket.emit('updateClient', gameData);
 }
