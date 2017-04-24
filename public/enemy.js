@@ -2,7 +2,6 @@
  * @author Chandler Davis
  */
 
-module.exports = Enemy;	
 
 /**
  *

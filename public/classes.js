@@ -162,10 +162,10 @@ function barbSpecial()
 {
 	console.log("You activated your special");
 
-	if(fullStaminaBar.width > 0 && this.activated = false)
+	if(fullStaminaBar.width > 0 && !this.activated)
 	{
-		this.sprite.scale = ;
-		this.sprite.sword.scale = ;
+		this.sprite.scale = 2;
+		this.sprite.sword.scale = 2;
 
 		this.activated = true;
 

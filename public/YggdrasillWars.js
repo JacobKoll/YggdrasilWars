@@ -72,7 +72,8 @@ function becomePlayer(playerType)
 
 
 
-	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
 
 	if(playerType == "Calvary")
 	{
@@ -134,28 +135,6 @@ function setupGame()
 	enemySymbols = new Group();
 	healthBars = new Group();
 
-	// becomePlayer();
-	// becomeSpectator();
-	// becomeMod();
-
-	if(isPlayer)
-	{
-		/* Send new local fighter data to the server */
-		var localFighterData = {
-			health: localFighter.health,
-
-			alive: localFighter.alive,
-			x: localFighter.sprite.position.x,
-			y: localFighter.sprite.position.y,
-			currAnimation: localFighter.sprite.getAnimationLabel(),
-			spriteDebug: localFighter.sprite.debug,
-			swordDebug: localFighter.sprite.sword.debug,
-			rot: localFighter.sprite.rotation
-		}
-		socket.emit('start', localFighterData);
-	}
-
-
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
@@ -169,63 +148,6 @@ function setupGame()
 		spawner.sprite.depth = i;
 		spawnerArray.push(spawner);
 	}
-
-	socket.on('newChest', function(newChestData){
-		var cheDepth = 1300 + chestArr.length;
-		var chest = new Chest(newChestData.x, newChestData.y, openChest, closedChest, tempUnlockCode,3);
-		chest.setUnlockCode();
-		chest.sprite.depth = cheDepth;
-		chestArr.push(chest);
-		chestGroup.add(chest.sprite);
-		chest.sprite.scale = .5;
-		cheDepth++;
-		console.log("Received Chest");
-	});
-
-	socket.on('updateObstacles', function(data) {
-		var obsDepth = 1000;
-		if (initializedObs == 0) {
-			console.log("Recieved Obstacles");
-			for (var i=0; i < data.length; i++) {
-				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, forest);
-				obstacle.sprite.depth = obsDepth;
-				obstaclesArr.push(obstacle);
-				obstacleGroup.add(obstacle.sprite);
-				obsDepth++;
-			}
-			initializedObs = 1;
-
-		}
-	});
-
-	socket.on('updateChests', function(chestData) {
-		for (var i=0; i<chestArr.length; i++) {
-			if (chestData[i].isOpen == true) {
-				chestArr[i].setOpen();
-			}
-		}
-	});
-
-	// socket.on('updateChests', function(chestData) {
-	// 	var cheDepth = 1300 + chestArr.length;
-	// 	if (initializedChe == 0){
-	// 		var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
-	// 		chest.setUnlockCode();
-	// 		chest.sprite.depth = cheDepth;
-	// 		chestArr.push(chest);
-	// 		chestGroup.add(chest.sprite);
-	// 		chest.sprite.scale = .5;
-	// 		cheDepth++;
-	// 		//console.log("Recieved Chests");
-	// 		for (i=0; i<chestData.length; i++) {
-	// 		}
-	// 		initializedChe = 1;
-	// 	}
-	// });
-
-
-
-
 
 	// miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
@@ -244,7 +166,6 @@ function keyPressed(){
 		loop();
 		location.reload();
 	}
-
 }
 
 function drawGame()
@@ -280,15 +201,13 @@ function drawGame()
 			localFighter.speed = localFighter.maxSpeed;
 
 		}
+		
+		localFighter.sprite.collide(chestGroup);
 
 		for (var i=0; i<chestArr.length; i++)
 		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-
 
 			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-
 
 				if (keyDown(chestArr[i].unlockCode[lockProgress]) && !(chestArr[i].isOpen)){
 
@@ -303,8 +222,6 @@ function drawGame()
 				}
 			}
 		}
-
-
 
 		if(keyDown('w'))
 		{
@@ -446,14 +363,7 @@ function drawGame()
 		spawnerArray[i].updateAll(fighterArray);
 	}
 
-	if(enemyGroup.overlap(obstacleGroup))
-	{
-		localFighter.speed = localFighter.maxSpeed - 1.213;
-	}
-	else
-	{
-		localFighter.speed = localFighter.maxSpeed;
-	}
+
 
 	drawSprites();
 	drawSprite(cursorSprite);
@@ -462,6 +372,7 @@ function drawGame()
 
 	if(isPlayer)
 	{
+
 		// if(keyWentDown('m'))
 		// 	{
 		// 	miniMap.createDots(enemyGroup);
@@ -491,11 +402,8 @@ function drawGame()
 
 		for (var i=0; i<chestArr.length; i++)
 		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
+			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) 
+			{
 				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
 				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
 				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
@@ -535,7 +443,7 @@ function drawGame()
 		updateClient();
 	}
 
-	if(time == 0){
+	if(false == true){//time == 0){
 		noLoop();
 		textSize(80);
 		textAlign(CENTER);
