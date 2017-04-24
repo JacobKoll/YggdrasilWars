@@ -142,11 +142,16 @@ function knightSpecial()
 
 function calvarySpecial()
 {
-	console.log("You activated your special");
+//	console.log("You activated your special");
 
-	if(fullStaminaBar > 0)
+	if(fullStaminaBar.width > 0)
 	{
 		console.log("Fuck you Jakie Poo.");
+		this.speed = this.maxSpeed + 5; 
+	}
+	else
+	{
+//		console.log("No stamina to use special.");
 	}
 	
 }
