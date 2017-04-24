@@ -53,6 +53,9 @@ function initPrepScreen()
 	}
 
 	changeLeft();
+	changeLeft();
+	changeLeft();
+	changeLeft();
 }
 
 function changeRight()

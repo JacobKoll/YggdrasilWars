@@ -59,7 +59,6 @@ function Fighter(x, y, type, id)
 
 	this.sprite.sword.damage = type.damage * this.inventory[0].dmg;
 
-
 	this.sprite.sword.addAnimation('swing', type.swingAnimation);
 
 	this.sprite.sword.position = this.sprite.position;
@@ -132,18 +131,25 @@ Fighter.prototype.attack = function(sword, enemy)
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
-	var dLeft = round(this.leftCone) + (-1 * round(sword.rotation));
-	var dRight = round(this.rightCone) + (-1 * round(sword.rotation));
+	var dLeft = (sword.rotation + this.leftCone);
+	var dRight =  (sword.rotation + this.rightCone);
 
-
-	if(mouseWentDown())
+	if(dLeft > 179.75)
 	{
-		console.clear();
-		console.log(this.leftCone, diffAngle, this.rightCone);	
-		console.log(this.leftCone, enemyAngle, this.rightCone);	
+		dLeft -= 360;
 	}
 
-	if(diffAngle >= this.rightCone && diffAngle <= this.leftCone)// && sword.visible == true)
+	if(dRight > 179.75)
+	{
+		dRight -= 360;
+	}
+
+	var case1 = (dRight > 0  && dLeft < 0 && enemyAngle <= dRight && enemyAngle >= dLeft);
+	var case2 = (dRight < 0  && dLeft > 0 && ((enemyAngle <= dRight && enemyAngle >= -180) || (enemyAngle >= dLeft && enemyAngle <= 180)));
+	var case3 = (dRight > 0 && dRight > 0 && enemyAngle <= dRight && enemyAngle >= dLeft);
+	var case4 = (dRight < 0 && dRight < 0 && enemyAngle <= dRight && enemyAngle >= dLeft);
+
+	if((case1 || case2 || case3 || case4 ) && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
 	}
