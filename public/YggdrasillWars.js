@@ -165,7 +165,7 @@ function setupGame()
 	numSpawners = round(random(5, 20));
 	for(var i = 0; i < numSpawners; i++)
 	{
-		spawner = new EnemySpawner(random(SCENE_W), random(SCENE_H), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
+		spawner = new EnemySpawner(random(300, SCENE_W - 300), random(300, SCENE_H - 300), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
 		spawner.sprite.depth = i;
 		spawnerArray.push(spawner);
 	}
@@ -233,8 +233,6 @@ function setupGame()
 	time = 120;
 	counter=setInterval(timer, 1000);
 	setChestsCode();
-
-
 }
 
 function mouseReleased(){
@@ -446,6 +444,15 @@ function drawGame()
 	{
 		spawnerArray[i].spawn(enemyGroup);
 		spawnerArray[i].updateAll(fighterArray);
+	}
+
+	if(enemyGroup.overlap(obstacleGroup))
+	{
+		localFighter.speed = localFighter.maxSpeed - 1.213;
+	}
+	else
+	{
+		localFighter.speed = localFighter.maxSpeed;
 	}
 
 	drawSprites();

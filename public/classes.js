@@ -142,16 +142,18 @@ function knightSpecial()
 
 function calvarySpecial()
 {
-//	console.log("You activated your special");
-
 	if(fullStaminaBar.width > 0)
 	{
-		console.log("Fuck you Jakie Poo.");
-		this.speed = this.maxSpeed + 5; 
+		this.sprite.velocity.y -= 15;
+		this.sprite.sword.velocity.y -= 15;
+
+		reduceStaminaWidth(); 
+		reduceStaminaWidth(); 
 	}
 	else
 	{
-//		console.log("No stamina to use special.");
+		this.speed = this.maxSpeed;
+		console.log("No stamina to use special.");
 	}
 	
 }
@@ -159,7 +161,21 @@ function calvarySpecial()
 function barbSpecial()
 {
 	console.log("You activated your special");
-	
+
+	if(fullStaminaBar.width > 0 && this.activated = false)
+	{
+		this.sprite.scale = ;
+		this.sprite.sword.scale = ;
+
+		this.activated = true;
+
+		reduceStaminaWidth(); 
+		// reduceStaminaWidth(); 
+	}
+	else
+	{
+		console.log("No stamina to use special.");
+	}
 }
 
 function mercenarySpecial()
