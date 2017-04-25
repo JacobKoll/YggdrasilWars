@@ -28,10 +28,17 @@ function initPlayerItems(){
 function chestItemDrop(item){
   for(i = 0; i < 4; i++){
     if(localFighter.inventory[i].name == "Empty" || localFighter.inventory[i].name == item.name){
+      
+      if (localFighter.inventory[i].name == item.name) {
+        localFighter.score += 2*item.dmg;
+      }
+
       console.log(item.name);
       localFighter.inventory[i] = item;
       itemsBar[i].addImage(localFighter.inventory[i].img);
       itemsBar[i].name = localFighter.inventory[i].name;
+
+
       break;
     }
   }

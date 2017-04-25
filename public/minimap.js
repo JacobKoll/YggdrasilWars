@@ -68,11 +68,20 @@ greenDotGroup[0].position.y += mapY;
 
 miniMap.prototype.update = function(){
 
-	for(var j = 0; j < enemySymbols.length; j++){
+for(var i = 0; i < enemyGroup.length; i++){
+
+	if(enemyGroup[i].health <= 0){
+		enemySymbols[i].shapeColor = "black";
+	}
+}
+
+
+for(var j = 0; j < enemySymbols.length; j++){
+
 
 		enemySymbols[j].position.x = (((enemyGroup[j].position.x/SCENE_W) * 900) + ((width - 900)/2));
 		enemySymbols[j].position.y = (((enemyGroup[j].position.y/SCENE_H) * 625) + ((height -625)/2));
-	
+
 	
 }
 
@@ -95,6 +104,7 @@ for(var i = 0; i < greenDotGroup.length; i++){
 
 };
 
+
 miniMap.prototype.show = function(){
 
 	for(var m = 0; m< enemySymbols.length; m++){
@@ -107,3 +117,13 @@ miniMap.prototype.show = function(){
 };
 
 
+// function removeDot(mapX,mapY){
+
+// for(var i = 0; i < enemySymbols.length; i++){
+// 	if(enemySymbols[i].position.x == mapX && enemySymbols[i].position.y == mapY){
+
+// 		enemySymbols[i].remove();
+// 	}
+// }
+
+// };

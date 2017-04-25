@@ -137,6 +137,7 @@ Enemy.prototype.update = function(playerArr)
 		{
 			this.sprite.remove();
 			this.sprite.bar.remove();
+			
 		}
 	}
 	else
