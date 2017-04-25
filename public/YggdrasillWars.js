@@ -168,15 +168,7 @@ function keyReleased(){
 }
 
 
-function keyReleased()
-{
- 	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68))
- 	{
-		galloping.stop();
-		footsteps.stop();
-	}
 
-}
 
 function drawGame()
 {
