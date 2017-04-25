@@ -16,6 +16,7 @@ function createHud(){
   fullStaminaBar = createSprite(10,200,200,23);
   fullStaminaBar.depth = 1503;
 
+
   fullHealthBar.shapeColor = color("red");
   emptyHealthBar.shapeColor = color("black");
   fullStaminaBar.shapeColor = color("blue");
@@ -122,12 +123,32 @@ function restoreStaminaWidth(){
 
 }
 function deleteHud(){
-  emptyHealthBar.remove();
-  fullHealthBar.remove();
-  emptyStaminaBar.remove();
-  fullStaminaBar.remove();
-  itemSelectedSprite.remove();
-  itemsBar.removeSprites();
+  emptyHealthBar.visible = false;
+  fullHealthBar.visible = false;
+  emptyStaminaBar.visible = false;
+  fullStaminaBar.visible = false;
+  itemSelectedSprite.visible = false;
+
+  for(var i = 0; i < itemsBar.length; i++){
+    itemsBar[i].visible = false;
+
+  }
+
+}
+
+function restoreHud(){
+
+   emptyHealthBar.visible = true;
+  fullHealthBar.visible = true;
+  emptyStaminaBar.visible = true;
+  fullStaminaBar.visible = true;
+  itemSelectedSprite.visible = true;
+
+  for(var i = 0; i < itemsBar.length; i++){
+    itemsBar[i].visible = true;
+
+  }
+
 
 }
 

@@ -95,7 +95,6 @@ function becomeMod()
 function setupGame()
 {
 	createCanvas(1000, 725);
-
 	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
@@ -490,7 +489,7 @@ function drawGame()
 		}
 		else {
 			if(hudNeedReset){
-				createHud();
+				restoreHud();
 				hudNeedReset = false;
 
 			}
