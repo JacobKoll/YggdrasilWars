@@ -172,7 +172,7 @@ function keyReleased(){
 	galloping.stop();
 	footsteps.stop();
 	barbSteps.stop();
-	
+
 }
 
 }
@@ -317,7 +317,7 @@ function drawGame()
 			else{
 				footsteps.loop();
 			}
-		}	
+		}
 		}
 
 
@@ -483,7 +483,7 @@ function drawGame()
 
 		if(keyDown('m'))
 		{
-			
+
 			miniMap.sprite.visible = true;
 			miniMap.sprite.depth = 1500;
 			miniMap.update();
@@ -520,7 +520,7 @@ function drawGame()
 		if(keyWentDown('p'))
 		{
 			partyScreen.draw();
-			
+
 		}
 		if(keyDown('p'))
 		{
@@ -626,7 +626,7 @@ function initSocketFunctions()
 		{
 			for(var clientKey in fighterArray)
 			{
-				if(serverKey == clientKey && (serverKey != localFighter.id || !isPlayer))
+				if(serverKey == clientKey && (serverKey != socket.id || !isPlayer))
 				{
 					let currAlly = allyArray[serverKey];
 					let currFighter = fighterArray[clientKey];
