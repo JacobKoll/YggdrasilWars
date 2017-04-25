@@ -13,51 +13,12 @@
  * @param {int} limit     The maximum amount of Enemies that this spawner will emit
  * @param {Image} image     The image for the EnemySpawner sprite
  */
-function EnemySpawner(x, y, enemyType, rate, limit, image)
+function EnemySpawner(x, y)
 {
 	this.x = x;
 	this.y = y;
-	this.enemyType = enemyType;
-	this.rate = rate;
-	this.limit = limit;
-	this.spawnCount = 0;
-	this.curDepth = 100;
-
-	this.enemyArr = [];
 
 	this.sprite = createSprite(x, y);
-	this.sprite.addImage(image);
+	this.sprite.addImage(spawnerImage);
 	this.sprite.scale = 2.63;
-	this.sprite.debug = true;
-	this.timer = 0;
 }
-
-/**
- * Spawns Enemies given the values initialized in the constructor function
- * @function
- *
- */
-EnemySpawner.prototype.spawn = function(enemyGroup)
-{
-	if((this.timer % (100/this.rate)) == 0 && this.spawnCount < this.limit)
-	{
-		this.spawnCount++;
-
-		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
-		tempEnemy.sprite.depth = this.curDepth;
-		this.curDepth++;
-		this.enemyArr.push(tempEnemy);
-		enemyGroup.push(tempEnemy.sprite);
-
-	}
-
-	this.timer++;
-};
-
-EnemySpawner.prototype.updateAll = function(fighterArr)
-{
-	for (var i = 0; i < this.enemyArr.length; i++)
-	{
-		this.enemyArr[i].update(fighterArr);
-	}
-};

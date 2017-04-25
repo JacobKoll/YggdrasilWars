@@ -25,10 +25,8 @@ var pointsGroup;
 var fliesGroup;
 var iceGroup;
 
-var enemyArray = [];
+var enemyArray = {};
 var fighterArray = [];
-var spawnerArray = [];
-
 
 var SCENE_H = 4000;
 var SCENE_W = 4000;
@@ -36,11 +34,8 @@ var SCENE_W = 4000;
 var score = 0;
 var partyScreen;
 
-var spawner;
-var numSpawners;
-
 var playerTypeArray;
-var enemyTypeArray = [];
+var enemyTypeArray;
 
 var globalType;
 
@@ -402,12 +397,6 @@ function drawGame()
 		}
 	}
 
-	for (var i = 0; i < spawnerArray.length; i++)
-	{
-		spawnerArray[i].spawn(enemyGroup);
-		spawnerArray[i].updateAll(fighterArray);
-	}
-
 	drawSprites();
 	drawSprite(cursorSprite);
 
@@ -558,12 +547,60 @@ function initSocketFunctions()
 		}
 	});
 
+	socket.on('initSpawners', function(spawnerArray)
+	{		
+		for(var i = 0; i < spawnerArray.length; i++)
+		{	
+			let tempSpawner = spawnerArray[i];
+			spawnerGroup.push(new EnemySpawner(tempSpawner.x, tempSpawner.y));
+		}
+	});
+
+	socket.on('addEnemy', function(newEnemy)
+	{
+		var tempEnemy = new Enemy(newEnemy.id, newEnemy.x, newEnemy.y, enemyTypeArray[newEnemy.type.name]);
+		tempEnemy.sprite.health = newEnemy.health;
+		enemyArray[newEnemy.id] = tempEnemy; 
+		enemyGroup.push(tempEnemy.sprite);
+	});
+
+	socket.on('initEnemies', function(serverArray)
+	{
+		console.log("Getting enemies from the server.");
+		for(var serverKey in serverArray)
+		{
+			let currEnemy = serverArray[serverKey];
+			tempEnemy = new Enemy(currEnemy.id, currEnemy.x, currEnemy.y, enemyTypeArray[currEnemy.type.name]);
+			tempEnemy.sprite.health = currEnemy.health;
+			enemyArray[currEnemy.id] = tempEnemy; 
+			enemyGroup.push(tempEnemy.sprite);
+		}
+	});
+
+	socket.on('updateEnemies', function(serverArray)
+	{
+		console.log(serverArray);
+		for(var serverKey in serverArray)
+		{
+			for(var clientKey in enemyArray)
+			{
+				if(serverKey == clientKey)
+				{
+					let temp = serverArray[serverKey];
+					enemyArray[clientKey].sprite.rotation = temp.rotation;
+					enemyArray[clientKey].sprite.position.x = temp.x;
+					enemyArray[clientKey].sprite.position.y = temp.y;
+					enemyArray[clientKey].sprite.health = temp.health;
+				}
+			}	
+		}
+	});
+
 	socket.on('initObstacles', function(obstacleArr)
 	{
-		var tempObstacle;
 		for(var i = 0; i < obstacleArr.length; i++)
 		{
-			tempObstacle = new Obstacle(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].scale)
+			let tempObstacle = new Obstacle(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].scale)
 			obstacleGroup.push(tempObstacle.sprite);
 		}
 	});
@@ -575,5 +612,7 @@ function initSocketFunctions()
 		chestArray[key].isOpen = true;
 
 	});
+
+
 
 }

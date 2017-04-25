@@ -1,61 +1,23 @@
-/**
- * @author Chandler Davis and Andrew Messerly
- */
-
-/**
- * Constructs a spawner that spawns Enemy objects/sprites
- * @constructor
- *
- * @param {int} x         Initial x-position of the spawner
- * @param {int} y         Initial y-position of the spawner
- * @param {function} enemyType The constructor for the Enemy that it will spawn
- * @param {int} rate      The rate (per second) that the spawner will emit a new Enemy
- * @param {int} limit     The maximum amount of Enemies that this spawner will emit
- * @param {Image} image     The image for the EnemySpawner sprite
- */
-function EnemySpawner(x, y, enemyType, rate, limit, scale)
+function EnemySpawner(x, y, type, rate, limit)
 {
 	this.x = x;
 	this.y = y;
 
-	this.enemyType = enemyType;
+	this.type = type;
 	this.rate = rate;
 	this.limit = limit;
 	this.spawnCount = 0;
-
-	this.enemyArr = [];
-
-	this.sprite.scale = 2.63;
-	this.sprite.debug = true;
-	this.timer = 0;
 }
 
-/**
- * Spawns Enemies given the values initialized in the constructor function
- * @function
- *
- */
-EnemySpawner.prototype.spawn = function(enemyGroup)
+EnemySpawner.prototype.spawn = function(timer)
 {
-	if((this.timer % (100/this.rate)) == 0 && this.spawnCount < this.limit)
-	{
+	if((timer % (100/this.rate)) == 0 && this.spawnCount <= this.limit)
+	{	
 		this.spawnCount++;
-
-		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
-		tempEnemy.sprite.depth = this.curDepth;
-		this.curDepth++;
-		this.enemyArr.push(tempEnemy);
-		enemyGroup.push(tempEnemy.sprite);
-
+		return true;
 	}
 
-	this.timer++;
+	return false;
 };
 
-EnemySpawner.prototype.updateAll = function(fighterArr)
-{
-	for (var i = 0; i < this.enemyArr.length; i++)
-	{
-		this.enemyArr[i].update(fighterArr);
-	}
-};
+module.exports = EnemySpawner;

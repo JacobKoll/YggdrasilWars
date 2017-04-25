@@ -5,37 +5,28 @@ function assignTypes()
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
-		health: 100,
-		damage: .83,
-		speed: 1.8,
-		detectionRadius: 225,
-		scale: .75,
-		friction: 0.5
+		damage: .83
 	};
 
 	var spider = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-		health: 100,
-		damage: .50,
-		speed: 3,
-		detectionRadius: 300
+		attackAnikmation: enemyAttackAnimation,
+		damage: .50
 	};
 
 	var bat = {
 		walkAnimation: enemyWalkAnimation,
 		idleAnimation: enemyIdleAnimation,
 		attackAnimation: enemyAttackAnimation,
-		health: 50,
-		damage: .25,
-		speed: 9,
-		detectionRadius: 500
+		damage: .25
 	};
 
-	enemyTypeArray.push(goblin);
-	enemyTypeArray.push(spider);
-	enemyTypeArray.push(bat);
+	enemyTypeArray = {
+		'Goblin': goblin,
+		'Spider': spider,
+		'Bat': bat
+	};
 
 
 	var knight = {
@@ -150,7 +141,7 @@ function knightSpecial(activated)
 		this.healthRate = 0.5;
 
 		reduceStaminaWidth();
-		reduceStaminaWidth();ddddddddddddddddd
+		reduceStaminaWidth();
 
 		console.log("You gain a newfound sense of purpose. Those monsters ain't gonna get an easy kill today! 5X Health Regeneration");
 	}

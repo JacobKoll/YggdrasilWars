@@ -29,10 +29,9 @@ var calvaryWalkAnimation;
 var calvarySwingAnimation;
 var calvaryIdleAnimation;
 
- var footsteps;
- var swordSound;
- var galloping;
-
+var footsteps;
+var swordSound;
+var galloping;
 
 var cursorSprite;
 
