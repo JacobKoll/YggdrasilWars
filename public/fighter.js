@@ -55,6 +55,8 @@ function Fighter(x, y, type, id)
 	this.sprite.addAnimation('walk', type.walkAnimation);
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
+	this.score = 0;
+
 	this.sprite.sword = createSprite(x, y, 138, 96);
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
@@ -154,6 +156,7 @@ Fighter.prototype.attack = function(sword, enemy)
 	if((case1 || case2 || case3 || case4 ) && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
-		
+
+		this.score += 10;
 	}
 };

@@ -261,9 +261,9 @@ function drawGame()
 		{
 			localFighter.walk("down");
 		}
-		if(keyWentDown('s')){
+	if(keyWentDown('s')){
 
-			if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
+		if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
 
 					galloping.loop();
@@ -274,6 +274,7 @@ function drawGame()
 			else{
 				footsteps.loop();
 			}
+
 			}
 		}
 
@@ -394,6 +395,7 @@ function drawGame()
 		}
 
 		localFighter.update(enemyGroup);
+		score = localFighter.score;
 
 	}
 	else

@@ -150,7 +150,7 @@ function knightSpecial(activated)
 		this.healthRate = 0.5;
 
 		reduceStaminaWidth();
-		reduceStaminaWidth();ddddddddddddddddd
+		reduceStaminaWidth();
 
 		console.log("You gain a newfound sense of purpose. Those monsters ain't gonna get an easy kill today! 5X Health Regeneration");
 	}
