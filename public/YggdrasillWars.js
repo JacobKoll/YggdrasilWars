@@ -1,4 +1,3 @@
-
 var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
@@ -278,8 +277,14 @@ function keyPressed(){
 if(keyCode == 82 && time == 0){
 		loop();
 		location.reload();
-	}
+}
+if(keyCode == 80 || keyCode == 77){
+	blop.play();
+}
 
+if(keyCode == 16 && globalType == "Calvary"){
+	whip.play();
+}
 
 
 }
@@ -288,6 +293,7 @@ function keyReleased(){
  if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
 	galloping.stop();
 	footsteps.stop();
+	barbSteps.stop();
 	
 }
 }
@@ -297,6 +303,8 @@ function drawGame()
 {
 
 	background(55,75,30);
+
+	footsteps.setVolume(0.3);
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
@@ -310,7 +318,6 @@ function drawGame()
 
 	partyScreen.sprite.position.x = camera.position.x;
 	partyScreen.sprite.position.y = camera.position.y;
-
 
 	if(isPlayer)
 	{
@@ -354,10 +361,13 @@ function drawGame()
 			localFighter.walk("up");
 		}
 		if(keyWentDown('w')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
 					galloping.loop();
 				}
+			else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
@@ -370,10 +380,13 @@ function drawGame()
 			localFighter.walk("down");
 		}
 		if(keyWentDown('s')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
 					galloping.loop();
 				}
+			else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
@@ -386,10 +399,13 @@ function drawGame()
 			localFighter.walk("left");
 		}
 		if(keyWentDown('a')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
 					galloping.loop();
 				}
+				else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
@@ -403,10 +419,13 @@ function drawGame()
 			localFighter.walk("right");
 		}
 		if(keyWentDown('d')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
 					galloping.loop();
 				}
+				else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
@@ -417,11 +436,16 @@ function drawGame()
 		if(mouseDown(LEFT) && time < 120 && !swordSound.isPlaying()){
 			swordSound.loop();
 		}
+
+		if(localFighter.sprite.sword.visible == false){
+			swordSound.stop();
+		}
 	
 
 
 		if(keyDown(16))
 		{
+			
 			localFighter.activateSpecial();
 		}
 
@@ -570,7 +594,7 @@ function drawGame()
 
 		if(keyDown('m'))
 		{
-
+			
 			miniMap.sprite.visible = true;
 			miniMap.sprite.depth = 1500;
 			miniMap.update();
@@ -610,14 +634,8 @@ function drawGame()
 		if(keyWentDown('p'))
 		{
 			partyScreen.draw();
+			
 		}
-
-
-		if(keyWentDown('p'))
-		{
-			partyScreen.draw();
-		}
-
 		if(keyDown('p'))
 		{
 			partyScreen.show();
@@ -640,6 +658,13 @@ function drawGame()
 	}
 
 	if(time == 0){
+		swordSound.stop();
+		galloping.stop();
+		barbSteps.stop();
+		whip.stop();
+		footsteps.stop();
+		victory.setVolume(0.0000001);
+		victory.play();
 		noLoop();
 		textSize(80);
 		textAlign(CENTER);

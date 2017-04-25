@@ -137,6 +137,8 @@ Enemy.prototype.update = function(playerArr)
 		{
 			this.sprite.remove();
 			this.sprite.bar.remove();
+			score += 50
+
 		}
 	}
 	else
@@ -198,6 +200,7 @@ Enemy.prototype.attack = function(enemy, player)
 		player.health = player.maxHealth;
 		fullHealthBar.width = 200;
 		fullStaminaBar.width = player.stamina;
+		score -= 100;
 		player.alive = true;
 
 		console.log("You died!");

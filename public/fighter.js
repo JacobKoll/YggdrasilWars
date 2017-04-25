@@ -162,5 +162,7 @@ Fighter.prototype.attack = function(sword, enemy)
 	if((case1 || case2 || case3 || case4 ) && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
+		score += sword.damage;
+		score = Math.round(score);
 	}
 };

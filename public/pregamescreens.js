@@ -32,6 +32,10 @@ var calvaryIdleAnimation;
  var footsteps;
  var swordSound;
  var galloping;
+ var blop;
+ var whip;
+ var barbSteps;
+ var victory;
 
 
 var cursorSprite;
@@ -146,6 +150,11 @@ function preload()
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
 	galloping = loadSound("assets/sounds/Galloping.wav");
+	blop = loadSound("assets/sounds/Blop.wav");
+	whip = loadSound("assets/sounds/Whip.wav");
+	barbSteps = loadSound("assets/sounds/barbSteps.wav");
+	victory = loadSound("assets/sounds/victory.wav");
+
 
 	forest = loadImage("assets/obstacles/forest.png");
 }
