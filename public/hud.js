@@ -41,9 +41,9 @@ function createHud(){
 
 function changeItemSelectedPosition(xPos, yPos){
 
-
   itemSelectedSprite.position.x = xPos;
   itemSelectedSprite.position.y = yPos;
+
 }
 function changeHealthPosition(xPos, yPos){
 
@@ -51,6 +51,7 @@ function changeHealthPosition(xPos, yPos){
   fullHealthBar.position.y = yPos;
   emptyHealthBar.position.x = xPos;
   emptyHealthBar.position.y = yPos;
+
 }
 
 function changeStaminaPosition(xPos,yPos){
@@ -63,6 +64,7 @@ function changeStaminaPosition(xPos,yPos){
 }
 
 function changeItemPosition(xPos,yPos){
+
   var xPosShift = xPos;
   for(i = 0; i < 4; i++){
     itemsBar[i].position.x = xPosShift;
@@ -83,8 +85,7 @@ function reduceHealthWidth(damage){
 
 }
 
-function reduceStaminaWidth()
-{
+function reduceStaminaWidth(){
 
   fullStaminaBar.width -= 200 / localFighter.sprite.stamina;
 
@@ -99,8 +100,8 @@ function reduceStaminaWidth()
 
 function restoreHealthWidth(){
 
-  fullHealthBar.width += .1;
-  localFighter.sprite.health += .1;
+  fullHealthBar.width += localFighter.sprite.healthRate;
+  localFighter.sprite.health += localFighter.sprite.healthRate;
   if(fullHealthBar.width >= 200)
   {
     fullHealthBar.width = 200;

@@ -1,30 +1,3 @@
-var enemyWalkAnimation;
-var enemyAttackAnimation;
-var enemyIdleAnimation;
-
-var fighterSwingAnimation;
-var fighterDeathAnimation;
-var fighterIdleAnimation;
-
-var knightWalkAnimation;
-var knightSwingAnimation;
-var knightIdleAnimation;
-
-var rogueWalkAnimation;
-var rogueSwingAnimation;
-var rogueIdleAnimation;
-
-var mercWalkAnimation;
-var mercSwingAnimation;
-var mercIdleAnimation;
-
-var barbWalkAnimation;
-var barbSwingAnimation;
-var barbIdleAnimation;
-
-var calvaryWalkAnimation;
-var calvarySwingAnimation;
-var calvaryIdleAnimation;
 
 var time;
 
@@ -32,14 +5,9 @@ var counter;
 
 var customCursor;
 
-var initializedObs;
-var initializedChe;
-
 var localFighter;
 
-var chestArr = [];
-
-var obstaclesArr = [];
+var chestArray = [];
 
 var fighterGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
@@ -55,7 +23,7 @@ var ruinsGroup;
 var treesGroup;
 var foodGroup;
 var pointsGroup;
-var flysGroup;
+var fliesGroup;
 var iceGroup;
 
 var enemyArray = [];
@@ -77,7 +45,7 @@ var enemyTypeArray = [];
 
 var globalType;
 
-// var miniMap;
+var miniMap;
 
 var healthBars;
 
@@ -92,7 +60,7 @@ var lockProgress = 0;
 
 var hudNeedReset = false;
 
-
+var	socket = io.connect('http://localhost:3000');
 
 function becomePlayer(playerType)
 {
@@ -102,9 +70,10 @@ function becomePlayer(playerType)
 
 
 
-	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
 
-	if(playerType == "Calvary")
+	if(playerType == "Cavalry")
 	{
 		localFighter.sprite.rotateToDirection = true;
 		localFighter.sprite.sword.rotateToDirection = true;
@@ -128,14 +97,6 @@ function becomeMod()
 	isMod = true;
 }
 
-function setChestsCode(){
-	for(var i=0; i<chestArr.length; i++){
-		chestArr[i].setUnlockCode();
-
-	}
-}
-
-
 function setupGame()
 {
 	createCanvas(1000, 725);
@@ -144,16 +105,12 @@ function setupGame()
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 
-	footsteps.setVolume(0.15);
+	footsteps.setVolume(0.10);
 
 	initGameItems();
-
 	assignTypes();
-	initializedObs = 0;
-	initializedChe = 0;
 
 	/* Connect to the server */
-	socket = io.connect('http://localhost:3000');
 
 	fighterGroup = new Group();
 	enemyGroup = new Group();
@@ -165,118 +122,35 @@ function setupGame()
 	healthBars = new Group();
 	greenDotGroup = new Group();
 
-	// becomePlayer();
-	// becomeSpectator();
-	// becomeMod();
-
-	if(isPlayer)
-	{
-		/* Send new local fighter data to the server */
-		var localFighterData = {
-			health: localFighter.health,
-
-			alive: localFighter.alive,
-			x: localFighter.sprite.position.x,
-			y: localFighter.sprite.position.y,
-			currAnimation: localFighter.sprite.getAnimationLabel(),
-			spriteDebug: localFighter.sprite.debug,
-			swordDebug: localFighter.sprite.sword.debug,
-			rot: localFighter.sprite.rotation
-		}
-		socket.emit('start', localFighterData);
-	}
-
+	initSocketFunctions();
 
 	/* Create the custom cursor and initialize its position to the middle of the canvas */
 	cursorSprite = createSprite(width/2, height/2);
 	cursorSprite.addImage(customCursor);
 
-	noCursor(); // Hides the system's cursor when inside the canvas
-
-	numSpawners = round(random(5, 20));
-	for(var i = 0; i < numSpawners; i++)
-	{
-		spawner = new EnemySpawner(random(300, SCENE_W - 300), random(300, SCENE_H - 300), enemyTypeArray[round(random(2))], random(.5, 2), round(random(5, 15)), spawnerImage);
-		spawner.sprite.depth = i;
-		spawnerArray.push(spawner);
-	}
-
-
-	socket.on('newChest', function(newChestData){
-		var cheDepth = 1300 + chestArr.length;
-		var chest = new Chest(newChestData.x, newChestData.y, openChest, closedChest, tempUnlockCode,3);
-		chest.setUnlockCode();
-		chest.sprite.depth = cheDepth;
-		chestArr.push(chest);
-		chestGroup.add(chest.sprite);
-		chest.sprite.scale = .5;
-		cheDepth++;
-		console.log("Received Chest");
-	});
-
-
-	socket.on('updateObstacles', function(data) {
-		var obsDepth = 1000;
-		if (initializedObs == 0) {
-			console.log("Recieved Obstacles");
-			for (var i=0; i < data.length; i++) {
-				var obstacle = new Obstacle(data[i].x, data[i].y, 40, 40, forest);
-				obstacle.sprite.depth = obsDepth;
-				obstaclesArr.push(obstacle);
-				obstacleGroup.add(obstacle.sprite);
-				obsDepth++;
-			}
-			initializedObs = 1;
-
-		}
-	});
-
-	socket.on('updateChests', function(chestData) {
-		for (var i=0; i<chestArr.length; i++) {
-			if (chestData[i].isOpen == true) {
-				chestArr[i].setOpen();
-			}
-		}
-	});
-
-	// socket.on('updateChests', function(chestData) {
-	// 	var cheDepth = 1300 + chestArr.length;
-	// 	if (initializedChe == 0){
-	// 		var chest = new Chest(chestData[i].x, chestData[i].y, openChest, closedChest, tempUnlockCode,3);
-	// 		chest.setUnlockCode();
-	// 		chest.sprite.depth = cheDepth;
-	// 		chestArr.push(chest);
-	// 		chestGroup.add(chest.sprite);
-	// 		chest.sprite.scale = .5;
-	// 		cheDepth++;
-	// 		//console.log("Recieved Chests");
-	// 		for (i=0; i<chestData.length; i++) {
-	// 		}
-	// 		initializedChe = 1;
-	// 	}
-	// });
-
-
-
-
+	noCursor();
 
 	miniMap = new miniMap(1000,1000);
 	partyScreen = new partyScreen(1000,1000, "Character", "Health", "Points");
 
 	time = 120;
 	counter=setInterval(timer, 1000);
-	setChestsCode();
+
+	socket.emit('requestMap');
 }
 
-function mouseReleased(){
+function mouseReleased()
+{
 	swordSound.stop();
 }
 
-function keyPressed(){
-
-if(keyCode == 82 && time == 0){
+function keyPressed()
+{
+	if(keyCode == 82 && time == 0)
+	{
 		loop();
 		location.reload();
+
 }
 if(keyCode == 80 || keyCode == 77){
 	blop.play();
@@ -296,12 +170,22 @@ function keyReleased(){
 	barbSteps.stop();
 	
 }
+
 }
 
 
+function keyReleased()
+{
+ 	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68))
+ 	{
+		galloping.stop();
+		footsteps.stop();
+	}
+
+}
+
 function drawGame()
 {
-
 	background(55,75,30);
 
 	footsteps.setVolume(0.3);
@@ -311,7 +195,6 @@ function drawGame()
 
 	cursorSprite.position.x = camera.mouseX;
 	cursorSprite.position.y = camera.mouseY;
-
 
 	miniMap.sprite.position.x = camera.position.x;
 	miniMap.sprite.position.y = camera.position.y;
@@ -331,38 +214,38 @@ function drawGame()
 		else
 		{
 			localFighter.speed = localFighter.maxSpeed;
-
 		}
 
-		for (var i=0; i<chestArr.length; i++)
+		localFighter.sprite.collide(chestGroup);
+
+		for (var key in chestArray)
 		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite)) {
-
-
-				if (keyDown(chestArr[i].unlockCode[lockProgress]) && !(chestArr[i].isOpen)){
+			if (localFighter.sprite.sword.overlap(chestArray[key].sprite)) {
+				if(keyDown(chestArray[key].unlockCode[lockProgress]) && !(chestArray[key].isOpen)){
 
 					lockProgress+=1;
-					if(lockProgress == chestArr[i].lockStrength){
+					if(lockProgress == chestArray[key].lockStrength){
 						lockProgress = 0;
-						chestArr[i].setUnlockCode();
-						chestArr[i].open();
-						chestArr[i].update;
+						chestArray[key].setUnlockCode();
+						chestArray[key].open();
+						chestArray[key].update;
 
 					}
 				}
 			}
-		}	
+
+		}
+
 		if(keyDown('w'))
 		{
 			localFighter.walk("up");
 		}
-		if(keyWentDown('w')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
+
+	if(keyWentDown('w'))
+	{
+		if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
 			else if(globalType == "Barbarian"){
@@ -371,17 +254,18 @@ function drawGame()
 			else{
 				footsteps.loop();
 			}
+			}
 		}
-		}
-		
+
 		if(keyDown('s'))
 		{
-			
 			localFighter.walk("down");
 		}
 		if(keyWentDown('s')){
+
 			if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
 			else if(globalType == "Barbarian"){
@@ -392,15 +276,17 @@ function drawGame()
 			}
 			}
 		}
-		
+
 
 		if(keyDown('a'))
 		{
 			localFighter.walk("left");
 		}
 		if(keyWentDown('a')){
+
 			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
 			if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
 				else if(globalType == "Barbarian"){
@@ -411,16 +297,17 @@ function drawGame()
 			}
 			}
 		}
-		
+
 
 		if(keyDown('d'))
 		{
-			
+
 			localFighter.walk("right");
 		}
 		if(keyWentDown('d')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
-			if(globalType == "Calvary"){
+				if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
 				else if(globalType == "Barbarian"){
@@ -429,7 +316,7 @@ function drawGame()
 			else{
 				footsteps.loop();
 			}
-			}
+		}	
 		}
 
 
@@ -437,16 +324,21 @@ function drawGame()
 			swordSound.loop();
 		}
 
+
 		if(localFighter.sprite.sword.visible == false){
 			swordSound.stop();
 		}
-	
+
 
 
 		if(keyDown(16))
 		{
-			
-			localFighter.activateSpecial();
+
+			localFighter.activateSpecial(true);
+		}
+		else {
+			localFighter.activateSpecial(false);
+
 		}
 
 		if(keyWentDown(49))
@@ -548,13 +440,11 @@ function drawGame()
 			{
 				socket.emit('addChest', camera.mouseX, camera.mouseY);
 				console.log("Added Chest");
-				initializedChe = false;
 			}
 			if(keyWentDown('o'))
 			{
 				socket.emit('addObstacle', camera.mouseX, camera.mouseY);
 				console.log("Added Obstacle");
-				initializedObs = false;
 			}
 		}
 	}
@@ -565,7 +455,6 @@ function drawGame()
 		spawnerArray[i].updateAll(fighterArray);
 	}
 
-
 	drawSprites();
 	drawSprite(cursorSprite);
 
@@ -574,14 +463,10 @@ function drawGame()
 	if(isPlayer)
 	{
 
-
 		if(keyWentDown('m'))
 		{
 			miniMap.createDots(enemyGroup);
 		}
-
-
-
 
 		if(enemyGroup.overlap(obstacleGroup))
 		{
@@ -592,6 +477,7 @@ function drawGame()
 			localFighter.speed = localFighter.maxSpeed;
 		}
 
+
 		if(keyDown('m'))
 		{
 			
@@ -600,7 +486,7 @@ function drawGame()
 			miniMap.update();
 			miniMap.show();
 			miniMap.move(camera.position.x - (width/2),  camera.position.y - (height/2));
-		
+
 			deleteHud();
 			hudNeedReset = true;
 
@@ -617,16 +503,13 @@ function drawGame()
 			drawHud();
 		}
 
-		for (var i=0; i<chestArr.length; i++)
+		for (var key in chestArray)
 		{
-			localFighter.sprite.collide(chestArr[i].sprite);
-
-
-
-			if (localFighter.sprite.sword.overlap(chestArr[i].sprite) && !(chestArr[i].isOpen)) {
-				text(chestArr[i].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-				text(chestArr[i].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+			if (localFighter.sprite.sword.overlap(chestArray[key].sprite) && !(chestArray[key].isOpen))
+			{
+				text(chestArray[key].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
 
 			}
 		}
@@ -653,11 +536,9 @@ function drawGame()
 			partyScreen.sprite.visible = false;
 			partyScreen.delete();
 		}
-
-		updateClient();
 	}
 
-	if(time == 0){
+	if(false == true){//time == 0){
 		swordSound.stop();
 		galloping.stop();
 		barbSteps.stop();
@@ -671,8 +552,7 @@ function drawGame()
 		text("Press 'R' \n to return to the title screen.", camera.position.x, camera.position.y);
 		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
 
-	}
-	
+	}	
 }
 
 function borderCamera()
@@ -701,16 +581,47 @@ function borderCamera()
 	}
 }
 
+/* Creates all the socket connection functions that will be used throughout the code */
+function initSocketFunctions()
+{
+	socket.on('initChests', function(serverChestArr)
+	{
+		var tempChest;
+		for(var key in serverChestArr)
+		{
+			tempChest = new Chest(serverChestArr[key].id, serverChestArr[key].x, serverChestArr[key].y);
+			
+			if(serverChestArr[key].isOpen)
+			{
+				tempChest.isOpen = true;
+				tempChest.sprite.changeImage('open');
+			}
+			else
+			{
+				tempChest.setUnlockCode();
+			}
 
-function updateClient() {
-	var chestData = [];
-	for (var i=0; i<chestArr.length; i++) {
-		chestData[i] = chestArr[i].isOpen;
-	}
+			chestArray[key] = tempChest;
+			chestGroup.push(tempChest.sprite);
+		}
+	});
 
-	var gameData = {
-		chests: chestData
-	}
+	socket.on('initObstacles', function(obstacleArr)
+	{
+		var tempObstacle;
+		for(var i = 0; i < obstacleArr.length; i++)
+		{
+			tempObstacle = new Obstacle(obstacleArr[i].x, obstacleArr[i].y, obstacleArr[i].scale)
+			obstacleGroup.push(tempObstacle.sprite);
+		}
+	});
 
-	socket.emit('updateClient', gameData);
+
+	socket.on('updateChest', function(key)
+	{
+		chestArray[key].sprite.changeImage('open');
+		chestArray[key].isOpen = true;
+
+	});
+
 }

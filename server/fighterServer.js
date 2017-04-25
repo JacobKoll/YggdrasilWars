@@ -47,21 +47,25 @@ function Fighter(x, y, type, id)
 
 	this.sprite.health = type.health; //Amount of health.
 	this.sprite.maxHealth = type.health; //Amount of health.
-	this.sprite.healthRate = type.healthRate; //How fast health regenerates
+
+
 	this.sprite.stamina = type.stamina;
+
 	this.sprite.staminaRate = type.staminaRate;
-	this.isVisible = type.isVisible;
 
 	this.sprite.addAnimation('walk', type.walkAnimation);
+
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
 	this.sprite.sword = createSprite(x, y, 138, 96);
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
+
 	this.sprite.sword.damage = type.damage * this.inventory[0].dmg;
-	this.sprite.sword.position = this.sprite.position;
 
 	this.sprite.sword.addAnimation('swing', type.swingAnimation);
+
+	this.sprite.sword.position = this.sprite.position;
 
 	/* Bounding boxes */
 	this.sprite.setCollider("circle", type.spriteCollider[0], type.spriteCollider[1], type.spriteCollider[2]);
@@ -154,6 +158,5 @@ Fighter.prototype.attack = function(sword, enemy)
 	if((case1 || case2 || case3 || case4 ) && sword.visible == true)
 	{
 		enemy.health -= sword.damage;
-		
 	}
 };

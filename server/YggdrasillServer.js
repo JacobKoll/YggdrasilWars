@@ -1,11 +1,11 @@
-
 var mysql = require('mysql');
 var express = require('express');
 var socket = require('socket.io');
-
+var objects = require('./mapobjectsServer');
 var app = express();
 var server = app.listen(3000);
 var io = socket(server);
+var shortid = require('short-id');
 
 var db = mysql.createConnection({
   host: 'mysql.cs.iastate.edu',
@@ -14,240 +14,133 @@ var db = mysql.createConnection({
   database: 'db309la1'
 });
 
+var chestArray = {};
+// var pointsArray = {};
+// var foodArray = {};
+
+var obstacleArray = [];
+// var wallsArray = [];
+// var treeArray = [];
+
+
 db.connect(function(err){
   if (err) console.log(err);
 });
 
-var FPS = 24;
+setInterval(heartbeat, 1000/60);
 
-var fighterArr = [];
-var spawnerArr = [];
-var enemyArr = [];
-var obstacleArr = [];
-var chestArr = [];
-var numSpawners = 2;
+app.use(express.static('../public'));
 
-app.use(express.static("../public"));
+console.log("Starting YggdrasillServer...\n");
+generateMap();
+console.log("\nThe server is ready! \n");
 
-
-/**
- * @author Chandler Davis and Andrew Messerly
- */
-
-/**
- * Constructs a spawner that spawns Enemy objects/sprites
- * @constructor
- *
- * @param {int} x         Initial x-position of the spawner
- * @param {int} y         Initial y-position of the spawner
- * @param {function} enemyType The constructor for the Enemy that it will spawn
- * @param {int} rate      The rate (per second) that the spawner will emit a new Enemy
- * @param {int} limit     The maximum amount of Enemies that this spawner will emit
- * @param {Image} image     The image for the EnemySpawner sprite
- */
-function EnemySpawner(x, y, rate, limit)
+function heartbeat()
 {
-	this.x = x;
-	this.y = y;
-	this.rate = rate;
-	this.limit = limit;
-	this.spawnCount = 0;
-	this.curDepth = 100;
 
-	this.enemyArr = [];
-	this.spawn;
-	this.timer = 0;
 }
 
-/**
- * Spawns Enemies given the values initialized in the constructor function
- * @function
- *
- */
-EnemySpawner.prototype.spawn = function(enemyGroup)
+
+
+io.sockets.on('connection', function(client)
 {
-	if((this.timer % (100/this.rate)) == 0 && this.enemyArr.length < this.limit)
+
+    console.log('New Connection: ', client.id);
+
+    client.on('disconnect', function(){
+      console.log("client disconnected");
+    });
+
+   	client.on('requestMap', function()
+   	{
+   		client.emit('initObstacles', obstacleArray);
+   		client.emit('initChests', chestArray);		
+   	});
+
+    client.on('checkUserDB',function(data){
+  		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			else if(result[0] == null){
+  				data = false;
+  			}
+  			io.sockets.emit('checkedUserDB', data);
+
+  		});
+  	});
+
+  	client.on('checkDB',function(data){
+
+  		db.query('select Pass from Login where UserName = ?', data.UserName, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			else if(result[0] == null || result[0].Pass != data.Pass){
+  				data = false;
+  			}
+  			io.sockets.emit('checkedDB', data);
+
+  		});
+  	});
+
+  	client.on('insertDB',function(data){
+  		var query = db.query('insert into Login set ?', data, function(err, result){
+  			if(err){
+  				console.error(err);
+  				return;
+  			}
+  			console.error(result);
+  		});
+  	});
+
+  	client.on('openChest', function(key){
+  		chestArray[key].isOpen = true;
+  		console.log("The chest ", key, "has been opened.");
+  		io.sockets.emit('updateChest', key);
+  	});
+
+
+    client.on('disconnect', function(){
+      console.log("  ", client.id, " disconnected.");
+    });
+});
+
+function generateMap()
+{
+	var i;
+	var tempID;
+
+
+	for(i = 0; i < 20; i++ )
 	{
-		this.spawnCount++;
+		tempID = shortid.generate();
 
-		tempEnemy = new Enemy(this.x, this.y, this.enemyType);
-		tempEnemy.sprite.depth = this.curDepth;
-		this.curDepth++;
-		this.enemyArr.push(tempEnemy);
-		enemyGroup.push(tempEnemy.sprite);
-
+		chestArray[tempID] = new objects.chest(tempID, randInt(200, 3800), randInt(200, 3800)); 
 	}
+	console.log("   Generated chests.");
 
-	this.timer++;
-};
-
-EnemySpawner.prototype.updateAll = function(fighterArr)
-{
-	for (var i = 0; i < this.enemyArr.length; i++)
+	for(i = 0; i < 100; i++ )
 	{
-		this.enemyArr[i].update(fighterArr);
+		tempID = shortid.generate();
+
+		obstacleArray.push(new objects.obstacle(randInt(200, 3800), randInt(200, 3800), rand(1, 2))); 
 	}
-};
-
-/**
- * Initializes everything that the server will need.
- */
-function init()
-{
-	fighterArr = [];
-
-	spawnerArr = [];
-	enemyArr = [];
-
-
-
-	/**
-	 * Initialize obstacles3
-	 */
-	for (var i=0; i<60; i++) {
-		var a = Math.floor((Math.random())*4000/45)*(45);
-		var b = Math.floor((Math.random())*4000/45)*(45);
-		var obsData = {x: a, y: b};
-		obstacleArr.push(obsData);
-	}
-	console.log("Obstacles Generated");
-
-	/**
-	 * Initialize chests
-	 */
-	 for (var i=0; i<10; i++) {
-		var a = Math.floor((Math.random())*4000/45)*(45);
-		var b = Math.floor((Math.random())*4000/45)*(45);
-		var chestData = {x: a, y: b, isOpen: false};
-		chestArr.push(chestData);
-	}
-	console.log("Chests Generated");
-
-	/**
-	 * Initialize spawners
-	 */
-	 for (i=0; i<numSpawners; i++) {
-	 	spawnerArr[i] = new EnemySpawner();
-	 }
-
-	console.log("The Yggdrasill Wars server is open and running... \n");
+	console.log("   Generated obstacles.");
 }
 
-/**
- * This handles the events that occur whenever someone joins the server.
- * @param  {socket} client [The socket that the client uses to connect to the server]
- */
-
-
-function onSocketConnect(client)
+/* Random integer within a range */
+function randInt(min, max)
 {
-
-	setInterval(heartbeat, 1000/FPS);
-
-	/* When connected, add the client's fighter to the array. */
-	client.on('start', function(newFighter)
-	{
-		io.sockets.emit('generateObstacles', obstacleArr);
-		io.sockets.emit('generateChests', chestArr);
-		io.sockets.emit('generateSpawners', spawnerArr);
-		console.log(client.id + " added it's fighter\n");
-	});
-
-	/**
-	 * Update all of the sprites to be rendered client-side for all clients.
-	 */
-	function heartbeat()
-	{
-		/* Fighter data */
-		var gameData = {
-			chests: chestArr
-		};
-		io.sockets.emit('updateFighters' , fighterArr);
-		io.sockets.emit('updateSpawners' , spawnerArr);
-		io.sockets.emit('updateEnemies'  , enemyArr);
-		io.sockets.emit('updateObstacles', obstacleArr);
-		io.sockets.emit('updateChests'   , chestArr);
-		for (var i=0; i<spawnerArr.length; i++) {
-			spawnerArr[i].spawn;
-		}
-		io.sockets.emit('updateGame', gameData);
-
-	}
-
-	client.on('updateClient', function(gameData) {
-		for (var i=0; i<chestArr.length; i++) {
-			chestArr[i].isOpen = gameData.chests[i];
-		}
-	});
-
-	console.log(client.id + " has connected to the server.\n");
-
-	client.on('addChest', function(givenX, givenY)
-	{
-		var chestData = {x: givenX, y: givenY, isOpen: false};
-		chestArr.push(chestData);
-		io.sockets.emit('newChest', chestData);
-		console.log(client.id + " added a chest at (" + givenX + ", " + givenY + ")\n");
-	});
-
-	client.on('addObstacle', function(givenX, givenY)
-	{
-		var obstacleData = {x: givenX, y: givenY};
-		obstacleArr.push(obstacleData);
-		console.log(client.id + " added an obstacle at (" + givenX + ", " + givenY + ")\n");
-	});
-
-
-	client.on('checkUserDB',function(data){
-		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
-			if(err){
-				console.error(err);
-				return;
-			}
-			else if(result[0] == null){
-				data = false;
-			}
-			io.sockets.emit('checkedUserDB', data);
-
-		});
-	});
-
-	client.on('checkDB',function(data){
-
-		db.query('select Pass from Login where UserName = ?', data.UserName, function(err, result){
-			if(err){
-				console.error(err);
-				return;
-			}
-			else if(result[0] == null || result[0].Pass != data.Pass){
-				data = false;
-			}
-			io.sockets.emit('checkedDB', data);
-
-		});
-	});
-
-	client.on('insertDB',function(data){
-		var query = db.query('insert into Login set ?', data, function(err, result){
-			if(err){
-				console.error(err);
-				return;
-			}
-			console.error(result);
-		});
-	});
-
-	io.on('disconnect', function()
-	{
-		console.log(client.id + " has disconnected from the server.\n");
-		for(var i = 0; i < fighterArr.length; i++){
-            if(client.id == fighterArr[i].id){
-                fighterArr.splice(i,1);
-            }
-        }
-	});
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-io.on('connection', onSocketConnect);
-
-init();
+/* Random float within a range */
+function rand(min, max)
+{
+	return Math.floor(Math.random() * (max - min)) + min;
+}

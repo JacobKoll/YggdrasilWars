@@ -22,7 +22,7 @@ function Enemy(x, y, type)
 {
 	this.health = type.health;
 	this.speed = type.speed;
-
+	
 	this.detectionRadius = type.detectionRadius;
 
 	this.sprite = createSprite(x, y, 32, 32);
@@ -83,7 +83,7 @@ Enemy.prototype.update = function(playerArr)
 		{
 			currDist = dist(playerArr[i].sprite.position.x, playerArr[i].sprite.position.y, this.sprite.position.x, this.sprite.position.y);
 
-			if(currDist < chasedDist && playerArr[i].isVisible)
+			if(currDist < chasedDist)
 			{
 				this.playerToChase = playerArr[i].sprite;
 			}
@@ -95,7 +95,7 @@ Enemy.prototype.update = function(playerArr)
 
 			this.sprite.collide(chestGroup);
 
-			if(chasedDist < this.detectionRadius && !(playerArr[i].sprite.overlap(obstacleGroup)) && playerArr[i].isVisible)
+			if(chasedDist < this.detectionRadius && !(playerArr[i].sprite.overlap(obstacleGroup)))
 			{
 				this.playerToChase = playerArr[i].sprite;
 				this.sprite.attractionPoint(this.speed, playerArr[i].sprite.position.x, playerArr[i].sprite.position.y);
@@ -137,7 +137,6 @@ Enemy.prototype.update = function(playerArr)
 		{
 			this.sprite.remove();
 			this.sprite.bar.remove();
-			
 		}
 	}
 	else
@@ -207,3 +206,4 @@ Enemy.prototype.attack = function(enemy, player)
 	}
 
 };
+

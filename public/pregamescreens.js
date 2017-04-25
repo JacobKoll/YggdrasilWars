@@ -40,10 +40,10 @@ var calvaryIdleAnimation;
 
 var cursorSprite;
 
-var forest;
+var forestImage;
 
-var openChest;
-var closedChest;
+var openChestImage;
+var closedChestImage;
 
 var landscapeSprite;
 
@@ -137,8 +137,8 @@ function preload()
 	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
 
-	openChest = loadImage("assets/obstacles/chest_open.png");
-	closedChest = loadImage("assets/obstacles/chest_closed.png");
+	openChestImage = loadImage("assets/obstacles/chest_open.png");
+	closedChestImage = loadImage("assets/obstacles/chest_closed.png");
 
 	landscape = loadImage("assets/map.png");
 	emptyInventoryImage = loadImage("assets/inventory/emptyInventory.png");
@@ -156,7 +156,7 @@ function preload()
 	victory = loadSound("assets/sounds/victory.wav");
 
 
-	forest = loadImage("assets/obstacles/forest.png");
+	forestImage = loadImage("assets/obstacles/forest.png");
 }
 
 function setup()

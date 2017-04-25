@@ -45,6 +45,7 @@ function assignTypes()
 		stamina: 120,
 		staminaRate: 2,
 		health: 135,
+		healthRate: .1,
 		speed: 3,
 		scale: 1,
 		damage: 1.2,
@@ -52,6 +53,7 @@ function assignTypes()
 		weaponCollider: [0, 0, 104],
 		leftConeAngle: -32,
 		rightConeAngle: 28,
+		isVisible: true,
 		specialAbility: knightSpecial
 	};
 
@@ -62,6 +64,7 @@ function assignTypes()
 		stamina: 135,
 		staminaRate: 2,
 		health: 120,
+		healthRate: .1,
 		speed: 4,
 		damage: 1.1,
 		scale: 1.3,
@@ -69,6 +72,7 @@ function assignTypes()
 		weaponCollider: [0,0,53],
 		leftConeAngle: 35,
 		rightConeAngle: 112,
+		isVisible: true,
 		specialAbility: calvarySpecial
 	};
 
@@ -79,6 +83,7 @@ function assignTypes()
 		stamina: 300,
 		staminaRate: 2,
 		health: 150,
+		healthRate: .1,
 		speed: 2,
 		damage: 1.5,
 		scale: 1.5,
@@ -86,6 +91,7 @@ function assignTypes()
 		weaponCollider: [0,0,60],
 		leftConeAngle: -38,
 		rightConeAngle: 42,
+		isVisible: true,
 		specialAbility: barbSpecial
 	};
 
@@ -96,6 +102,7 @@ function assignTypes()
 		stamina: 145,
 		staminaRate: 2,
 		health: 125,
+		healthRate: .1,
 		speed: 3.2,
 		scale: 1.15,
 		damage: 1.15,
@@ -103,6 +110,7 @@ function assignTypes()
 		weaponCollider: [0,0,64],
 		leftConeAngle: -8,
 		rightConeAngle: 45,
+		isVisible: true,
 		specialAbility: mercenarySpecial
 	};
 
@@ -113,6 +121,7 @@ function assignTypes()
 		stamina: 120,
 		staminaRate: 2,
 		health: 100,
+		healthRate: .1,
 		speed: 3.4,
 		scale: .8,
 		damage: 1,
@@ -120,6 +129,7 @@ function assignTypes()
 		weaponCollider: [0,0,71],
 		leftConeAngle: 10,
 		rightConeAngle: 38,
+		isVisible: true,
 		specialAbility: rogueSpecial
 	};
 
@@ -134,58 +144,110 @@ function assignTypes()
 
 
 
-function knightSpecial()
+function knightSpecial(activated)
 {
-	console.log("You activated your special");
+	if (activated && fullStaminaBar.width > 0) {
+		this.healthRate = 0.5;
+
+		reduceStaminaWidth();
+		reduceStaminaWidth();ddddddddddddddddd
+
+		console.log("You gain a newfound sense of purpose. Those monsters ain't gonna get an easy kill today! 5X Health Regeneration");
+	}
+	else {
+		if (fullStaminaBar.width == 0) {
+			console.log("You snap out of it and realize life is meaningless. 1X Health Regeneration");
+		}
+		this.healthRate = 0.1;
+	}
 
 }
 
-function calvarySpecial()
+/* Speed increase */
+function calvarySpecial(activated)
 {
-	if(fullStaminaBar.width > 0)
+	if(activated && fullStaminaBar.width > 0)
 	{
-		this.sprite.velocity.y -= 15;
-		this.sprite.sword.velocity.y -= 15;
+		this.maxSpeed = 12;
 
 		reduceStaminaWidth();
 		reduceStaminaWidth();
+
+		console.log("You give your steed a double espresso! 3X Speed");
 	}
 	else
 	{
-		this.speed = this.maxSpeed;
-		console.log("No stamina to use special.");
+		if (fullStaminaBar.width == 0) {
+			console.log("Your horse is suffering from caffeine withdrawal. 1X Speed");
+		}
+		this.maxSpeed = 4;
 	}
 
 }
 
-function barbSpecial()
+/* Increase in size */
+function barbSpecial(activated)
 {
-	console.log("You activated your special");
+	if(activated && fullStaminaBar.width > 0)
+	{
+		this.sprite.scale = 2;
+		this.sprite.sword.scale = 2;
 
-	// if(fullStaminaBar.width > 0 && this.activated == false)
-	// {
-	// 	this.sprite.scale = ;
-	// 	this.sprite.sword.scale = ;
-	//
-	// 	this.activated = true;
-	//
-	// 	reduceStaminaWidth();
-	// 	// reduceStaminaWidth();
-	// }
-	// else
-	// {
-	// 	console.log("No stamina to use special.");
-	// }
+		reduceStaminaWidth();
+		reduceStaminaWidth();
+		
+		console.log("Your size increases to epic proportions!");
+	}
+	else
+	{
+		if (activated && fullStaminaBar.width == 0) {
+			console.log("You are too sore to buff up anymore.");
+		}
+		this.sprite.scale = 1.5;
+		this.sprite.sword.scale = 1.5;
+	}
+
 }
 
-function mercenarySpecial()
+/* Double damage */
+function mercenarySpecial(activated)
 {
-	console.log("You activated your special");
+	if(activated && fullStaminaBar.width > 0)
+	{
+		this.damage = 2.30;
+
+		reduceStaminaWidth();
+		reduceStaminaWidth();
+		
+		console.log("You remember how much money you'll get paid if you survive. 2X base damage");
+	}
+	else
+	{
+		if (activated && fullStaminaBar.width == 0) {
+			console.log("You also remember you have student loans. 1X base damage.");
+		}
+		this.damage = 1.15;
+	}
 
 }
 
-function rogueSpecial()
+/* Become invisible to enemies */
+function rogueSpecial(activated)
 {
-	console.log("You activated your special");
+	if (activated && fullStaminaBar.width > 0) {
+		console.log("You remember that technique your mentor taught you. You are now invisible to monsters");
+
+		this.isVisible = false;
+
+		reduceStaminaWidth();
+		reduceStaminaWidth();
+	}
+	else {
+		if (activated && fullStaminaBar.width == 0) {
+			console.log("You were busy playing games in class, so you forget that you have to stay quiet, too.");
+		}
+
+		this.isVisible = true;
+	}
 
 }
