@@ -4,9 +4,8 @@ var rightPosX;
 var current;
 var left;
 var right;
-
-
 var visibleInfo = false;
+var specialInfo = false;
 
 var hasSelected;
 
@@ -25,6 +24,13 @@ var rogueDescription = ["An outcast forced out of the major city of Firnim. \n H
 var barbDescription = ["A ruffian looking to take advantage of the war by causing lawlessness and chaos.\n This melevolent man looks to get up close and hurt with his fists.\n  He can't take many hits but his health pool is incredible and one swing hurts massively"];
 var cavalryDescription = ["A mounted knight hailing from the village of Brynhildr.\n Raised in a family of farmer's his family's horses are the fastest in all the land,\n thanks to that he is faster than others, \nthough he can't hurt as much from horseback, his speed makes up for it.\n The horse's name is Bo'Jangles"];
 var knightDescription = ["Through dedication to his country,\n the knight has prided himself with an almost impenetrable suit of armor. \nTo wear such a suit encourages incredible strength to move and hurt as well.\n However, all of it comes at a cost of his speed."];
+
+var mercSpecialInfo = ["By realizing that he gets paid for performing well,\n the mercenary gets a damage boost when using his special."];
+var rogueSpecialInfo = ["When cornered, the rogue will use \n her invisibility to sneak away from monsters with her special."];
+var barbSpecialInfo = ["The Barbarian doesn't like to be underestimated, \n and once you do he is suddenly twice his size, and range."];
+var cavalrySpecialInfo = ["By whipping the reins on his horse, Bo'Jangles knows to speed it up,\n as if he got a nice hit of a triple espresso"];
+var knightSpecialInfo = ["The knight knows he cannot die in the filth and mud of a battlefield,\n so when he activates his special, he rapidly gets health back."];
+
 
 var selectedCharacter;
 
@@ -53,6 +59,7 @@ function initPrepScreen()
 
 
 	infoButton = new Button(leftPosX, 600, "Info", 22, defaultButtonImage, clickedButtonImage, showInfo);
+	specialButton = new Button(rightPosX,600,"Special",22,defaultButtonImage,clickedButtonImage,showSpecial);
 	randomButton = new Button(width/2, 205, "Random", 22, defaultButtonImage,clickedButtonImage,randomize);
 	selectButton = new Button(width/2, 257, "Select", 22, defaultButtonImage, clickedButtonImage, select);
 	leftButton = new Button(leftPosX + 137, 257, "<<<<<<<", 22, defaultButtonImage, clickedButtonImage, changeLeft);
@@ -74,6 +81,7 @@ function initPrepScreen()
 function changeRight()
 {	
 	visibleInfo = false;
+	specialInfo = false;
 	if(left == 0)
 	{
 		left = lastIndex;
@@ -109,6 +117,7 @@ function changeRight()
 function changeLeft()
 {
 	visibleInfo = false;
+	specialInfo = false;
 	if(right == lastIndex)
 	{
 		left = lastIndex - 1;
@@ -149,11 +158,25 @@ function getRandomInt(min, max) {
 
 function showInfo(){
 if(visibleInfo==false){
+	specialInfo = false;
 	visibleInfo = true;
 }
 else{
 	visibleInfo = false;
 }
+}
+
+function showSpecial(){
+if(specialInfo == false){
+	visibleInfo = false;
+	specialInfo = true;
+
+}
+else{
+	specialInfo = false;
+}
+
+
 }
 
 function randomize(){
@@ -179,6 +202,7 @@ function drawPrepScreen()
 	image(foregroundImage,0,0);
 
 	infoButton.draw();
+	specialButton.draw();
 	randomButton.draw();
 	selectButton.draw();
 	leftButton.draw();
@@ -198,7 +222,7 @@ function drawPrepScreen()
 	fill("#D4C40F");
 	text("Choose Your Character!", width / 2, 100);
 
-	if(visibleInfo){
+if(visibleInfo){
 	textFont(meath);
 	textSize(27);
 	strokeWeight(2);
@@ -223,6 +247,33 @@ function drawPrepScreen()
 		else if(characterNames[current] == "Barbarian"){
 			text(barbDescription,(width/2)-20,460);
 		}
+	}
+
+if(specialInfo){
+	textFont(meath);
+	textSize(27);
+	strokeWeight(2);
+	stroke("black");
+	fill("white");
+		if(characterNames[current] == "Rogue"){
+
+			text(rogueSpecialInfo,(width/2)-35,460);
+
+		}else if(characterNames[current] == "Knight"){
+
+			text(knightSpecialInfo,(width/2)-35,460);
+
+		}else if(characterNames[current] == "Mercenary"){
+
+			text(mercSpecialInfo,(width/2)-30,440);
+		}
+		else if(characterNames[current] == "Calvary"){
+			text(cavalrySpecialInfo,(width/2)-35,460);
+		}
+		else if(characterNames[current] == "Barbarian"){
+			text(barbSpecialInfo,(width/2)-20,460);
+		}
+
 	}
 
 	if(selectedCharacter)
