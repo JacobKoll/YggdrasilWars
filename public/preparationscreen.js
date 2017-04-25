@@ -51,7 +51,9 @@ function initPrepScreen()
 
 	lastIndex  = characterImages.length - 1;
 
+
 	infoButton = new Button(leftPosX, 600, "Info", 22, defaultButtonImage, clickedButtonImage, showInfo);
+	randomButton = new Button(width/2, 205, "Random", 22, defaultButtonImage,clickedButtonImage,randomize);
 	selectButton = new Button(width/2, 257, "Select", 22, defaultButtonImage, clickedButtonImage, select);
 	leftButton = new Button(leftPosX + 137, 257, "<<<<<<<", 22, defaultButtonImage, clickedButtonImage, changeLeft);
 	rightButton = new Button(rightPosX - 137, 257, ">>>>>>>", 22, defaultButtonImage, clickedButtonImage, changeRight);
@@ -141,6 +143,10 @@ function select()
 	selectedCharacter =  currentSprite.getAnimationLabel();
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function showInfo(){
 if(visibleInfo==false){
 	visibleInfo = true;
@@ -150,8 +156,20 @@ else{
 }
 }
 
+function randomize(){
+var x = getRandomInt(0,4);
+
+for(var i = 0; i < x; i++){
+
+	changeLeft();
+
+}
+
+}
+
 function drawPrepScreen()
 {
+
 	image(backgroundImage,0,0);
 
 	drawSprite(currentSprite);
@@ -161,25 +179,30 @@ function drawPrepScreen()
 	image(foregroundImage,0,0);
 
 	infoButton.draw();
+	randomButton.draw();
 	selectButton.draw();
 	leftButton.draw();
 	rightButton.draw();
 
+	textFont(goudy);
+
 	fill("white");
 	stroke("black");
-	textSize(36);
+	textSize(45);
 	strokeWeight(2);
 	text(characterNames[current], (width/2), 420);
 
-	textSize(72);
-	strokeWeight(4);
-	stroke("Black");
-	fill("Yellow");
+	textSize(90);
+	strokeWeight(7);
+	stroke("#3E2005");
+	fill("#D4C40F");
 	text("Choose Your Character!", width / 2, 100);
 
 	if(visibleInfo){
-	textSize(25);
+	textFont(meath);
+	textSize(27);
 	strokeWeight(2);
+	stroke("black");
 	fill("white");
 
 		if(characterNames[current] == "Rogue"){
@@ -192,7 +215,7 @@ function drawPrepScreen()
 
 		}else if(characterNames[current] == "Mercenary"){
 
-			text(mercDescription,(width/2)-25,445);
+			text(mercDescription,(width/2)-30,440);
 		}
 		else if(characterNames[current] == "Calvary"){
 			text(cavalryDescription,(width/2)-35,460);

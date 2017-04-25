@@ -23,6 +23,7 @@ Button.prototype.press = function()
 {
 	this.changeImage('clicked');
 	this.functionToCall();
+	click.play();
 };
 
 Button.prototype.release = function() 

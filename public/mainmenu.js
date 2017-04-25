@@ -26,7 +26,7 @@ function initMainMenu()
 function drawMainMenu()
 {
 	image(mainMenuImage, 0 ,0);
-
+	
 	startPlayerButton.draw();
 	startModButton.draw();
 	startSpectatorButton.draw();

@@ -36,7 +36,13 @@ var calvaryIdleAnimation;
  var whip;
  var barbSteps;
  var victory;
+ var hover;
+ var click;
 
+ var oldEnglish;
+ var celtic;
+ var goudy;
+ var meath;
 
 var cursorSprite;
 
@@ -154,6 +160,14 @@ function preload()
 	whip = loadSound("assets/sounds/Whip.wav");
 	barbSteps = loadSound("assets/sounds/barbSteps.wav");
 	victory = loadSound("assets/sounds/victory.wav");
+
+	hover = loadSound("assets/sounds/hover.wav");
+	click = loadSound("assets/sounds/click.wav");
+
+	oldEnglish = loadFont("assets/Fonts/OldEnglish.ttf");
+	celtic = loadFont("assets/Fonts/Celtic.ttf");
+	meath = loadFont("assets/Fonts/Meath.ttf");
+	goudy = loadFont("assets/Fonts/Goudy.ttf");
 
 
 	forestImage = loadImage("assets/obstacles/forest.png");

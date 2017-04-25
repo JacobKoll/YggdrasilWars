@@ -1,12 +1,7 @@
-
 var time;
-
 var counter;
-
 var customCursor;
-
 var localFighter;
-
 var chestArray = [];
 
 var fighterGroup; // Fighter sprites group
@@ -156,7 +151,7 @@ if(keyCode == 80 || keyCode == 77){
 	blop.play();
 }
 
-if(keyCode == 16 && globalType == "Calvary"){
+if(keyCode == 16 && globalType == "Calvary" && (keyIsDown(65) || keyIsDown(83) || keyIsDown(87) || keyIsDown(68))){
 	whip.play();
 }
 
