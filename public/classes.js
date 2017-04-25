@@ -14,9 +14,9 @@ function assignTypes()
 	};
 
 	var spider = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
+		walkAnimation: spiderWalkAnimation,
+		idleAnimation: spiderIdleAnimation,
+		attackAnimation: spiderAttackAnimation,
 		health: 100,
 		damage: .50,
 		speed: 3,
@@ -24,9 +24,9 @@ function assignTypes()
 	};
 
 	var bat = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
+		walkAnimation: batWalkAnimation,
+		idleAnimation: batIdleAnimation,
+		attackAnimation: batAttackAnimation,
 		health: 50,
 		damage: .25,
 		speed: 9,
