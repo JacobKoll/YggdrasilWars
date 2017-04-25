@@ -21,7 +21,7 @@ var rightButton;
 var lastIndex;
 
 var mercDescription = ["A sellsword hailing from a common village. \nHis loyalty is to gold, and his price is steep. \n Through his training, and experience in the art of warefare, \n he has equipped himself properly with medium armor and his favorite sword. \n His well balanced fighting style is valued highly and worth the price."];
-var rogueDescription = ["An outcast forced out of the major city of Firnim. \n Her thievery skills have allowed her to open chests faster than most, \n though she is better at picking locks than fights,\n she uses a dagger for self defense."];
+var rogueDescription = ["An outcast forced out of the major city of Firnim. \n His thievery skills have allowed him to open chests faster than most, \n though he is better at picking locks than fights,\n he uses a dagger for self defense."];
 var barbDescription = ["A ruffian looking to take advantage of the war by causing lawlessness and chaos.\n This melevolent man looks to get up close and hurt with his fists.\n  He can't take many hits but his health pool is incredible and one swing hurts massively"];
 var cavalryDescription = ["A mounted knight hailing from the village of Brynhildr.\n Raised in a family of farmer's his family's horses are the fastest in all the land,\n thanks to that he is faster than others, \nthough he can't hurt as much from horseback, his speed makes up for it.\n The horse's name is Bo'Jangles"];
 var knightDescription = ["Through dedication to his country,\n the knight has prided himself with an almost impenetrable suit of armor. \nTo wear such a suit encourages incredible strength to move and hurt as well.\n However, all of it comes at a cost of his speed."];
@@ -55,8 +55,8 @@ function initPrepScreen()
 	infoButton = new Button(leftPosX, 600, "Info", 22, defaultButtonImage, clickedButtonImage, showInfo);
 	randomButton = new Button(width/2, 205, "Random", 22, defaultButtonImage,clickedButtonImage,randomize);
 	selectButton = new Button(width/2, 257, "Select", 22, defaultButtonImage, clickedButtonImage, select);
-	leftButton = new Button(leftPosX + 137, 257, "<<<<<<<", 22, defaultButtonImage, clickedButtonImage, changeLeft);
-	rightButton = new Button(rightPosX - 137, 257, ">>>>>>>", 22, defaultButtonImage, clickedButtonImage, changeRight);
+	leftArrow = new Button(leftPosX + 137, 257, "Previous", 22, defaultButtonImage, clickedButtonImage, changeLeft);
+	rightArrow = new Button(rightPosX - 137, 257, "Next", 22, defaultButtonImage, clickedButtonImage, changeRight);
 
 	for (var i = 0; i < characterImages.length; i++)
 	{
@@ -181,8 +181,8 @@ function drawPrepScreen()
 	infoButton.draw();
 	randomButton.draw();
 	selectButton.draw();
-	leftButton.draw();
-	rightButton.draw();
+	leftArrow.draw();
+	rightArrow.draw();
 
 	textFont(goudy);
 
