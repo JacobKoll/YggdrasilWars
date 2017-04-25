@@ -25,17 +25,19 @@ function Enemy(id, x, y, type)
 	this.x = x;
 	this.y = y;
 
+
 	this.sprite = createSprite(x, y, 70, 70);
 	this.sprite.setCollider('circle', 0, 0, 30);
-	// this.sprite.rotateToDirection = true;
 	this.sprite.damage = type.damage;
-	this.sprite.health = 0;
+	this.sprite.health = type.health;
 
-	// this.sprite.addAnimation('idle', type.idleAnimation);
-	// this.sprite.addAnimation('walk', type.walkAnimation);
-	// this.sprite.addAnimation('attack', type.attackAnimation);
+	this.sprite.scale = type.scale;
 
-	// this.sprite.bar = createSprite(this.x, this.y, this.health, 10);
+	this.sprite.isAttacking = false;
 
-	// this.sprite.scale = type.scale;
+	this.sprite.addAnimation('idle'  , enemyImageArray[type.name + 'Walk']);
+	this.sprite.addAnimation('walk'  , enemyImageArray[type.name + 'Idle']);
+	this.sprite.addAnimation('attack', enemyImageArray[type.name + 'Attack']);
+
+	this.sprite.bar = createSprite(this.x, this.y, this.health, 10);
 }

@@ -5,6 +5,14 @@ var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
 
+var batWalkAnimation;
+var batAttackAnimation;
+var batIdleAnimation;
+
+var spiderWalkAnimation;
+var spiderAttackAnimation;
+var spiderIdleAnimation;
+
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
@@ -25,13 +33,24 @@ var barbWalkAnimation;
 var barbSwingAnimation;
 var barbIdleAnimation;
 
-var calvaryWalkAnimation;
-var calvarySwingAnimation;
-var calvaryIdleAnimation;
+var cavalryWalkAnimation;
+var cavalrySwingAnimation;
+var cavalryIdleAnimation;
 
-var footsteps;
-var swordSound;
-var galloping;
+ var footsteps;
+ var swordSound;
+ var galloping;
+ var blop;
+ var whip;
+ var barbSteps;
+ var victory;
+ var hover;
+ var click;
+
+ var oldEnglish;
+ var celtic;
+ var goudy;
+ var meath;
 
 var cursorSprite;
 
@@ -93,8 +112,8 @@ function preload()
 	characterImages.push(loadImage("assets/screens/class_images/barb_portrait.png"));
 	characterNames.push("Barbarian");
 
-	characterImages.push(loadImage("assets/screens/class_images/calvary_portrait.png"));
-	characterNames.push("Calvary");
+	characterImages.push(loadImage("assets/screens/class_images/cavalry_portrait.png"));
+	characterNames.push("Cavalry");
 
 	characterImages.push(loadImage("assets/screens/class_images/knight_portrait.png"));
 	characterNames.push("Knight");
@@ -105,9 +124,17 @@ function preload()
 	characterImages.push(loadImage("assets/screens/class_images/merc_portrait.png"));
 	characterNames.push("Mercenary");
 
-	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
-	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
-	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
+	goblinWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
+	goblinAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
+	goblinIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
+
+	batWalkAnimation = loadAnimation("assets/bat/walk/batWalk0.png","assets/bat/walk/batWalk7.png");
+	batAttackAnimation = loadAnimation("assets/bat/attack/batAttack0.png","assets/bat/attack/batAttack5.png");
+	batIdleAnimation = loadAnimation("assets/bat/walk/batWalk0.png","assets/bat/walk/batWalk7.png");
+
+	spiderWalkAnimation = loadAnimation("assets/spider/walk/spiderWalk0.png","assets/spider/walk/spiderWalk3.png");
+	spiderAttackAnimation = loadAnimation("assets/spider/attack/spiderAttack0.png","assets/spider/attack/spiderAttack4.png");
+	spiderIdleAnimation = loadAnimation("assets/spider/walk/spiderWalk0.png","assets/spider/walk/spiderWalk3.png");
 
 	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
 	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
@@ -125,9 +152,9 @@ function preload()
 	barbSwingAnimation = loadAnimation("assets/barbarian/attack/barbattack0.png","assets/barbarian/attack/barbattack5.png");
 	barbIdleAnimation = loadAnimation("assets/barbarian/walk/barbwalk2.png");
 
-	calvaryWalkAnimation = loadAnimation("assets/calvary/walk/calvarywalk0.png","assets/calvary/walk/calvarywalk3.png");
-	calvarySwingAnimation = loadAnimation("assets/calvary/swing/calvaryswing0.png","assets/calvary/swing/calvaryswing5.png");
-	calvaryIdleAnimation = loadAnimation("assets/calvary/walk/calvarywalk3.png");
+	cavalryWalkAnimation = loadAnimation("assets/cavalry/walk/cavalrywalk0.png","assets/cavalry/walk/cavalrywalk3.png");
+	cavalrySwingAnimation = loadAnimation("assets/cavalry/swing/cavalryswing0.png","assets/cavalry/swing/cavalryswing5.png");
+	cavalryIdleAnimation = loadAnimation("assets/cavalry/walk/cavalrywalk3.png");
 
 	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
@@ -145,6 +172,19 @@ function preload()
 	footsteps = loadSound("assets/sounds/Marching.wav");
 	swordSound = loadSound("assets/sounds/Woosh.wav");
 	galloping = loadSound("assets/sounds/Galloping.wav");
+	blop = loadSound("assets/sounds/Blop.wav");
+	whip = loadSound("assets/sounds/Whip.wav");
+	barbSteps = loadSound("assets/sounds/barbSteps.wav");
+	victory = loadSound("assets/sounds/victory.wav");
+
+	hover = loadSound("assets/sounds/hover.wav");
+	click = loadSound("assets/sounds/click.wav");
+
+	oldEnglish = loadFont("assets/Fonts/OldEnglish.ttf");
+	celtic = loadFont("assets/Fonts/Celtic.ttf");
+	meath = loadFont("assets/Fonts/Meath.ttf");
+	goudy = loadFont("assets/Fonts/Goudy.ttf");
+
 
 	forestImage = loadImage("assets/obstacles/forest.png");
 }
@@ -220,7 +260,7 @@ function draw()
 				console.log("Moving past the title screen");
 				titleScreenFinished = true;
 				initMainMenu();
-				
+
 			}
 		}
 	}
@@ -229,5 +269,3 @@ function draw()
 		drawGame();
 	}
 }
-
-

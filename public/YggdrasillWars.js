@@ -1,11 +1,7 @@
 var time;
-
 var counter;
-
 var customCursor;
-
 var localFighter;
-
 var chestArray = [];
 
 var fighterGroup; // Fighter sprites group
@@ -25,8 +21,8 @@ var pointsGroup;
 var fliesGroup;
 var iceGroup;
 
+var fighterArray = {};
 var enemyArray = {};
-var fighterArray = [];
 
 var SCENE_H = 4000;
 var SCENE_W = 4000;
@@ -35,7 +31,7 @@ var score = 0;
 var partyScreen;
 
 var playerTypeArray;
-var enemyTypeArray;
+var enemyImageArray;
 
 var globalType;
 
@@ -54,7 +50,6 @@ var lockProgress = 0;
 
 var hudNeedReset = false;
 
-var	socket = io.connect('http://localhost:3000');
 
 function becomePlayer(playerType)
 {
@@ -63,10 +58,18 @@ function becomePlayer(playerType)
 	globalType = playerType;
 
 
-
 	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
-	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
+	localFighter = new Fighter(500, 500, playerTypeArray[playerType], socket.id);
 
+	var data = {
+    x: localFighter.sprite.position.x,
+    y: localFighter.sprite.position.y,
+    rotation: localFighter.sprite.rotation,
+    type: playerType
+	};
+
+	socket.emit("initPlayer", data)
+	console.log(playerType);
 	if(playerType == "Cavalry")
 	{
 		localFighter.sprite.rotateToDirection = true;
@@ -75,7 +78,6 @@ function becomePlayer(playerType)
 
 	numTeamMates++;
 
-	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
 
 	createHud();
@@ -94,10 +96,10 @@ function becomeMod()
 function setupGame()
 {
 	createCanvas(1000, 725);
-
 	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
+	socket = io.connect('http://localhost:3000');
 
 	footsteps.setVolume(0.10);
 
@@ -131,6 +133,7 @@ function setupGame()
 	counter=setInterval(timer, 1000);
 
 	socket.emit('requestMap');
+	socket.emit('requestAllies');
 }
 
 function mouseReleased()
@@ -144,21 +147,37 @@ function keyPressed()
 	{
 		loop();
 		location.reload();
-	}
+
+}
+if(keyCode == 80 || keyCode == 77){
+	blop.play();
 }
 
-function keyReleased()
-{
- 	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68))
- 	{
-		galloping.stop();
-		footsteps.stop();
-	}
+if(keyCode == 16 && globalType == "Calvary" && (keyIsDown(65) || keyIsDown(83) || keyIsDown(87) || keyIsDown(68))){
+	whip.play();
 }
+
+
+}
+
+function keyReleased(){
+ if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
+	galloping.stop();
+	footsteps.stop();
+	barbSteps.stop();
+
+}
+
+}
+
+
+
 
 function drawGame()
 {
 	background(55,75,30);
+
+	footsteps.setVolume(0.3);
 
 	cursorSprite.position.x = mouseX;
 	cursorSprite.position.y = mouseY;
@@ -172,9 +191,15 @@ function drawGame()
 	partyScreen.sprite.position.x = camera.position.x;
 	partyScreen.sprite.position.y = camera.position.y;
 
-
 	if(isPlayer)
 	{
+
+		enemyGroup.collide(localFighter.sprite, function(enemy, fighter)
+		{
+				reduceHealthWidth(enemy.damage);
+		});
+
+
 		camera.position.x = localFighter.sprite.position.x;
 		camera.position.y = localFighter.sprite.position.y;
 
@@ -204,40 +229,51 @@ function drawGame()
 					}
 				}
 			}
-
 		}
+
+		localFighter.sprite.changeAnimation('idle');
 
 		if(keyDown('w'))
 		{
 			localFighter.walk("up");
+			localFighter.sprite.changeAnimation('walk');
 		}
-		if(keyWentDown('w'))
-		{
-			if(!galloping.isPlaying() && !footsteps.isPlaying())
-			{
-				if(globalType == "Cavalry")
-				{
+
+	if(keyWentDown('w'))
+	{
+		if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
+			if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
-				else
-				{
-					footsteps.loop();
-				}
+			else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
+			else{
+				footsteps.loop();
+			}
 			}
 		}
 
 		if(keyDown('s'))
 		{
 			localFighter.walk("down");
+			localFighter.sprite.changeAnimation('walk');
 		}
-		if(keyWentDown('s')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Cavalry"){
+	if(keyWentDown('s')){
+
+		if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
+			if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
+			else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
+
 			}
 		}
 
@@ -245,12 +281,18 @@ function drawGame()
 		if(keyDown('a'))
 		{
 			localFighter.walk("left");
+			localFighter.sprite.changeAnimation('walk');
 		}
 		if(keyWentDown('a')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Cavalry"){
+
+			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
+			if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
+				else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
@@ -262,16 +304,21 @@ function drawGame()
 		{
 
 			localFighter.walk("right");
+			localFighter.sprite.changeAnimation('walk');
 		}
 		if(keyWentDown('d')){
-			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Cavalry"){
+			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
+				if(globalType == "Calvary"){
+
 					galloping.loop();
 				}
+				else if(globalType == "Barbarian"){
+				barbSteps.loop();
+			}
 			else{
 				footsteps.loop();
 			}
-			}
+		}
 		}
 
 
@@ -280,13 +327,20 @@ function drawGame()
 		}
 
 
+		if(localFighter.sprite.sword.visible == false){
+			swordSound.stop();
+		}
+
+
 
 		if(keyDown(16))
 		{
+
 			localFighter.activateSpecial(true);
 		}
 		else {
 			localFighter.activateSpecial(false);
+
 		}
 
 		if(keyWentDown(49))
@@ -342,11 +396,13 @@ function drawGame()
 		}
 
 		localFighter.update(enemyGroup);
+		score = localFighter.score;
 
 	}
 	else
 	{
 		var spectatorSpeed = 5.6;
+
 
 		if(keyDown(16))
 		{
@@ -435,7 +491,7 @@ function drawGame()
 		}
 		else {
 			if(hudNeedReset){
-				createHud();
+				restoreHud();
 				hudNeedReset = false;
 
 			}
@@ -459,14 +515,8 @@ function drawGame()
 		if(keyWentDown('p'))
 		{
 			partyScreen.draw();
+
 		}
-
-
-		if(keyWentDown('p'))
-		{
-			partyScreen.draw();
-		}
-
 		if(keyDown('p'))
 		{
 			partyScreen.show();
@@ -484,16 +534,35 @@ function drawGame()
 			partyScreen.sprite.visible = false;
 			partyScreen.delete();
 		}
+
+		var currPlayerData = {
+			x: localFighter.sprite.position.x,
+			y: localFighter.sprite.position.y,
+			rotation: localFighter.sprite.rotation,
+			isAttacking: localFighter.sprite.sword.visible,
+			isWalking: localFighter.sprite.getAnimationLabel() == "walk"
+		};
+
+		socket.emit('updatePlayer', currPlayerData);
+
 	}
 
 	if(false == true){//time == 0){
+		swordSound.stop();
+		galloping.stop();
+		barbSteps.stop();
+		whip.stop();
+		footsteps.stop();
+		victory.setVolume(0.0000001);
+		victory.play();
 		noLoop();
 		textSize(80);
 		textAlign(CENTER);
 		text("Press 'R' \n to return to the title screen.", camera.position.x, camera.position.y);
 		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
 
-	}	
+	}
+
 }
 
 function borderCamera()
@@ -525,13 +594,70 @@ function borderCamera()
 /* Creates all the socket connection functions that will be used throughout the code */
 function initSocketFunctions()
 {
+	socket.on('addAlly', function(newAlly)
+	{
+		var tempAlly = new Ally(newAlly.x, newAlly.y, playerTypeArray[newAlly.type], newAlly.id);
+		fighterArray[newAlly.id] = tempAlly;
+		fighterGroup.push(tempAlly.sprite);
+	});
+
+	socket.on('removeAlly', function(toRemoveKey)
+	{
+		for(var clientKey in fighterArray)
+		{
+			if(clientKey == toRemoveKey)
+			{
+				fighterArray[clientKey].sprite.sword.remove();
+				fighterArray[clientKey].sprite.remove();
+				delete fighterArray[clientKey];
+			}
+
+		}
+	});
+
+	socket.on('updateAllies', function(allyArray)
+	{
+		for(var serverKey in allyArray)
+		{
+			for(var clientKey in fighterArray)
+			{
+				if(serverKey == clientKey && (serverKey != socket.id || !isPlayer))
+				{
+					let currAlly = allyArray[serverKey];
+					let currFighter = fighterArray[clientKey];
+
+					currFighter.sprite.position.x = currAlly.x;
+					currFighter.sprite.position.y = currAlly.y;
+					currFighter.sprite.rotation = currAlly.rotation;
+					currFighter.sprite.sword.rotation = currAlly.rotation;
+					currFighter.sprite.sword.visible = currAlly.isAttacking;
+					currFighter.sprite.changeAnimation(currAlly.isWalking ? 'walk' : 'idle');
+				}
+			}
+		}
+	});
+
+	socket.on('placeNewChest', function(newChest)
+	{
+		var tempChest = new Chest(newChest.id, newChest.x, newChest.y);
+		tempChest.setUnlockCode();
+		chestArray[newChest.id] = tempChest;
+		chestGroup.push(tempChest.sprite);
+	});
+
+	socket.on('placeNewObject', function(newObject)
+	{
+		var tempObstacle = new Obstacle(newObject.x, newObject.y, newObject.scale);
+		obstacleGroup.push(tempObstacle.sprite);
+	});
+
 	socket.on('initChests', function(serverChestArr)
 	{
 		var tempChest;
 		for(var key in serverChestArr)
 		{
 			tempChest = new Chest(serverChestArr[key].id, serverChestArr[key].x, serverChestArr[key].y);
-			
+
 			if(serverChestArr[key].isOpen)
 			{
 				tempChest.isOpen = true;
@@ -558,10 +684,16 @@ function initSocketFunctions()
 
 	socket.on('addEnemy', function(newEnemy)
 	{
-		var tempEnemy = new Enemy(newEnemy.id, newEnemy.x, newEnemy.y, enemyTypeArray[newEnemy.type.name]);
-		tempEnemy.sprite.health = newEnemy.health;
+		var tempEnemy = new Enemy(newEnemy.id, newEnemy.x, newEnemy.y, newEnemy.type);
 		enemyArray[newEnemy.id] = tempEnemy; 
 		enemyGroup.push(tempEnemy.sprite);
+	});
+
+	socket.on('removeEnemy', function(enemyID)
+	{
+		enemyArray[enemyID].sprite.sword.remove();
+		enemyArray[enemyID].sprite.remove();
+		delete enemyArray[enemyID];
 	});
 
 	socket.on('initEnemies', function(serverArray)
@@ -570,8 +702,7 @@ function initSocketFunctions()
 		for(var serverKey in serverArray)
 		{
 			let currEnemy = serverArray[serverKey];
-			tempEnemy = new Enemy(currEnemy.id, currEnemy.x, currEnemy.y, enemyTypeArray[currEnemy.type.name]);
-			tempEnemy.sprite.health = currEnemy.health;
+			tempEnemy = new Enemy(currEnemy.id, currEnemy.x, currEnemy.y, currEnemy.type);
 			enemyArray[currEnemy.id] = tempEnemy; 
 			enemyGroup.push(tempEnemy.sprite);
 		}
@@ -579,7 +710,6 @@ function initSocketFunctions()
 
 	socket.on('updateEnemies', function(serverArray)
 	{
-		console.log(serverArray);
 		for(var serverKey in serverArray)
 		{
 			for(var clientKey in enemyArray)
@@ -613,6 +743,10 @@ function initSocketFunctions()
 
 	});
 
-
+	socket.on('disconnect', function () 
+	{
+    	console.log( 'Disconnected from Server' );
+    	window.setTimeout( 'app.connect()', 5000 );
+  	});
 
 }

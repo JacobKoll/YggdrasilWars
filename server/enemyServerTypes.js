@@ -1,20 +1,26 @@
 exports.goblin = {
-	name: 'Goblin',
-	speed: 1.8,
+	name: 'goblin',
+	speed: 1,
 	health: 100,
-	detectionRadius: 225
+	detectionRadius: 225,
+	damage: .83,
+	scale: 1.3
 },
 
 exports.spider = {
-	name: 'Spider',
-	speed: 3,
+	name: 'spider',
+	speed: 1.5,
 	health: 100,
-	detectionRadius: 300
+	detectionRadius: 250,
+	damage: .43,
+	scale: 1.0
 },
 
 exports.bat = {
-	name: 'Bat',
-	speed: 9,
+	name: 'bat',
+	speed: 2.1,
 	health: 50,
-	detectionRadius: 500
+	detectionRadius: 300,
+	damage: .17,
+	scale: .89
 }

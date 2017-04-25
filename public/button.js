@@ -23,6 +23,7 @@ Button.prototype.press = function()
 {
 	this.changeImage('clicked');
 	this.functionToCall();
+	click.play();
 };
 
 Button.prototype.release = function() 
@@ -32,10 +33,13 @@ Button.prototype.release = function()
 
 Button.prototype.draw = function() 
 {
+	stroke(255);
+	fill(255);
+	textFont(celtic);
+	
 	drawSprite(this.sprite);
 	textAlign(CENTER);
-	textSize(this.textSize);
-	text(this.buttonText, this.x, this.y + (this.textSize / 3));
+	textSize(this.textSize);	text(this.buttonText, this.x, this.y + (this.textSize / 3));
 };
 
 

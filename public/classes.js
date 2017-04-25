@@ -1,32 +1,17 @@
 /* Assigns values to the various types of Enemies and Fighters that we have. */
 function assignTypes()
 {
-	var goblin = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-		damage: .83
-	};
-
-	var spider = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnikmation: enemyAttackAnimation,
-		damage: .50
-	};
-
-	var bat = {
-		walkAnimation: enemyWalkAnimation,
-		idleAnimation: enemyIdleAnimation,
-		attackAnimation: enemyAttackAnimation,
-		damage: .25
-	};
-
-	enemyTypeArray = {
-		'Goblin': goblin,
-		'Spider': spider,
-		'Bat': bat
-	};
+	enemyImageArray = {
+		"goblinWalk" : goblinWalkAnimation,
+		"goblinIdle" : goblinIdleAnimation,
+		"goblinAttack" : goblinAttackAnimation,
+		"spiderWalk" : spiderWalkAnimation,
+		"spiderIdle" : spiderIdleAnimation,
+		"spiderAttack" : spiderAttackAnimation,
+		"batWalk" : batWalkAnimation,
+		"batIdle" : batIdleAnimation,
+		"batAttack" : batAttackAnimation
+	}
 
 
 	var knight = {
@@ -48,10 +33,10 @@ function assignTypes()
 		specialAbility: knightSpecial
 	};
 
-	var calvary = {
-		walkAnimation: calvaryWalkAnimation,
-		idleAnimation: calvaryIdleAnimation,
-		swingAnimation: calvarySwingAnimation,
+	var cavalry = {
+		walkAnimation: cavalryWalkAnimation,
+		idleAnimation: cavalryIdleAnimation,
+		swingAnimation: cavalrySwingAnimation,
 		stamina: 135,
 		staminaRate: 2,
 		health: 120,
@@ -64,7 +49,7 @@ function assignTypes()
 		leftConeAngle: 35,
 		rightConeAngle: 112,
 		isVisible: true,
-		specialAbility: calvarySpecial
+		specialAbility: cavalrySpecial
 	};
 
 	var barb = {
@@ -126,7 +111,7 @@ function assignTypes()
 
 	playerTypeArray = {
 		"Knight" : knight,
-		"Calvary" : calvary,
+		"Cavalry" : cavalry,
 		"Barbarian" : barb,
 		"Mercenary" : mercenary,
 		"Rogue" : rogue,
@@ -155,7 +140,7 @@ function knightSpecial(activated)
 }
 
 /* Speed increase */
-function calvarySpecial(activated)
+function cavalrySpecial(activated)
 {
 	if(activated && fullStaminaBar.width > 0)
 	{

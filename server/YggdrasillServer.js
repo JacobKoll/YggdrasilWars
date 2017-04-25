@@ -6,6 +6,7 @@ var EnemySpawner = require('./enemyspawnerServer');
 var Enemy = require('./enemyServer');
 var enemyTypes = require('./enemyServerTypes');
 
+var Fighter = require('./fighterServer');
 var app = express();
 var server = app.listen(3000);
 var io = socket(server);
@@ -27,6 +28,7 @@ var fighterArray = {};
 var obstacleArray = [];
 var spawnerArray = [];
 
+
 db.connect(function(err){
   if (err) console.log(err);
 });
@@ -43,53 +45,90 @@ setInterval(heartbeat, 1000/60);
 function heartbeat()
 {
 
+	for(var i = 0; i < spawnerArray.length; i++)
+	{
+		let curr = spawnerArray[i];
 
-	// for(var i = 0; i < spawnerArray.length; i++)
-	// {
-	// 	let curr = spawnerArray[i];
-
-	// 	if(curr.spawn(timer))
-	// 	{
-	// 		let id = shortid.generate();
-	// 		let tempEnemy = new Enemy(curr.x, curr.y, curr.type, id);
-	// 		enemyArray[id] = tempEnemy;
-	// 		io.sockets.emit('addEnemy', tempEnemy);
-	// 	}
-	// }
+		if(curr.spawn(timer))
+		{
+			let id = shortid.generate();
+			let tempEnemy = new Enemy(curr.x, curr.y, curr.type, id);
+			enemyArray[id] = tempEnemy;
+			io.sockets.emit('addEnemy', tempEnemy);
+		}
+	}
 	
-
 	for(var key in enemyArray)
 	{
 		enemyArray[key].update(fighterArray);
 	}
 
+    io.sockets.emit('updateAllies', fighterArray);
 	io.sockets.emit('updateEnemies', enemyArray);
 
 	timer++;
 }
 
-
 io.sockets.on('connection', function(client)
 {
-
     console.log('New Connection: ', client.id);
 
-    client.on('disconnect', function(){
+    client.on('disconnect', function()
+    {
       console.log("client disconnected");
     });
 
-	var testID = shortid.generate();
-	var testEnemy = new Enemy(500, 500, enemyTypes.goblin, testID);
-	enemyArray[testID] = testEnemy;
 
    	client.on('requestMap', function()
    	{
-   		//client.emit('initObstacles', obstacleArray);
-   		//client.emit('initChests', chestArray);
-   		//client.emit('initSpawners', spawnerArray);	
-		// io.sockets.emit('addEnemy', tempEnemy);
+   		client.emit('initObstacles', obstacleArray);
+   		client.emit('initChests', chestArray);
+   		client.emit('initSpawners', spawnerArray);	
    		client.emit('initEnemies', enemyArray);	
    	});
+
+    client.on('requestAllies', function()
+    {
+        for(var key in fighterArray)
+        {
+            if(key != client.id)
+            {
+                client.emit('addAlly', fighterArray[key]);
+            }
+        }
+    });
+
+    client.on('initPlayer', function(data)
+    {
+      var fighter = new Fighter(data.x, data.y, data.rotation, data.type, client.id);
+      console.log(fighter.id, fighter.x, fighter.y, fighter.rotation, fighter.type, fighter.isAlive, "\n");
+      fighterArray[fighter.id] = fighter;
+      client.broadcast.emit('addAlly', fighter);
+    });
+
+    client.on('updatePlayer', function(player)
+    {
+        fighterArray[client.id].x = player.x;
+        fighterArray[client.id].y = player.y;
+        fighterArray[client.id].rotation = player.rotation;
+        fighterArray[client.id].isAttacking = player.isAttacking;
+        fighterArray[client.id].isWalking = player.isWalking;
+    });
+
+    client.on('hurtEnemy', function(enemyID, damage)
+    {
+
+    	if(enemyArray[enemyID].health - damage <= 0)
+    	{
+    		console.log("Enemy ", enemyID, " has been defeated.");
+    		delete enemyArray[enemyID];
+    		client.emit('removeEnemy', enemyID);
+    	}
+    	else
+    	{
+	    	enemyArray[enemyID].health -= damage;
+    	}
+    });
 
     client.on('checkUserDB',function(data){
   		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
@@ -136,9 +175,28 @@ io.sockets.on('connection', function(client)
   		io.sockets.emit('updateChest', key);
   	});
 
+    client.on('addChest', function(newChestX, newChestY){
+        var tempID = shortid.generate();
+        chestArray[tempID] = new objects.chest(tempID, newChestX, newChestY);
+        io.sockets.emit('placeNewChest', chestArray[tempID]);
+  	});
+
+    client.on('addObstacle', function(newObstacleX, newObstacleY){
+        var newObject = new objects.obstacle(newObstacleX, newObstacleY, 1);
+        obstacleArray.push(newObject);
+        io.sockets.emit('placeNewObject', newObject);
+  	});
+
 
     client.on('disconnect', function(){
       console.log("  ", client.id, " disconnected.");
+      for(var key in fighterArray){
+        if(client.id == fighterArray[key].id){
+          delete fighterArray[key];
+          io.sockets.emit('removeAlly', key);
+        }
+      }
+
     });
 });
 
@@ -149,21 +207,20 @@ function generateMap()
 	var minBounds = 30;
 	var maxBounds = 3970;
 
-	for(i = 0; i < 3; i++ )
+	for(i = 0; i < 5; i++ )
 	{
 		tempID = shortid.generate();
-
 		chestArray[tempID] = new objects.chest(tempID, randInt(minBounds, maxBounds), randInt(minBounds, maxBounds)); 
 	}
 	console.log("   Generated chests.");
 
-	for(i = 0; i < 5; i++ )
+	for(i = 0; i < 20; i++ )
 	{
-		obstacleArray.push(new objects.obstacle(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), rand(.4, 2.1))); 
+		obstacleArray.push(new objects.obstacle(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), rand(1.4, 2.1))); 
 	}
 	console.log("   Generated obstacles.");
 
-	for(i = 0; i < 10; i++)
+	for(i = 0; i < 7; i++)
 	{
 		let chosenType;
 		switch(randInt(0,3))

@@ -26,7 +26,7 @@ function Enemy(x, y, type, id)
 	this.id = id;
 	this.health = type.health;
 
-	this.detectionRadius = type.detectionRadius;
+	this.detectionRadius = type.detectionRadius * type.scale;
 	this.speed = type.speed;
 
 	this.turnCounter = 0;
@@ -48,40 +48,34 @@ function Enemy(x, y, type, id)
 Enemy.prototype.update = function(fighterArr)
 {
 	var currDist;
-	var chasedDist;
+	var chasedDist = 10000;
 
-	if(fighterArr.length > 0)
+	// The monster will chase the player that is closest to it, in its view-range.
+	for(var player in fighterArr)
 	{
-		console.log("Trying to chase");
-		// The monster will chase the player that is closest to it, in its view-range.
-		for(var player in fighterArr)
+		currDist = this.dist(fighterArr[player].x, fighterArr[player].y, this.x, this.y);
+
+		if(!this.playerToChase || currDist < chasedDist)
 		{
-			currDist = dist(fighterArr[player].x, fighterArr[player].y, this.x, this.y);
+			chasedDist = currDist;
+			this.playerToChase = fighterArr[player];
+		}
 
-			if(!this.playerToChase || currDist < chasedDist)
-			{
-				chasedDist = currDist;
-				this.playerToChase = fighterArr[player];
-			}
-
-			// Chase them
-			if(chasedDist < this.detectionRadius)
-			{
-				let dX = this.playerToChase.x - this.x;
-				let dY = this.playerToChase.y - this.y;
-				let angleToChase = Math.atan2(dY, dX);
-				this.addSpeed(2, angleToChase)
-			}
-			else // Walk around
-			{
-				this.moveAround();
-			}
+		// Chase them
+		if(chasedDist < this.detectionRadius)
+		{
+			let dX = this.playerToChase.x - this.x;
+			let dY = this.playerToChase.y - this.y;
+			let angleToChase = Math.atan2(dY, dX);
+			this.rotation = angleToChase;
+			this.addSpeed(1.3, angleToChase)
+		}
+		else // Walk around
+		{
+			this.moveAround();
 		}
 	}
-	else
-	{
-		this.moveAround();
-	}
+
 };
 
 

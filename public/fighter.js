@@ -55,6 +55,8 @@ function Fighter(x, y, type, id)
 	this.sprite.addAnimation('walk', type.walkAnimation);
 	this.sprite.addAnimation('idle', type.idleAnimation);
 
+	this.score = 0;
+
 	this.sprite.sword = createSprite(x, y, 138, 96);
 	this.sprite.sword.maxSpeed = maxSpeed;
 	this.sprite.sword.friction = friction;
@@ -107,16 +109,6 @@ Fighter.prototype.walk = function(direction)
 }
 
 /**
- * [die Runs the characters death animation]
- * @function
- */
-Fighter.prototype.die = function()
-{
-	this.sprite.remove();
-	this.sprite.sword.remove();
-}
-
-/**
  * Updates the rotation of the player and the bounding box for the sword.
  * @function
  */
@@ -130,6 +122,7 @@ Fighter.prototype.update = function(enemyGroup)
 
 Fighter.prototype.attack = function(sword, enemy)
 {
+	console.log(enemy.health);
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
@@ -153,6 +146,15 @@ Fighter.prototype.attack = function(sword, enemy)
 
 	if((case1 || case2 || case3 || case4 ) && sword.visible == true)
 	{
-		enemy.health -= sword.damage;
+		if(enemy.bar.width <= 0)
+		{
+			this.score += 10;
+			enemy.bar.width = 0;
+		}else
+		{
+			enemy.bar.width -= sword.damage;
+		}
+
+
 	}
 };
