@@ -5,6 +5,14 @@ var enemyWalkAnimation;
 var enemyAttackAnimation;
 var enemyIdleAnimation;
 
+var batWalkAnimation;
+var batAttackAnimation;
+var batIdleAnimation;
+
+var spiderWalkAnimation;
+var spiderAttackAnimation;
+var spiderIdleAnimation;
+
 var fighterSwingAnimation;
 var fighterDeathAnimation;
 var fighterIdleAnimation;
@@ -119,6 +127,14 @@ function preload()
 	enemyWalkAnimation = loadAnimation("assets/enemy/walk/enemyWalking00.png", "assets/enemy/walk/enemyWalking09.png");
 	enemyAttackAnimation = loadAnimation("assets/enemy/attack/enemyAttack0.png", "assets/enemy/attack/enemyAttack3.png");
 	enemyIdleAnimation = loadAnimation("assets/enemy/enemyIdle.png");
+
+	batWalkAnimation = loadAnimation("assets/bat/walk/batWalk0.png","assets/bat/walk/batWalk7.png");
+	batAttackAnimation = loadAnimation("assets/bat/attack/batAttack0.png","assets/bat/attack/batAttack5.png");
+	batIdleAnimation = loadAnimation("assets/bat/walk/batWalk0.png","assets/bat/walk/batWalk7.png");
+
+	spiderWalkAnimation = loadAnimation("assets/spider/walk/spiderWalk0.png","assets/spider/walk/spiderWalk3.png");
+	spiderAttackAnimation = loadAnimation("assets/spider/attack/spiderAttack0.png","assets/spider/attack/spiderAttack4.png");
+	spiderIdleAnimation = loadAnimation("assets/spider/walk/spiderWalk0.png","assets/spider/walk/spiderWalk3.png");
 
 	knightWalkAnimation = loadAnimation("assets/fighter/walk/walk00.png","assets/fighter/walk/walk09.png");
 	knightSwingAnimation = loadAnimation("assets/fighter/swing/swing0.png","assets/fighter/swing/swing6.png");
