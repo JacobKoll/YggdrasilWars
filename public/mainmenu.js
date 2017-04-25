@@ -18,9 +18,9 @@ function initMainMenu()
 {
 	// menuImage = backgroundImage;
 
-	startPlayerButton = new Button(width/2, 200, "Join Game", 22, defaultButtonImage, clickedButtonImage, function(){menuChoice = 1;});
-	startSpectatorButton = new Button(width/2, 300, "Spectate Game", 10, defaultButtonImage, clickedButtonImage, function(){menuChoice = 2;});
-	startModButton = new Button(width/2, 400, "Become Mod", 22, defaultButtonImage, clickedButtonImage, function(){menuChoice = 3;});
+	startPlayerButton = new Button(width/2, 350, "Join Game", 22, defaultButtonImage, clickedButtonImage, function(){menuChoice = 1;});
+	startSpectatorButton = new Button(width/2, 450, "Spectate Game", 19, defaultButtonImage, clickedButtonImage, function(){menuChoice = 2;});
+	startModButton = new Button(width/2, 550, "Become Mod", 22, defaultButtonImage, clickedButtonImage, function(){menuChoice = 3;});
 }
 
 function drawMainMenu()
