@@ -194,7 +194,7 @@ function drawPrepScreen()
 
 			text(mercDescription,(width/2)-25,445);
 		}
-		else if(characterNames[current] == "Calvary"){
+		else if(characterNames[current] == "Cavalry"){
 			text(cavalryDescription,(width/2)-35,460);
 		}
 		else if(characterNames[current] == "Barbarian"){

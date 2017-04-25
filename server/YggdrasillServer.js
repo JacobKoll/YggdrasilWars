@@ -2,6 +2,7 @@ var mysql = require('mysql');
 var express = require('express');
 var socket = require('socket.io');
 var objects = require('./mapobjectsServer');
+var Fighter = require('./fighterServer');
 var app = express();
 var server = app.listen(3000);
 var io = socket(server);
@@ -15,12 +16,14 @@ var db = mysql.createConnection({
 });
 
 var chestArray = {};
+var fighterArray = {};
 // var pointsArray = {};
 // var foodArray = {};
 
 var obstacleArray = [];
 // var wallsArray = [];
 // var treeArray = [];
+
 
 
 db.connect(function(err){
@@ -35,27 +38,56 @@ console.log("Starting YggdrasillServer...\n");
 generateMap();
 console.log("\nThe server is ready! \n");
 
+
 function heartbeat()
 {
-
+    io.sockets.emit('updateAllies', fighterArray);
 }
 
 
 
 io.sockets.on('connection', function(client)
 {
-
     console.log('New Connection: ', client.id);
 
-    client.on('disconnect', function(){
+    client.on('disconnect', function()
+    {
       console.log("client disconnected");
     });
 
    	client.on('requestMap', function()
    	{
    		client.emit('initObstacles', obstacleArray);
-   		client.emit('initChests', chestArray);		
+   		client.emit('initChests', chestArray);
    	});
+
+    client.on('requestAllies', function()
+    {
+        for(var key in fighterArray)
+        {
+            if(key != client.id)
+            {
+                client.emit('addAlly', fighterArray[key]);
+            }
+        }
+    });
+
+    client.on('initPlayer', function(data)
+    {
+      var fighter = new Fighter(data.x, data.y, data.rotation, data.type, client.id);
+      console.log(fighter.id, fighter.x, fighter.y, fighter.rotation, fighter.type, fighter.isAlive, "\n");
+      fighterArray[fighter.id] = fighter;
+      client.broadcast.emit('addAlly', fighter);
+    });
+
+    client.on('updatePlayer', function(player)
+    {
+        fighterArray[client.id].x = player.x;
+        fighterArray[client.id].y = player.y;
+        fighterArray[client.id].rotation = player.rotation;
+        fighterArray[client.id].isAttacking = player.isAttacking;
+        fighterArray[client.id].isWalking = player.isWalking;
+    });
 
     client.on('checkUserDB',function(data){
   		db.query('select UserName from Login where UserName = ?', data.UserName, function(err, result){
@@ -102,9 +134,27 @@ io.sockets.on('connection', function(client)
   		io.sockets.emit('updateChest', key);
   	});
 
+    client.on('addChest', function(newChestX, newChestY){
+        var tempID = shortid.generate();
+        chestArray[tempID] = new objects.chest(tempID, newChestX, newChestY);
+        io.sockets.emit('placeNewChest', chestArray[tempID]);
+  	});
+
+    client.on('addObstacle', function(newObstacleX, newObstacleY){
+        var newObject = new objects.obstacle(newObstacleX, newObstacleY, 1);
+        obstacleArray.push(newObject);
+        io.sockets.emit('placeNewObject', newObject);
+  	});
+
 
     client.on('disconnect', function(){
       console.log("  ", client.id, " disconnected.");
+      for(var key in fighterArray){
+        if(client.id == fighterArray[key].id){
+          delete fighterArray[key];
+          io.sockets.emit('removeAlly', key);
+        }
+      }
     });
 });
 
@@ -118,7 +168,7 @@ function generateMap()
 	{
 		tempID = shortid.generate();
 
-		chestArray[tempID] = new objects.chest(tempID, randInt(200, 3800), randInt(200, 3800)); 
+		chestArray[tempID] = new objects.chest(tempID, randInt(200, 3800), randInt(200, 3800));
 	}
 	console.log("   Generated chests.");
 
@@ -126,7 +176,7 @@ function generateMap()
 	{
 		tempID = shortid.generate();
 
-		obstacleArray.push(new objects.obstacle(randInt(200, 3800), randInt(200, 3800), rand(1, 2))); 
+		obstacleArray.push(new objects.obstacle(randInt(200, 3800), randInt(200, 3800), rand(1, 2)));
 	}
 	console.log("   Generated obstacles.");
 }

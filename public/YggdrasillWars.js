@@ -25,8 +25,10 @@ var pointsGroup;
 var fliesGroup;
 var iceGroup;
 
+
+var fighterArray = {};
+
 var enemyArray = [];
-var fighterArray = [];
 var spawnerArray = [];
 
 
@@ -68,10 +70,18 @@ function becomePlayer(playerType)
 	globalType = playerType;
 
 
-
 	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
-	localFighter = new Fighter(50, 50, playerTypeArray[playerType]);
+	localFighter = new Fighter(500, 500, playerTypeArray[playerType], socket.id);
 
+	var data = {
+    x: localFighter.sprite.position.x,
+    y: localFighter.sprite.position.y,
+    rotation: localFighter.sprite.rotation,
+    type: playerType
+	};
+
+	socket.emit("initPlayer", data)
+	console.log(playerType);
 	if(playerType == "Cavalry")
 	{
 		localFighter.sprite.rotateToDirection = true;
@@ -80,7 +90,6 @@ function becomePlayer(playerType)
 
 	numTeamMates++;
 
-	fighterArray.push(localFighter);
 	fighterGroup.push(localFighter.sprite);
 
 	createHud();
@@ -136,6 +145,7 @@ function setupGame()
 	counter=setInterval(timer, 1000);
 
 	socket.emit('requestMap');
+	socket.emit('requestAllies');
 }
 
 function mouseReleased()
@@ -209,12 +219,13 @@ function drawGame()
 					}
 				}
 			}
-
 		}
+		localFighter.sprite.changeAnimation('idle');
 
 		if(keyDown('w'))
 		{
 			localFighter.walk("up");
+			localFighter.sprite.changeAnimation('walk');
 		}
 		if(keyWentDown('w'))
 		{
@@ -234,6 +245,7 @@ function drawGame()
 		if(keyDown('s'))
 		{
 			localFighter.walk("down");
+			localFighter.sprite.changeAnimation('walk');
 		}
 		if(keyWentDown('s')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
@@ -250,6 +262,7 @@ function drawGame()
 		if(keyDown('a'))
 		{
 			localFighter.walk("left");
+			localFighter.sprite.changeAnimation('walk');
 		}
 		if(keyWentDown('a')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
@@ -267,6 +280,7 @@ function drawGame()
 		{
 
 			localFighter.walk("right");
+			localFighter.sprite.changeAnimation('walk');
 		}
 		if(keyWentDown('d')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
@@ -352,6 +366,7 @@ function drawGame()
 	else
 	{
 		var spectatorSpeed = 5.6;
+
 
 		if(keyDown(16))
 		{
@@ -495,6 +510,17 @@ function drawGame()
 			partyScreen.sprite.visible = false;
 			partyScreen.delete();
 		}
+
+		var currPlayerData = {
+			x: localFighter.sprite.position.x,
+			y: localFighter.sprite.position.y,
+			rotation: localFighter.sprite.rotation,
+			isAttacking: localFighter.sprite.sword.visible,
+			isWalking: localFighter.sprite.getAnimationLabel() == "walk"
+		};
+
+		socket.emit('updatePlayer', currPlayerData);
+
 	}
 
 	if(false == true){//time == 0){
@@ -504,7 +530,8 @@ function drawGame()
 		text("Press 'R' \n to return to the title screen.", camera.position.x, camera.position.y);
 		text("Your final score:" + score, camera.position.x, camera.position.y - 100);
 
-	}	
+	}
+
 }
 
 function borderCamera()
@@ -536,13 +563,71 @@ function borderCamera()
 /* Creates all the socket connection functions that will be used throughout the code */
 function initSocketFunctions()
 {
+	socket.on('addAlly', function(newAlly)
+	{
+		var tempAlly = new Ally(newAlly.x, newAlly.y, playerTypeArray[newAlly.type], newAlly.id);
+		fighterArray[newAlly.id] = tempAlly;
+		fighterGroup.push(tempAlly.sprite);
+	});
+
+	socket.on('removeAlly', function(toRemoveKey)
+	{
+		for(var clientKey in fighterArray)
+		{
+			if(clientKey == toRemoveKey)
+			{
+				fighterArray[clientKey].sprite.sword.remove();
+				fighterArray[clientKey].sprite.remove();
+				delete fighterArray[clientKey];
+			}
+
+		}
+	});
+
+	socket.on('updateAllies', function(allyArray)
+	{
+		for(var serverKey in allyArray)
+		{
+			for(var clientKey in fighterArray)
+			{
+				if(serverKey == clientKey && (serverKey != localFighter.id || !isPlayer))
+				{
+					let currAlly = allyArray[serverKey];
+					let currFighter = fighterArray[clientKey];
+
+					currFighter.sprite.position.x = currAlly.x;
+					currFighter.sprite.position.y = currAlly.y;
+					currFighter.sprite.rotation = currAlly.rotation;
+					currFighter.sprite.sword.rotation = currAlly.rotation;
+					currFighter.sprite.sword.visible = currAlly.isAttacking;
+					currFighter.sprite.changeAnimation(currAlly.isWalking ? 'walk' : 'idle');
+				}
+			}
+		}
+	});
+
+	socket.on('placeNewChest', function(newChest)
+	{
+		var tempChest = new Chest(newChest.id, newChest.x, newChest.y);
+		tempChest.setUnlockCode();
+		chestArray[newChest.id] = tempChest;
+		chestGroup.push(tempChest.sprite);
+	});
+
+	socket.on('placeNewObject', function(newObject)
+	{
+		var tempObstacle = new Obstacle(newObject.x, newObject.y, newObject.scale);
+		obstacleGroup.push(tempObstacle.sprite);
+		console.log("wasChestAddsljsdgljadglj");
+	});
+
 	socket.on('initChests', function(serverChestArr)
 	{
 		var tempChest;
 		for(var key in serverChestArr)
 		{
 			tempChest = new Chest(serverChestArr[key].id, serverChestArr[key].x, serverChestArr[key].y);
-			
+
 			if(serverChestArr[key].isOpen)
 			{
 				tempChest.isOpen = true;

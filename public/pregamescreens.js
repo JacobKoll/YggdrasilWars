@@ -25,9 +25,9 @@ var barbWalkAnimation;
 var barbSwingAnimation;
 var barbIdleAnimation;
 
-var calvaryWalkAnimation;
-var calvarySwingAnimation;
-var calvaryIdleAnimation;
+var cavalryWalkAnimation;
+var cavalrySwingAnimation;
+var cavalryIdleAnimation;
 
  var footsteps;
  var swordSound;
@@ -94,8 +94,8 @@ function preload()
 	characterImages.push(loadImage("assets/screens/class_images/barb_portrait.png"));
 	characterNames.push("Barbarian");
 
-	characterImages.push(loadImage("assets/screens/class_images/calvary_portrait.png"));
-	characterNames.push("Calvary");
+	characterImages.push(loadImage("assets/screens/class_images/cavalry_portrait.png"));
+	characterNames.push("Cavalry");
 
 	characterImages.push(loadImage("assets/screens/class_images/knight_portrait.png"));
 	characterNames.push("Knight");
@@ -126,9 +126,9 @@ function preload()
 	barbSwingAnimation = loadAnimation("assets/barbarian/attack/barbattack0.png","assets/barbarian/attack/barbattack5.png");
 	barbIdleAnimation = loadAnimation("assets/barbarian/walk/barbwalk2.png");
 
-	calvaryWalkAnimation = loadAnimation("assets/calvary/walk/calvarywalk0.png","assets/calvary/walk/calvarywalk3.png");
-	calvarySwingAnimation = loadAnimation("assets/calvary/swing/calvaryswing0.png","assets/calvary/swing/calvaryswing5.png");
-	calvaryIdleAnimation = loadAnimation("assets/calvary/walk/calvarywalk3.png");
+	cavalryWalkAnimation = loadAnimation("assets/cavalry/walk/cavalrywalk0.png","assets/cavalry/walk/cavalrywalk3.png");
+	cavalrySwingAnimation = loadAnimation("assets/cavalry/swing/cavalryswing0.png","assets/cavalry/swing/cavalryswing5.png");
+	cavalryIdleAnimation = loadAnimation("assets/cavalry/walk/cavalrywalk3.png");
 
 	customCursor = loadImage("assets/cursor.png");
 	spawnerImage = loadImage("assets/spawner.png");
@@ -221,7 +221,7 @@ function draw()
 				console.log("Moving past the title screen");
 				titleScreenFinished = true;
 				initMainMenu();
-				
+
 			}
 		}
 	}
@@ -230,5 +230,3 @@ function draw()
 		drawGame();
 	}
 }
-
-

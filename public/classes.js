@@ -57,10 +57,10 @@ function assignTypes()
 		specialAbility: knightSpecial
 	};
 
-	var calvary = {
-		walkAnimation: calvaryWalkAnimation,
-		idleAnimation: calvaryIdleAnimation,
-		swingAnimation: calvarySwingAnimation,
+	var cavalry = {
+		walkAnimation: cavalryWalkAnimation,
+		idleAnimation: cavalryIdleAnimation,
+		swingAnimation: cavalrySwingAnimation,
 		stamina: 135,
 		staminaRate: 2,
 		health: 120,
@@ -73,7 +73,7 @@ function assignTypes()
 		leftConeAngle: 35,
 		rightConeAngle: 112,
 		isVisible: true,
-		specialAbility: calvarySpecial
+		specialAbility: cavalrySpecial
 	};
 
 	var barb = {
@@ -135,7 +135,7 @@ function assignTypes()
 
 	playerTypeArray = {
 		"Knight" : knight,
-		"Calvary" : calvary,
+		"Cavalry" : cavalry,
 		"Barbarian" : barb,
 		"Mercenary" : mercenary,
 		"Rogue" : rogue,
@@ -164,7 +164,7 @@ function knightSpecial(activated)
 }
 
 /* Speed increase */
-function calvarySpecial(activated)
+function cavalrySpecial(activated)
 {
 	if(activated && fullStaminaBar.width > 0)
 	{
