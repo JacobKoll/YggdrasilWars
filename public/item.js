@@ -11,5 +11,3 @@ function Items(img, dmg, name, isEmpty){
   this.name = name;
   this.isEmpty = isEmpty;
 }
-
-function

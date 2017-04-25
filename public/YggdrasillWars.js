@@ -237,12 +237,12 @@ function drawGame()
 		}
 		if(keyWentDown('s')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()){
-			if(globalType == "Cavalry"){
-					galloping.loop();
+				if(globalType == "Cavalry"){
+						galloping.loop();
+					}
+				else{
+					footsteps.loop();
 				}
-			else{
-				footsteps.loop();
-			}
 			}
 		}
 
@@ -347,6 +347,7 @@ function drawGame()
 		}
 
 		localFighter.update(enemyGroup);
+		score = localFighter.score;
 
 	}
 	else
