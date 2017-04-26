@@ -19,9 +19,9 @@ function assignTypes()
 		idleAnimation: knightIdleAnimation,
 		swingAnimation: knightSwingAnimation,
 		stamina: 120,
-		staminaRate: 2,
+		staminaRate: 1.5,
 		health: 135,
-		healthRate: .1,
+		healthRate: .5,
 		speed: 3,
 		scale: 1,
 		damage: 1.2,
@@ -38,12 +38,12 @@ function assignTypes()
 		idleAnimation: cavalryIdleAnimation,
 		swingAnimation: cavalrySwingAnimation,
 		stamina: 135,
-		staminaRate: 2,
+		staminaRate: 1.6,
 		health: 120,
-		healthRate: .1,
+		healthRate: .5,
 		speed: 4,
 		damage: 1.1,
-		scale: 1.3,
+		scale: 1.5,
 		spriteCollider: [0,0,25],
 		weaponCollider: [0,0,53],
 		leftConeAngle: 35,
@@ -57,12 +57,12 @@ function assignTypes()
 		idleAnimation: barbIdleAnimation,
 		swingAnimation: barbSwingAnimation,
 		stamina: 300,
-		staminaRate: 2,
-		health: 150,
-		healthRate: .1,
+		staminaRate: .8,
+		health: 175,
+		healthRate: 1.5,
 		speed: 2,
 		damage: 1.5,
-		scale: 1.5,
+		scale: 1.3,
 		spriteCollider: [0,0,22.5],
 		weaponCollider: [0,0,60],
 		leftConeAngle: -38,
@@ -76,9 +76,9 @@ function assignTypes()
 		idleAnimation: mercIdleAnimation,
 		swingAnimation: mercSwingAnimation,
 		stamina: 145,
-		staminaRate: 2,
+		staminaRate: 1,
 		health: 125,
-		healthRate: .1,
+		healthRate: 1.2,
 		speed: 3.2,
 		scale: 1.15,
 		damage: 1.15,
@@ -95,9 +95,9 @@ function assignTypes()
 		idleAnimation: rogueIdleAnimation,
 		swingAnimation: rogueSwingAnimation,
 		stamina: 120,
-		staminaRate: 2,
+		staminaRate: 3,
 		health: 100,
-		healthRate: .1,
+		healthRate: .5,
 		speed: 3.4,
 		scale: .8,
 		damage: 1,
@@ -123,7 +123,7 @@ function assignTypes()
 function knightSpecial(activated)
 {
 	if (activated && fullStaminaBar.width > 0) {
-		this.healthRate = 0.5;
+		this.healthRate = 5;
 
 		reduceStaminaWidth();
 		reduceStaminaWidth();
@@ -166,8 +166,8 @@ function barbSpecial(activated)
 {
 	if(activated && fullStaminaBar.width > 0)
 	{
-		this.sprite.scale = 2;
-		this.sprite.sword.scale = 2;
+		this.sprite.scale = this.type.scale + 1;
+		this.sprite.sword.scale = this.type.scale + 1;
 
 		reduceStaminaWidth();
 		reduceStaminaWidth();
@@ -179,8 +179,8 @@ function barbSpecial(activated)
 		if (activated && fullStaminaBar.width == 0) {
 			console.log("You are too sore to buff up anymore.");
 		}
-		this.sprite.scale = 1.5;
-		this.sprite.sword.scale = 1.5;
+		this.sprite.scale = this.type.scale;
+		this.sprite.sword.scale = this.type.scale;
 	}
 
 }

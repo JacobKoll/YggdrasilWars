@@ -37,6 +37,8 @@ var cavalryWalkAnimation;
 var cavalrySwingAnimation;
 var cavalryIdleAnimation;
 
+var miniMapImage;
+
  var footsteps;
  var swordSound;
  var galloping;
@@ -106,6 +108,7 @@ function preload()
 	mainMenuImage = loadImage("assets/screens/mainmenu.png");
 
 
+
 	backgroundImage = loadImage("assets/screens/prep_background.png");
 	foregroundImage = loadImage("assets/screens/prep_foreground.png");
 
@@ -163,6 +166,9 @@ function preload()
 	closedChestImage = loadImage("assets/obstacles/chest_closed.png");
 
 	landscape = loadImage("assets/map.png");
+	
+	miniMapImage = loadImage("assets/minimap.png");
+	
 	emptyInventoryImage = loadImage("assets/inventory/emptyInventory.png");
 	basicSwordImage = loadImage("assets/inventory/basicSword.png");
 	bronzeSwordImage = loadImage("assets/inventory/bronzeSword.png");

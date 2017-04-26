@@ -27,9 +27,10 @@ function Enemy(id, x, y, type)
 
 
 	this.sprite = createSprite(x, y, 70, 70);
-	this.sprite.setCollider('circle', 0, 0, 30);
 	this.sprite.damage = type.damage;
 	this.sprite.health = type.health;
+
+	this.sprite.id = id;
 
 	this.sprite.scale = type.scale;
 
@@ -40,4 +41,5 @@ function Enemy(id, x, y, type)
 	this.sprite.addAnimation('attack', enemyImageArray[type.name + 'Attack']);
 
 	this.sprite.bar = createSprite(this.x, this.y, this.health, 10);
+	healthBars.push(this.sprite.bar);
 }

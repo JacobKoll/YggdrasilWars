@@ -4,7 +4,7 @@ var customCursor;
 var localFighter;
 var chestArray = [];
 
-var fighterGroup; // Fighter sprites group
+var allyGroup; // Fighter sprites group
 var enemyGroup; // Enemy sprites group
 var swordGroup;
 var obstacleGroup;
@@ -12,14 +12,15 @@ var chestGroup;
 var spawnerGroup;
 var enemySymbols;
 var greenDotGroup;
+var hudGroup;
 
 // To be used later
-var ruinsGroup;
-var treesGroup;
-var foodGroup;
-var pointsGroup;
-var fliesGroup;
-var iceGroup;
+// var ruinsGroup;
+// var treesGroup;
+// var foodGroup;
+// var pointsGroup;
+// var fliesGroup;
+// var iceGroup;
 
 var fighterArray = {};
 var enemyArray = {};
@@ -44,7 +45,6 @@ var isSpectator;
 var isPlayer;
 var paused = false;
 
-var numTeamMates = 0;
 var tempUnlockCode = [1,2,3];
 var lockProgress = 0;
 
@@ -57,15 +57,16 @@ function becomePlayer(playerType)
 
 	globalType = playerType;
 
-
 	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
 	localFighter = new Fighter(500, 500, playerTypeArray[playerType], socket.id);
+	fighterArray[socket.id] = localFighter;
 
 	var data = {
     x: localFighter.sprite.position.x,
     y: localFighter.sprite.position.y,
     rotation: localFighter.sprite.rotation,
-    type: playerType
+    type: playerType,
+    health: localFighter.sprite.health
 	};
 
 	socket.emit("initPlayer", data)
@@ -75,10 +76,6 @@ function becomePlayer(playerType)
 		localFighter.sprite.rotateToDirection = true;
 		localFighter.sprite.sword.rotateToDirection = true;
 	}
-
-	numTeamMates++;
-
-	fighterGroup.push(localFighter.sprite);
 
 	createHud();
 }
@@ -96,9 +93,22 @@ function becomeMod()
 function setupGame()
 {
 	createCanvas(1000, 725);
+	allyGroup = new Group();
+	enemyGroup = new Group();
+	swordGroup = new Group();
+	obstacleGroup = new Group();
+	chestGroup = new Group();
+	spawnerGroup = new Group();
+	enemySymbols = new Group();
+	healthBars = new Group();
+	greenDotGroup = new Group();
+	hudGroup = new Group();
+
 	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
+	
+	// socket = io.connect('proj-309-la-1.cs.iastate.edu:3000');
 	socket = io.connect('http://localhost:3000');
 
 	footsteps.setVolume(0.10);
@@ -108,15 +118,6 @@ function setupGame()
 
 	/* Connect to the server */
 
-	fighterGroup = new Group();
-	enemyGroup = new Group();
-	swordGroup = new Group();
-	obstacleGroup = new Group();
-	chestGroup = new Group();
-	spawnerGroup = new Group();
-	enemySymbols = new Group();
-	healthBars = new Group();
-	greenDotGroup = new Group();
 
 	initSocketFunctions();
 
@@ -148,34 +149,30 @@ function keyPressed()
 		loop();
 		location.reload();
 
-}
-if(keyCode == 80 || keyCode == 77){
-	blop.play();
-}
+	}
+	if(keyCode == 80 || keyCode == 77){
+		blop.play();
+	}
 
-if(keyCode == 16 && globalType == "Calvary" && (keyIsDown(65) || keyIsDown(83) || keyIsDown(87) || keyIsDown(68))){
-	whip.play();
-}
-
-
+	if(keyCode == 16 && globalType == "Cavalry" && (keyIsDown(65) || keyIsDown(83) || keyIsDown(87) || keyIsDown(68))){
+		whip.play();
+	}
 }
 
-function keyReleased(){
- if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
-	galloping.stop();
-	footsteps.stop();
-	barbSteps.stop();
-
+function keyReleased()
+{
+	if(!keyIsDown(65) && !keyIsDown(83) && !keyIsDown(87) && !keyIsDown(68)){
+		galloping.stop();
+		footsteps.stop();
+		barbSteps.stop();
+	}
 }
-
-}
-
-
-
 
 function drawGame()
 {
 	background(55,75,30);
+
+
 
 	footsteps.setVolume(0.3);
 
@@ -193,12 +190,7 @@ function drawGame()
 
 	if(isPlayer)
 	{
-
-		enemyGroup.collide(localFighter.sprite, function(enemy, fighter)
-		{
-				reduceHealthWidth(enemy.damage);
-		});
-
+		fullHealthBar.width = 200 * (localFighter.sprite.health / localFighter.sprite.maxHealth);
 
 		camera.position.x = localFighter.sprite.position.x;
 		camera.position.y = localFighter.sprite.position.y;
@@ -242,7 +234,7 @@ function drawGame()
 	if(keyWentDown('w'))
 	{
 		if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
-			if(globalType == "Calvary"){
+			if(globalType == "Cavalry"){
 
 					galloping.loop();
 				}
@@ -263,7 +255,7 @@ function drawGame()
 	if(keyWentDown('s')){
 
 		if(!galloping.isPlaying() && !footsteps.isPlaying() && !barbSteps.isPlaying()){
-			if(globalType == "Calvary"){
+			if(globalType == "Cavalry"){
 
 					galloping.loop();
 				}
@@ -286,7 +278,7 @@ function drawGame()
 		if(keyWentDown('a')){
 
 			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
-			if(globalType == "Calvary"){
+			if(globalType == "Cavalry"){
 
 					galloping.loop();
 				}
@@ -308,7 +300,7 @@ function drawGame()
 		}
 		if(keyWentDown('d')){
 			if(!galloping.isPlaying() && !footsteps.isPlaying()&& !barbSteps.isPlaying()){
-				if(globalType == "Calvary"){
+				if(globalType == "Cavalry"){
 
 					galloping.loop();
 				}
@@ -379,7 +371,7 @@ function drawGame()
 			restoreStaminaWidth();
 		}
 
-		restoreHealthWidth();
+		
 
 		/* Invisible landscapeSprite around landscape */
 		if(localFighter.sprite.position.x < 0) {
@@ -453,9 +445,6 @@ function drawGame()
 		}
 	}
 
-	drawSprites();
-	drawSprite(cursorSprite);
-
 	borderCamera();
 
 	if(isPlayer)
@@ -466,7 +455,7 @@ function drawGame()
 			miniMap.createDots(enemyGroup);
 		}
 
-		if(enemyGroup.overlap(obstacleGroup))
+		if(localFighter.sprite.overlap(obstacleGroup))
 		{
 			localFighter.speed = localFighter.maxSpeed - 1.213;
 		}
@@ -480,11 +469,9 @@ function drawGame()
 		{
 
 			miniMap.sprite.visible = true;
-			miniMap.sprite.depth = 1500;
 			miniMap.update();
 			miniMap.show();
 			miniMap.move(camera.position.x - (width/2),  camera.position.y - (height/2));
-
 			deleteHud();
 			hudNeedReset = true;
 
@@ -499,40 +486,6 @@ function drawGame()
 			miniMap.delete();
 			camera.zoom = 1;
 			drawHud();
-		}
-
-		for (var key in chestArray)
-		{
-			if (localFighter.sprite.sword.overlap(chestArray[key].sprite) && !(chestArray[key].isOpen))
-			{
-				text(chestArray[key].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
-				text(chestArray[key].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
-				text(chestArray[key].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
-
-			}
-		}
-
-		if(keyWentDown('p'))
-		{
-			partyScreen.draw();
-
-		}
-		if(keyDown('p'))
-		{
-			partyScreen.show();
-			partyScreen.sprite.visible = true;
-
-			partyScreen.move(camera.position.x + 200,camera.position.y - 200);
-			text("Character", camera.position.x - 400, camera.position.y - 250);
-			text("Health", camera.position.x + 130, camera.position.y - 250);
-			text("Points", camera.position.x - 100, camera.position.y-250);
-			partyScreen.addNames(fighterArray);
-			partyScreen.addPoints(fighterArray);
-		}
-		else
-		{
-			partyScreen.sprite.visible = false;
-			partyScreen.delete();
 		}
 
 		var currPlayerData = {
@@ -563,6 +516,69 @@ function drawGame()
 
 	}
 
+	drawSprite(landscapeSprite);
+	drawSprites(allyGroup);
+	if(isPlayer)
+	{
+		drawSprite(localFighter.sprite);
+		drawSprite(localFighter.sprite.sword);
+	}
+	drawSprites(spawnerGroup);
+	drawSprites(enemyGroup);
+	drawSprites(chestGroup);
+	drawSprites(obstacleGroup);
+	if(isPlayer)
+	{
+		for (var key in chestArray)
+		{
+			if (localFighter.sprite.sword.overlap(chestArray[key].sprite) && !(chestArray[key].isOpen))
+			{
+				text(chestArray[key].unlockCode[0], localFighter.sprite.position.x, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[1], localFighter.sprite.position.x + 20, localFighter.sprite.position.y+10);
+				text(chestArray[key].unlockCode[2], localFighter.sprite.position.x + 40, localFighter.sprite.position.y+10);
+
+			}
+		}
+
+		drawSprite(miniMap.sprite);
+		drawSprites(enemySymbols);
+		drawSprites(greenDotGroup);
+	}
+
+	if(isPlayer)
+	{
+		if(keyWentDown('p'))
+		{
+			partyScreen.draw();
+
+		}
+		if(keyDown('p'))
+		{
+			drawSprite(partyScreen.sprite);
+			partyScreen.show();
+			partyScreen.sprite.visible = true;
+
+			partyScreen.move(camera.position.x + 200,camera.position.y - 200);
+			text("Character", camera.position.x - 400, camera.position.y - 250);
+			text("Health", camera.position.x + 130, camera.position.y - 250);
+			text("Points", camera.position.x - 100, camera.position.y-250);
+			partyScreen.addNames(fighterArray);
+			partyScreen.addPoints(fighterArray);
+
+			drawSprites(healthBars);
+
+		}
+		else
+		{
+			partyScreen.sprite.visible = false;
+			partyScreen.delete();
+
+			drawSprites(hudGroup);
+			drawSprites(itemsBar);
+		}
+		
+	}
+	drawSprite(cursorSprite);
 }
 
 function borderCamera()
@@ -598,7 +614,8 @@ function initSocketFunctions()
 	{
 		var tempAlly = new Ally(newAlly.x, newAlly.y, playerTypeArray[newAlly.type], newAlly.id);
 		fighterArray[newAlly.id] = tempAlly;
-		fighterGroup.push(tempAlly.sprite);
+		allyGroup.push(tempAlly.sprite);
+		allyGroup.push(tempAlly.sprite.sword);
 	});
 
 	socket.on('removeAlly', function(toRemoveKey)
@@ -621,17 +638,21 @@ function initSocketFunctions()
 		{
 			for(var clientKey in fighterArray)
 			{
+				let currAlly = allyArray[serverKey];
+				let currFighter = fighterArray[clientKey];
+				
 				if(serverKey == clientKey && (serverKey != socket.id || !isPlayer))
 				{
-					let currAlly = allyArray[serverKey];
-					let currFighter = fighterArray[clientKey];
-
 					currFighter.sprite.position.x = currAlly.x;
 					currFighter.sprite.position.y = currAlly.y;
 					currFighter.sprite.rotation = currAlly.rotation;
 					currFighter.sprite.sword.rotation = currAlly.rotation;
 					currFighter.sprite.sword.visible = currAlly.isAttacking;
 					currFighter.sprite.changeAnimation(currAlly.isWalking ? 'walk' : 'idle');
+				}
+				else if(serverKey == socket.id && isPlayer)
+				{
+					currFighter.sprite.health = currAlly.health;
 				}
 			}
 		}
@@ -677,8 +698,8 @@ function initSocketFunctions()
 	{		
 		for(var i = 0; i < spawnerArray.length; i++)
 		{	
-			let tempSpawner = spawnerArray[i];
-			spawnerGroup.push(new EnemySpawner(tempSpawner.x, tempSpawner.y));
+			let tempSpawner = new EnemySpawner(spawnerArray[i].x, spawnerArray[i].y)
+			spawnerGroup.push(tempSpawner.sprite);
 		}
 	});
 
@@ -691,7 +712,7 @@ function initSocketFunctions()
 
 	socket.on('removeEnemy', function(enemyID)
 	{
-		enemyArray[enemyID].sprite.sword.remove();
+		enemyGroup.remove(enemyArray[enemyID].sprite);
 		enemyArray[enemyID].sprite.remove();
 		delete enemyArray[enemyID];
 	});
@@ -735,6 +756,11 @@ function initSocketFunctions()
 		}
 	});
 
+	socket.on('die', function()
+	{
+		localFighter.sprite.position.x = random(50, 3950);
+		localFighter.sprite.position.y = random(50, 3950);
+	});
 
 	socket.on('updateChest', function(key)
 	{

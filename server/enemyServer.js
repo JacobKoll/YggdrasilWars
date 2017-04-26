@@ -26,7 +26,10 @@ function Enemy(x, y, type, id)
 	this.id = id;
 	this.health = type.health;
 
+	this.damage = type.damage;
+
 	this.detectionRadius = type.detectionRadius * type.scale;
+	this.hitRadius = type.hitRadius;
 	this.speed = type.speed;
 
 	this.turnCounter = 0;
@@ -68,7 +71,21 @@ Enemy.prototype.update = function(fighterArr)
 			let dY = this.playerToChase.y - this.y;
 			let angleToChase = Math.atan2(dY, dX);
 			this.rotation = angleToChase;
-			this.addSpeed(1.3, angleToChase)
+
+			if(chasedDist <= this.hitRadius)
+			{
+				if(Math.floor(this.playerToChase.health - this.damage) <= .7)
+				{
+					return player;		
+				}
+					
+				this.playerToChase.health -= this.damage;		
+			}
+			else
+			{
+				this.addSpeed(.2, angleToChase);
+			}
+
 		}
 		else // Walk around
 		{

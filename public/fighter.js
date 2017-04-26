@@ -122,7 +122,6 @@ Fighter.prototype.update = function(enemyGroup)
 
 Fighter.prototype.attack = function(sword, enemy)
 {
-	console.log(enemy.health);
 	var enemyAngle = degrees(atan2(enemy.position.y-sword.position.y, enemy.position.x-sword.position.x ));
 	var diffAngle = round(enemyAngle) + (-1 * round(sword.rotation));
 
@@ -146,14 +145,8 @@ Fighter.prototype.attack = function(sword, enemy)
 
 	if((case1 || case2 || case3 || case4 ) && sword.visible == true)
 	{
-		if(enemy.bar.width <= 0)
-		{
-			this.score += 10;
-			enemy.bar.width = 0;
-		}else
-		{
-			enemy.bar.width -= sword.damage;
-		}
+		socket.emit('hurtEnemy', enemy.id, sword.damage)
+		console.log("Hit!");
 
 
 	}

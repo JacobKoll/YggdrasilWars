@@ -41,14 +41,17 @@ partyScreen.prototype.draw = function(){
 	
 
 
-	for(var i = 0; i < numTeamMates; i++){
+	for(var i = 0; i < fighterArray; i++){
 
 
 	
 		this.sprite.healthBar = createSprite(20, 10, 100, 8);
+		this.classPic = createSprite(20, 10, 100, 100);
 		this.sprite.healthBar.position.x += this.sprite.position.x + 20;
+		this.classPic.position.x += this.sprite.position.x + 3;
 
-		this.sprite.healthBar.position.y += this.sprite.position.y + 10;
+		this.sprite.healthBar.position.y += this.sprite.position.y + 10 * i;
+		this.classPic.position.y += this.sprite.position.y + 30 * i;
 		this.sprite.healthBar.shapeColor = "red";
 		this.sprite.healthBar.visible = false;
 	
@@ -56,6 +59,7 @@ partyScreen.prototype.draw = function(){
 		
 
 		healthBars.add(this.sprite.healthBar);
+		healthBars.add(this.classPic);
 
 		
 	}

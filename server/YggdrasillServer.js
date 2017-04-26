@@ -44,6 +44,7 @@ setInterval(heartbeat, 1000/60);
 
 function heartbeat()
 {
+    io.sockets.emit('updateAllies', fighterArray);
 
 	for(var i = 0; i < spawnerArray.length; i++)
 	{
@@ -60,10 +61,18 @@ function heartbeat()
 	
 	for(var key in enemyArray)
 	{
-		enemyArray[key].update(fighterArray);
+		let killedFighter = enemyArray[key].update(fighterArray);
+
+		if(killedFighter)
+		{
+			fighterArray[killedFighter].health = fighterArray[killedFighter].maxHealth;
+
+			if (io.sockets.connected[killedFighter]) {
+			    io.sockets.connected[killedFighter].emit('die');
+			}
+		}
 	}
 
-    io.sockets.emit('updateAllies', fighterArray);
 	io.sockets.emit('updateEnemies', enemyArray);
 
 	timer++;
@@ -100,8 +109,8 @@ io.sockets.on('connection', function(client)
 
     client.on('initPlayer', function(data)
     {
-      var fighter = new Fighter(data.x, data.y, data.rotation, data.type, client.id);
-      console.log(fighter.id, fighter.x, fighter.y, fighter.rotation, fighter.type, fighter.isAlive, "\n");
+      var fighter = new Fighter(data.x, data.y, data.rotation, data.type, data.health, client.id);
+      console.log(fighter.id, fighter.x, fighter.y, fighter.rotation, fighter.health, "\n");
       fighterArray[fighter.id] = fighter;
       client.broadcast.emit('addAlly', fighter);
     });
@@ -115,19 +124,30 @@ io.sockets.on('connection', function(client)
         fighterArray[client.id].isWalking = player.isWalking;
     });
 
-    client.on('hurtEnemy', function(enemyID, damage)
+    client.on('hurtEnemy', function(hurtEnemyKey, damage)
     {
 
-    	if(enemyArray[enemyID].health - damage <= 0)
+    	for(var key in enemyArray)
     	{
-    		console.log("Enemy ", enemyID, " has been defeated.");
-    		delete enemyArray[enemyID];
-    		client.emit('removeEnemy', enemyID);
+    		if(key == hurtEnemyKey)
+    		{
+    			let enemyToHurt = enemyArray[key];
+
+		    	if(enemyToHurt.health - damage <= 0)
+		    	{
+		    		console.log("Enemy ", key, " has been defeated.\n");
+		    		delete enemyToHurt;
+		    		io.sockets.emit('removeEnemy', key);
+		    	}
+		    	else
+		    	{
+			    	enemyToHurt.health -= damage;
+			    	console.log(enemyToHurt.health);
+		    	}
+
+    		}
     	}
-    	else
-    	{
-	    	enemyArray[enemyID].health -= damage;
-    	}
+
     });
 
     client.on('checkUserDB',function(data){
@@ -207,7 +227,7 @@ function generateMap()
 	var minBounds = 30;
 	var maxBounds = 3970;
 
-	for(i = 0; i < 5; i++ )
+	for(i = 0; i < 7; i++ )
 	{
 		tempID = shortid.generate();
 		chestArray[tempID] = new objects.chest(tempID, randInt(minBounds, maxBounds), randInt(minBounds, maxBounds)); 
@@ -220,7 +240,7 @@ function generateMap()
 	}
 	console.log("   Generated obstacles.");
 
-	for(i = 0; i < 7; i++)
+	for(i = 0; i < 5; i++)
 	{
 		let chosenType;
 		switch(randInt(0,3))
@@ -239,7 +259,8 @@ function generateMap()
 				break;
 		}
 
-		spawnerArray.push(new EnemySpawner(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), chosenType, rand(.9, 1.5), randInt(10, 20)));
+
+		spawnerArray.push(new EnemySpawner(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), chosenType, .7, 10));
 	}
 	console.log("   Generated Spawners.");
 

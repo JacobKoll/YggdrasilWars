@@ -11,7 +11,7 @@ function EnemySpawner(x, y, type, rate, limit)
 
 EnemySpawner.prototype.spawn = function(timer)
 {
-	if((timer % (100/this.rate)) == 0 && this.spawnCount <= this.limit)
+	if((timer % (600/this.rate)) == 0 && this.spawnCount <= this.limit)
 	{	
 		this.spawnCount++;
 		return true;

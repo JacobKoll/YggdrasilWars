@@ -8,13 +8,13 @@ function createHud(){
 
 
   emptyHealthBar = createSprite(10,100,200,23);
-  emptyHealthBar.depth = 1500;
+  hudGroup.push(emptyHealthBar);
   fullHealthBar = createSprite(10,10,200,23);
-  fullHealthBar.depth = 1501;
+  hudGroup.push(fullHealthBar);
   emptyStaminaBar = createSprite(10,200,200,23);
-  emptyStaminaBar.depth = 1502;
+  hudGroup.push(emptyStaminaBar);
   fullStaminaBar = createSprite(10,200,200,23);
-  fullStaminaBar.depth = 1503;
+  hudGroup.push(fullStaminaBar);
 
 
   fullHealthBar.shapeColor = color("red");
@@ -26,16 +26,16 @@ function createHud(){
   itemsBar = new Group();
 
   for(i = 0; i < 4; i++){
-    var itemSprite  = createSprite(0,0,90,90);
+    let itemSprite  = createSprite(0,0,90,90);
     itemSprite.addImage(localFighter.inventory[i].img);
     itemSprite.name = localFighter.inventory[i].name;
-    itemSprite.depth = itemDepth;
+    hudGroup.push(itemSprite);
     itemsBar.add(itemSprite);
     itemDepth++;
   }
 
   itemSelectedSprite = createSprite(0,0,100,100);
-  itemSelectedSprite.depth = 1503;
+  hudGroup.push(itemSelectedSprite);
   itemSelectedSprite.shapeColor = color("cyan");
 
 }
@@ -74,8 +74,8 @@ function changeItemPosition(xPos,yPos){
   }
 }
 
-function reduceHealthWidth(damage){
-
+function reduceHealthWidth(damage)
+{
   fullHealthBar.width -= (200 * damage)/ localFighter.sprite.maxHealth;
   
   if(fullHealthBar.width <= 0)
@@ -85,7 +85,6 @@ function reduceHealthWidth(damage){
     localFighter.sprite.health = localFighter.sprite.maxHealth;
     fullHealthBar.width = emptyHealthBar.width;
   }
-
 }
 
 function reduceStaminaWidth(){
@@ -103,12 +102,10 @@ function reduceStaminaWidth(){
 
 function restoreHealthWidth(){
 
-  fullHealthBar.width += localFighter.sprite.healthRate;
   localFighter.sprite.health += localFighter.sprite.healthRate;
-  if(fullHealthBar.width >= 200)
+  if(localFighter.sprite.health >= localFighter.sprite.maxHealth)
   {
-    fullHealthBar.width = 200;
-    localFighter.sprite.health = localFighter.sprite.maxHealth;
+      localFighter.sprite.health = localFighter.sprite.maxHealth;
   }
 
 }

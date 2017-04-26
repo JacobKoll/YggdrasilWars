@@ -4,6 +4,94 @@
 		"selected_items":
 		[
 			[
+				"lcoa",
+				"localFighter"
+			],
+			[
+				"figer",
+				"fighterArray"
+			],
+			[
+				"player",
+				"playerToChase"
+			],
+			[
+				"cur",
+				"currAlly"
+			],
+			[
+				"all",
+				"allyArray"
+			],
+			[
+				"curr",
+				"currFighter"
+			],
+			[
+				"server",
+				"serverKey"
+			],
+			[
+				"ser",
+				"serverKey"
+			],
+			[
+				"ene",
+				"enemyGroup"
+			],
+			[
+				"enem",
+				"enemyID"
+			],
+			[
+				"enemy",
+				"enemyArray"
+			],
+			[
+				"em",
+				"emptyHealthBar"
+			],
+			[
+				"lo",
+				"localFighter"
+			],
+			[
+				"chase",
+				"chasedDist"
+			],
+			[
+				"ro",
+				"rotation"
+			],
+			[
+				"se",
+				"serverKey"
+			],
+			[
+				"gen",
+				"generate"
+			],
+			[
+				"en",
+				"enemyTypes"
+			],
+			[
+				"saw",
+				"spawnerArray"
+			],
+			[
+				"play",
+				"playerToChase"
+			],
+			[
+				"r",
+				"rotation"
+			],
+			[
+				"rotat",
+				"rotationToRadians"
+			],
+			[
 				"move",
 				"moveAround"
 			],
@@ -16,16 +104,8 @@
 				"proto\tPrototype"
 			],
 			[
-				"player",
-				"playerArr"
-			],
-			[
 				"sp",
 				"spawner"
-			],
-			[
-				"enem",
-				"enemyGroup"
 			],
 			[
 				"new",
@@ -34,10 +114,6 @@
 			[
 				"temp",
 				"tempSpawner"
-			],
-			[
-				"enemy",
-				"enemyTypeArray"
 			],
 			[
 				"max",
@@ -56,10 +132,6 @@
 				"spawnerArray"
 			],
 			[
-				"server",
-				"serverChestArr"
-			],
-			[
 				"set",
 				"setUnlockCode"
 			],
@@ -74,10 +146,6 @@
 			[
 				"log",
 				"log\tlog"
-			],
-			[
-				"gen",
-				"generateMap"
 			],
 			[
 				"init",
@@ -126,10 +194,6 @@
 			[
 				"pr",
 				"prepScreenInit"
-			],
-			[
-				"ene",
-				"enemyAngle"
 			],
 			[
 				"local",
@@ -190,10 +254,6 @@
 			[
 				"draw",
 				"drawGame"
-			],
-			[
-				"se",
-				"setupGame"
 			],
 			[
 				"prel",
@@ -274,14 +334,6 @@
 			[
 				"dim",
 				"dim_x"
-			],
-			[
-				"cur",
-				"currRoom"
-			],
-			[
-				"curr",
-				"currX"
 			],
 			[
 				"ne",
@@ -432,19 +484,18 @@
 	"buffers":
 	[
 		{
-			"file": "public/YggdrasillWars.js",
+			"file": "public/pregamescreens.js",
 			"settings":
 			{
-				"buffer_size": 11487,
-				"encoding": "UTF-8",
+				"buffer_size": 7493,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/pregamescreens.js",
+			"file": "public/YggdrasillWars.js",
 			"settings":
 			{
-				"buffer_size": 6075,
+				"buffer_size": 16124,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -453,37 +504,16 @@
 			"file": "server/enemyspawnerServer.js",
 			"settings":
 			{
-				"buffer_size": 1090,
+				"buffer_size": 371,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "server/mapobjectsServer.js",
+			"file": "server/enemyServer.js",
 			"settings":
 			{
-				"buffer_size": 235,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "/* Assigns values to the various types of Enemies and Fighters that we have. */\nfunction assignTypes()\n{\n\tvar goblin = {\n\t\twalkAnimation: enemyWalkAnimation,\n\t\tidleAnimation: enemyIdleAnimation,\n\t\tattackAnimation: enemyAttackAnimation,\n\t\thealth: 100,\n\t\tdamage: .83,\n\t\tspeed: 1.8,\n\t\tdetectionRadius: 225,\n\t\tscale: .90\n\t};\n\n\tvar spider = {\n\t\twalkAnimation: enemyWalkAnimation,\n\t\tidleAnimation: enemyIdleAnimation,\n\t\tattackAnikmation: enemyAttackAnimation,\n\t\thealth: 100,\n\t\tdamage: .50,\n\t\tspeed: 3,\n\t\tdetectionRadius: 300,\n\t\tscale: .75\n\t};\n\n\tvar bat = {\n\t\twalkAnimation: enemyWalkAnimation,\n\t\tidleAnimation: enemyIdleAnimation,\n\t\tattackAnimation: enemyAttackAnimation,\n\t\thealth: 50,\n\t\tdamage: .25,\n\t\tspeed: 9,\n\t\tdetectionRadius: 500,\n\t\tscale: .50\n\t};\n\n\tenemyTypeArray = {\n\t\t'Goblin': goblin,\n\t\t'Spider': spider,\n\t\t'Bat': bat\n\t};\n\n\n\tvar knight = {\n\t\twalkAnimation: knightWalkAnimation,\n\t\tidleAnimation: knightIdleAnimation,\n\t\tswingAnimation: knightSwingAnimation,\n\t\tstamina: 120,\n\t\tstaminaRate: 2,\n\t\thealth: 135,\n\t\thealthRate: .1,\n\t\tspeed: 3,\n\t\tscale: 1,\n\t\tdamage: 1.2,\n\t\tspriteCollider: [0, 0, 30], // {offsetX, offsetY, radius}\n\t\tweaponCollider: [0, 0, 104],\n\t\tleftConeAngle: -32,\n\t\trightConeAngle: 28,\n\t\tisVisible: true,\n\t\tspecialAbility: knightSpecial\n\t};\n\n\tvar calvary = {\n\t\twalkAnimation: calvaryWalkAnimation,\n\t\tidleAnimation: calvaryIdleAnimation,\n\t\tswingAnimation: calvarySwingAnimation,\n\t\tstamina: 135,\n\t\tstaminaRate: 2,\n\t\thealth: 120,\n\t\thealthRate: .1,\n\t\tspeed: 4,\n\t\tdamage: 1.1,\n\t\tscale: 1.3,\n\t\tspriteCollider: [0,0,25],\n\t\tweaponCollider: [0,0,53],\n\t\tleftConeAngle: 35,\n\t\trightConeAngle: 112,\n\t\tisVisible: true,\n\t\tspecialAbility: calvarySpecial\n\t};\n\n\tvar barb = {\n\t\twalkAnimation: barbWalkAnimation,\n\t\tidleAnimation: barbIdleAnimation,\n\t\tswingAnimation: barbSwingAnimation,\n\t\tstamina: 300,\n\t\tstaminaRate: 2,\n\t\thealth: 150,\n\t\thealthRate: .1,\n\t\tspeed: 2,\n\t\tdamage: 1.5,\n\t\tscale: 1.5,\n\t\tspriteCollider: [0,0,22.5],\n\t\tweaponCollider: [0,0,60],\n\t\tleftConeAngle: -38,\n\t\trightConeAngle: 42,\n\t\tisVisible: true,\n\t\tspecialAbility: barbSpecial\n\t};\n\n\tvar mercenary = {\n\t\twalkAnimation: mercWalkAnimation,\n\t\tidleAnimation: mercIdleAnimation,\n\t\tswingAnimation: mercSwingAnimation,\n\t\tstamina: 145,\n\t\tstaminaRate: 2,\n\t\thealth: 125,\n\t\thealthRate: .1,\n\t\tspeed: 3.2,\n\t\tscale: 1.15,\n\t\tdamage: 1.15,\n\t\tspriteCollider: [0,0,24],\n\t\tweaponCollider: [0,0,64],\n\t\tleftConeAngle: -8,\n\t\trightConeAngle: 45,\n\t\tisVisible: true,\n\t\tspecialAbility: mercenarySpecial\n\t};\n\n\tvar rogue = {\n\t\twalkAnimation: rogueWalkAnimation,\n\t\tidleAnimation: rogueIdleAnimation,\n\t\tswingAnimation: rogueSwingAnimation,\n\t\tstamina: 120,\n\t\tstaminaRate: 2,\n\t\thealth: 100,\n\t\thealthRate: .1,\n\t\tspeed: 3.4,\n\t\tscale: .8,\n\t\tdamage: 1,\n\t\tspriteCollider: [0,0,23],\n\t\tweaponCollider: [0,0,71],\n\t\tleftConeAngle: 10,\n\t\trightConeAngle: 38,\n\t\tisVisible: true,\n\t\tspecialAbility: rogueSpecial\n\t};\n\n\tplayerTypeArray = {\n\t\t\"Knight\" : knight,\n\t\t\"Calvary\" : calvary,\n\t\t\"Barbarian\" : barb,\n\t\t\"Mercenary\" : mercenary,\n\t\t\"Rogue\" : rogue,\n\t};\n}\n\n\n\nfunction knightSpecial(activated)\n{\n\tif (activated && fullStaminaBar.width > 0) {\n\t\tthis.healthRate = 0.5;\n\n\t\treduceStaminaWidth();\n\t\treduceStaminaWidth();\n\n\t\tconsole.log(\"You gain a newfound sense of purpose. Those monsters ain't gonna get an easy kill today! 5X Health Regeneration\");\n\t}\n\telse {\n\t\tif (fullStaminaBar.width == 0) {\n\t\t\tconsole.log(\"You snap out of it and realize life is meaningless. 1X Health Regeneration\");\n\t\t}\n\t\tthis.healthRate = 0.1;\n\t}\n\n}\n\n/* Speed increase */\nfunction calvarySpecial(activated)\n{\n\tif(activated && fullStaminaBar.width > 0)\n\t{\n\t\tthis.maxSpeed = 12;\n\n\t\treduceStaminaWidth();\n\t\treduceStaminaWidth();\n\n\t\tconsole.log(\"You give your steed a double espresso! 3X Speed\");\n\t}\n\telse\n\t{\n\t\tif (fullStaminaBar.width == 0) {\n\t\t\tconsole.log(\"Your horse is suffering from caffeine withdrawal. 1X Speed\");\n\t\t}\n\t\tthis.maxSpeed = 4;\n\t}\n\n}\n\n/* Increase in size */\nfunction barbSpecial(activated)\n{\n\tif(activated && fullStaminaBar.width > 0)\n\t{\n\t\tthis.sprite.scale = 2;\n\t\tthis.sprite.sword.scale = 2;\n\n\t\treduceStaminaWidth();\n\t\treduceStaminaWidth();\n\t\t\n\t\tconsole.log(\"Your size increases to epic proportions!\");\n\t}\n\telse\n\t{\n\t\tif (activated && fullStaminaBar.width == 0) {\n\t\t\tconsole.log(\"You are too sore to buff up anymore.\");\n\t\t}\n\t\tthis.sprite.scale = 1.5;\n\t\tthis.sprite.sword.scale = 1.5;\n\t}\n\n}\n\n/* Double damage */\nfunction mercenarySpecial(activated)\n{\n\tif(activated && fullStaminaBar.width > 0)\n\t{\n\t\tthis.damage = 2.30;\n\n\t\treduceStaminaWidth();\n\t\treduceStaminaWidth();\n\t\t\n\t\tconsole.log(\"You remember how much money you'll get paid if you survive. 2X base damage\");\n\t}\n\telse\n\t{\n\t\tif (activated && fullStaminaBar.width == 0) {\n\t\t\tconsole.log(\"You also remember you have student loans. 1X base damage.\");\n\t\t}\n\t\tthis.damage = 1.15;\n\t}\n\n}\n\n/* Become invisible to enemies */\nfunction rogueSpecial(activated)\n{\n\tif (activated && fullStaminaBar.width > 0) {\n\t\tconsole.log(\"You remember that technique your mentor taught you. You are now invisible to monsters\");\n\n\t\tthis.isVisible = false;\n\n\t\treduceStaminaWidth();\n\t\treduceStaminaWidth();\n\t}\n\telse {\n\t\tif (activated && fullStaminaBar.width == 0) {\n\t\t\tconsole.log(\"You were busy playing games in class, so you forget that you have to stay quiet, too.\");\n\t\t}\n\n\t\tthis.isVisible = true;\n\t}\n\n}\n",
-			"file": "public/classes.js",
-			"file_size": 5487,
-			"file_write_time": 131375694551979680,
-			"settings":
-			{
-				"buffer_size": 5232,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/YggdrasillServer.js",
-			"settings":
-			{
-				"buffer_size": 3663,
+				"buffer_size": 3341,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -492,7 +522,61 @@
 			"file": "public/enemy.js",
 			"settings":
 			{
-				"buffer_size": 1262,
+				"buffer_size": 1286,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/classes.js",
+			"settings":
+			{
+				"buffer_size": 4931,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/hud.js",
+			"settings":
+			{
+				"buffer_size": 3913,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Searching 12 files for \"changeHealthPosition\" (case sensitive)\n\nC:\\Users\\Owner\\cs309\\public\\hud.js:\n   47  \n   48  }\n   49: function changeHealthPosition(xPos, yPos){\n   50  \n   51    fullHealthBar.position.x = xPos;\n   ..\n  162  \n  163    changeItemPosition(camera.position.x-150, camera.position.y+310);\n  164:   changeHealthPosition((camera.position.x - 385) , camera.position.y-335);\n  165    changeStaminaPosition((camera.position.x - 395) + localFighter.sprite.maxHealth + 150, camera.position.y-335);\n  166    text(\"Score: \" + score, camera.position.x+343, camera.position.y-330);\n\n2 matches in 1 file\n",
+			"settings":
+			{
+				"buffer_size": 609,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "server/YggdrasillServer.js",
+			"settings":
+			{
+				"buffer_size": 6289,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/ally.js",
+			"settings":
+			{
+				"buffer_size": 591,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/enemyServerTypes.js",
+			"settings":
+			{
+				"buffer_size": 385,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -502,32 +586,15 @@
 			"settings":
 			{
 				"buffer_size": 4553,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/map_objects.js",
-			"settings":
-			{
-				"buffer_size": 1762,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "public/enemyspawner.js",
+			"file": "server/fighterServer.js",
 			"settings":
 			{
-				"buffer_size": 734,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/enemyServer.js",
-			"settings":
-			{
-				"buffer_size": 2654,
+				"buffer_size": 271,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -556,10 +623,22 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 248.0,
-		"last_filter": "box",
+		"height": 446.0,
+		"last_filter": "bo",
 		"selected_items":
 		[
+			[
+				"bo",
+				"Boxy Theme: Configuration"
+			],
+			[
+				"reindent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
 			[
 				"box",
 				"Boxy Theme: Configuration"
@@ -637,7 +716,7 @@
 				"LaTeXTools: Show toggles"
 			]
 		],
-		"width": 510.0
+		"width": 703.0
 	},
 	"console":
 	{
@@ -668,17 +747,19 @@
 	[
 		"/C/Users/Owner/cs309",
 		"/C/Users/Owner/cs309/public",
-		"/C/Users/Owner/cs309/public/js_modules",
 		"/C/Users/Owner/cs309/server"
 	],
 	"file_history":
 	[
-		"/C/Users/Owner/cs309/server/YggdrasillServerBackup.js",
-		"/C/Users/Owner/cs309/public/pregamescreens.js",
-		"/C/Users/Owner/cs309/public/inventory.js",
-		"/C/Users/Owner/cs309/public/map_objects.js",
 		"/C/Users/Owner/cs309/public/fighter.js",
+		"/C/Users/Owner/cs309/public/pregamescreens.js",
+		"/C/Users/Owner/cs309/server/mapobjectsServer.js",
+		"/C/Users/Owner/cs309/public/map_objects.js",
 		"/C/Users/Owner/cs309/public/classes.js",
+		"/C/Users/Owner/cs309/public/enemyspawner.js",
+		"/C/Users/Owner/cs309/server/enemyServerTypes.js",
+		"/C/Users/Owner/cs309/server/YggdrasillServerBackup.js",
+		"/C/Users/Owner/cs309/public/inventory.js",
 		"/C/Users/Owner/cs309/public/partyScreen.js",
 		"/C/Users/Owner/cs309/public/preparationscreen.js",
 		"/C/Users/Owner/cs309/server/YggdrasillServer.js",
@@ -690,7 +771,6 @@
 		"/C/Users/Owner/cs309/public/mainmenu.js",
 		"/C/Users/Owner/cs309/public/index.html",
 		"/C/Users/Owner/cs309/public/minimap.js",
-		"/C/Users/Owner/cs309/public/enemyspawner.js",
 		"/C/Users/Owner/cs309/README",
 		"/C/Users/Owner/Desktop/cs327/assignment2/move.cpp",
 		"/C/Users/Owner/Desktop/cs327/assignment2/io.cpp",
@@ -798,19 +878,20 @@
 		"/C/Users/Chand/OneDrive/Documents/ComS230HW3.tex",
 		"/C/Users/Chand/AppData/Local/Sublime Text 3/Cache/LaTeXTools/preview_math/f50b649b0b4997be70fa2d69fea0f3bc.png.err",
 		"/C/Users/Chand/cs309/public/js_modules/p5.play.js",
-		"/C/Users/Chand/cs309/public/js_modules/p5.js",
-		"/C/Users/Chand/cs309/public/SpaceShip_Chan.js",
-		"/C/Users/Chand/OneDrive/Pictures/309_project_assets/p5.play-master/p5.play-master/lib/p5.play.js"
+		"/C/Users/Chand/cs309/public/js_modules/p5.js"
 	],
 	"find":
 	{
-		"height": 48.0
+		"height": 58.0
 	},
 	"find_in_files":
 	{
 		"height": 117.0,
 		"where_history":
 		[
+			"<open files> ",
+			"<current file>",
+			"",
 			"<open files>,C:\\Users\\Owner\\cs309\\public",
 			"<open files>",
 			"C:\\Users\\Owner\\cs309",
@@ -822,9 +903,62 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			".depth",
+			"depth",
+			"fighterGroup",
+			"enemyGroup",
+			"changeHealthPosition",
+			"fighterArray",
+			"restoreHealthWidth",
+			"healthRate",
+			"Cavalry",
+			"Calvary",
+			"detectionRadius",
+			"2",
+			"4",
+			"enemySymbols",
+			"localFighter.",
+			"reduc",
+			"rest",
+			"\t\t\n",
+			"type",
+			":\"",
+			",",
+			"Attack",
+			"Idle",
+			"Walk",
+			"detectionRadius",
+			"<<<<<<< HEAD",
+			"tempEnemy.health",
+			"x",
+			"moveAround()",
+			"playerArr",
+			"32",
+			"\"",
+			"newEnemy",
+			"temp",
+			"enemyServerArray",
+			"enemyType",
+			"var",
+			"let",
+			"leT",
+			"let",
+			"angle",
+			"x",
+			"{",
+			"SCENE_H",
+			"SCENE_W",
+			"this.speed",
+			"magnitude",
+			"}",
+			"\n}",
+			"speed",
+			"=",
+			";",
+			"var ",
 			"x",
 			".sprite",
 			".sprite.position",
@@ -899,60 +1033,7 @@
 			"shapeColor",
 			"BOUNCE",
 			"random(",
-			"this.speed",
-			"keyDown(16)",
-			"rightConeAngle",
-			"150",
-			"maxHealth",
-			"SCENE_",
-			"goblin",
-			"localFighter.sprite.maxHealth",
-			"reduceHealthWidth",
-			"150",
-			"localFighter.sprite.maxHealth",
-			"stamina",
-			"change",
-			"changeS",
-			"restoreStaminaWidth()",
-			"empty",
-			"localFighter",
-			" emptyStaminaBar",
-			"stamina",
-			"maxStamina",
-			")",
-			"Enemy",
-			"-",
-			"+",
-			"-",
-			"localFighter.sprite",
-			"\",",
-			"log(",
-			"diffAngle",
-			"this",
-			"testSpawner2 = new EnemySpawner(930, 827, goblin, .5, 1, spawnerImage);\n\t// testSpawner2.sprite.depth = 1;\n\t// spawnerArray.push(testSpawner2);\n",
-			"left",
-			"enemy.position.",
-			"=",
-			"sword.rotation",
-			"this",
-			"=",
-			" =",
-			"= ",
-			"=",
-			";",
-			"radians(",
-			"degrees",
-			"right",
-			"pc_is_alive",
-			"player_is",
-			"player_is_alive",
-			"->alive",
-			"lastIndex - 3",
-			"lastIndex - 2",
-			"characterImages.length",
-			"characterImages.length - 1",
-			";",
-			"debug"
+			"this.speed"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -960,6 +1041,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"Cavalry",
 			" stamina",
 			" "
 		],
@@ -972,24 +1054,62 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "public/YggdrasillWars.js",
+					"file": "public/pregamescreens.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11487,
+						"buffer_size": 7493,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10884,
-								10884
+								2559,
+								2559
+							],
+							[
+								2677,
+								2677
+							],
+							[
+								2797,
+								2797
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4308.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/YggdrasillWars.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2295,
+								2295
 							]
 						],
 						"settings":
@@ -1000,40 +1120,10 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 7709.0,
+						"translation.y": 2178.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "public/pregamescreens.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6075,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								658,
-								658
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2916.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -1042,15 +1132,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1090,
+						"buffer_size": 371,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								132,
-								132
+								317,
+								317
 							]
 						],
 						"settings":
@@ -1063,24 +1153,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "server/mapobjectsServer.js",
+					"file": "server/enemyServer.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 235,
+						"buffer_size": 3341,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								174,
-								174
+								2139,
+								2139
 							]
 						],
 						"settings":
@@ -1090,27 +1180,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1338.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "public/classes.js",
+					"file": "public/enemy.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5232,
+						"buffer_size": 1286,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								424,
-								424
+								989,
+								989
 							]
 						],
 						"settings":
@@ -1120,27 +1210,165 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 132.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "public/classes.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4931,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2720,
+								2720
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 330.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "public/hud.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3913,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								167,
+								161
+							],
+							[
+								237,
+								243
+							],
+							[
+								318,
+								324
+							],
+							[
+								397,
+								403
+							],
+							[
+								844,
+								850
+							],
+							[
+								986,
+								992
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 66.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 609,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										133,
+										153
+									],
+									[
+										315,
+										335
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								331,
+								331
+							]
+						],
+						"settings":
+						{
+							"default_dir": "C:\\Users\\Owner\\cs309",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
 					"file": "server/YggdrasillServer.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3663,
+						"buffer_size": 6289,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3660,
-								3615
+								1430,
+								1430
 							]
 						],
 						"settings":
@@ -1150,49 +1378,19 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1620.0,
+						"translation.y": 4719.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "public/enemy.js",
+					"buffer": 9,
+					"file": "public/ally.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1262,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1262,
-								1262
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "public/fighter.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 4553,
+						"buffer_size": 591,
 						"regions":
 						{
 						},
@@ -1210,91 +1408,56 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 648.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "public/map_objects.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1762,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1433,
-								1433
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "public/enemyspawner.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 734,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								458,
-								459
-							],
-							[
-								603,
-								603
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
 					"buffer": 10,
-					"file": "server/enemyServer.js",
+					"file": "server/enemyServerTypes.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2654,
+						"buffer_size": 385,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2388,
-								2388
+								354,
+								354
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "public/fighter.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4553,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3544,
+								3544
 							]
 						],
 						"settings":
@@ -1304,10 +1467,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1551.0,
+						"translation.y": 2486.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "server/fighterServer.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 271,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								189,
+								189
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1330,11 +1522,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -1390,15 +1589,15 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
-	"show_minimap": false,
+	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": false,
-	"side_bar_width": 148.0,
+	"side_bar_width": 358.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

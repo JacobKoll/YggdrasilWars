@@ -4,13 +4,14 @@
  */
 
 
-function miniMap(x,y,enemySymbols){
+function miniMap(x,y){
 
 	this.x = x;
 	this.y = y;
 
 
 	this.sprite = createSprite(this.x,this.y, 900,625);
+	this.sprite.addImage(miniMapImage);
 	this.sprite.shapeColor = "black";
 	this.sprite.visible = false;
 	this.sprite.enemySymbol;

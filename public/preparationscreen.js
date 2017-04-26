@@ -47,13 +47,13 @@ function initPrepScreen()
 
 	hasSelected = false;
 
-	currentSprite = createSprite(width/2, 455);
-	leftSprite = createSprite(leftPosX - 45, 440);
-	rightSprite = createSprite(rightPosX + 45, 440);
+	currentSprite = createSprite(width/2, 476);
+	leftSprite = createSprite(leftPosX - 45, 412);
+	rightSprite = createSprite(rightPosX + 45, 412);
 
 
-	currentSprite.scale = 1.6;
-	leftSprite.scale = rightSprite.scale  = 1.4;
+	currentSprite.scale = 1.42;
+	leftSprite.scale = rightSprite.scale  = 1.26;
 
 	lastIndex  = characterImages.length - 1;
 
@@ -214,7 +214,7 @@ function drawPrepScreen()
 	stroke("black");
 	textSize(45);
 	strokeWeight(2);
-	text(characterNames[current], (width/2), 420);
+	text(characterNames[current], (width/2), 436);
 
 	textSize(90);
 	strokeWeight(7);
@@ -267,7 +267,7 @@ if(specialInfo){
 
 			text(mercSpecialInfo,(width/2)-30,440);
 		}
-		else if(characterNames[current] == "Calvary"){
+		else if(characterNames[current] == "Cavalry"){
 			text(cavalrySpecialInfo,(width/2)-35,460);
 		}
 		else if(characterNames[current] == "Barbarian"){
