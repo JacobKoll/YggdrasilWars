@@ -136,7 +136,7 @@ io.sockets.on('connection', function(client)
 		    	if(enemyToHurt.health - damage <= 0)
 		    	{
 		    		console.log("Enemy ", key, " has been defeated.\n");
-		    		delete enemyToHurt;
+		    		delete enemyArray[key];
 		    		io.sockets.emit('removeEnemy', key);
 		    	}
 		    	else
@@ -260,7 +260,7 @@ function generateMap()
 		}
 
 
-		spawnerArray.push(new EnemySpawner(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), chosenType, .7, 10));
+		spawnerArray.push(new EnemySpawner(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), chosenType, .7, 20));
 	}
 	console.log("   Generated Spawners.");
 
