@@ -58,7 +58,7 @@ function heartbeat()
 			io.sockets.emit('addEnemy', tempEnemy);
 		}
 	}
-	
+
 	for(var key in enemyArray)
 	{
 		let killedFighter = enemyArray[key].update(fighterArray);
@@ -67,9 +67,7 @@ function heartbeat()
 		{
 			fighterArray[killedFighter].health = fighterArray[killedFighter].maxHealth;
 
-			if (io.sockets.connected[killedFighter]) {
-			    io.sockets.connected[killedFighter].emit('die');
-			}
+			    io.sockets..emit('die', killedFighter);
 		}
 	}
 
@@ -92,8 +90,8 @@ io.sockets.on('connection', function(client)
    	{
    		client.emit('initObstacles', obstacleArray);
    		client.emit('initChests', chestArray);
-   		client.emit('initSpawners', spawnerArray);	
-   		client.emit('initEnemies', enemyArray);	
+   		client.emit('initSpawners', spawnerArray);
+   		client.emit('initEnemies', enemyArray);
    	});
 
     client.on('requestAllies', function()
@@ -230,13 +228,13 @@ function generateMap()
 	for(i = 0; i < 7; i++ )
 	{
 		tempID = shortid.generate();
-		chestArray[tempID] = new objects.chest(tempID, randInt(minBounds, maxBounds), randInt(minBounds, maxBounds)); 
+		chestArray[tempID] = new objects.chest(tempID, randInt(minBounds, maxBounds), randInt(minBounds, maxBounds));
 	}
 	console.log("   Generated chests.");
 
 	for(i = 0; i < 20; i++ )
 	{
-		obstacleArray.push(new objects.obstacle(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), rand(1.4, 2.1))); 
+		obstacleArray.push(new objects.obstacle(randInt(minBounds, maxBounds), randInt(minBounds, maxBounds), rand(1.4, 2.1)));
 	}
 	console.log("   Generated obstacles.");
 

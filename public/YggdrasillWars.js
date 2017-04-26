@@ -59,7 +59,7 @@ function becomePlayer(playerType)
 
 	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
 	// localFighter = new Fighter(500, 500, playerTypeArray[playerType], socket.id);
-	
+
 	fighterArray[socket.id] = localFighter;
 
 	var data = {
@@ -108,7 +108,7 @@ function setupGame()
 	landscapeSprite = createSprite(SCENE_W/2, SCENE_H/2, SCENE_W, SCENE_H);
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
-	
+
 	socket = io.connect('proj-309-la-1.cs.iastate.edu:3000');
 	//socket = io.connect('http://localhost:3000');
 
@@ -372,7 +372,7 @@ function drawGame()
 			restoreStaminaWidth();
 		}
 
-		
+
 
 		/* Invisible landscapeSprite around landscape */
 		if(localFighter.sprite.position.x < 0) {
@@ -577,7 +577,7 @@ function drawGame()
 			drawSprites(hudGroup);
 			drawSprites(itemsBar);
 		}
-		
+
 	}
 	drawSprite(cursorSprite);
 }
@@ -641,7 +641,7 @@ function initSocketFunctions()
 			{
 				let currAlly = allyArray[serverKey];
 				let currFighter = fighterArray[clientKey];
-				
+
 				if(serverKey == clientKey && (serverKey != socket.id || !isPlayer))
 				{
 					currFighter.sprite.position.x = currAlly.x;
@@ -696,9 +696,9 @@ function initSocketFunctions()
 	});
 
 	socket.on('initSpawners', function(spawnerArray)
-	{		
+	{
 		for(var i = 0; i < spawnerArray.length; i++)
-		{	
+		{
 			let tempSpawner = new EnemySpawner(spawnerArray[i].x, spawnerArray[i].y)
 			spawnerGroup.push(tempSpawner.sprite);
 		}
@@ -707,7 +707,7 @@ function initSocketFunctions()
 	socket.on('addEnemy', function(newEnemy)
 	{
 		var tempEnemy = new Enemy(newEnemy.id, newEnemy.x, newEnemy.y, newEnemy.type);
-		enemyArray[newEnemy.id] = tempEnemy; 
+		enemyArray[newEnemy.id] = tempEnemy;
 		enemyGroup.push(tempEnemy.sprite);
 	});
 
@@ -725,7 +725,7 @@ function initSocketFunctions()
 		{
 			let currEnemy = serverArray[serverKey];
 			tempEnemy = new Enemy(currEnemy.id, currEnemy.x, currEnemy.y, currEnemy.type);
-			enemyArray[currEnemy.id] = tempEnemy; 
+			enemyArray[currEnemy.id] = tempEnemy;
 			enemyGroup.push(tempEnemy.sprite);
 		}
 	});
@@ -744,7 +744,7 @@ function initSocketFunctions()
 					enemyArray[clientKey].sprite.position.y = temp.y;
 					enemyArray[clientKey].sprite.health = temp.health;
 				}
-			}	
+			}
 		}
 	});
 
@@ -757,10 +757,13 @@ function initSocketFunctions()
 		}
 	});
 
-	socket.on('die', function()
+	socket.on('die', function(serverID)
 	{
-		localFighter.sprite.position.x = random(50, 3950);
-		localFighter.sprite.position.y = random(50, 3950);
+		if(serverID == socket.id)
+		{
+			localFighter.sprite.position.x = random(50, 3950);
+			localFighter.sprite.position.y = random(50, 3950);
+		}
 	});
 
 	socket.on('updateChest', function(key)
@@ -770,7 +773,7 @@ function initSocketFunctions()
 
 	});
 
-	socket.on('disconnect', function () 
+	socket.on('disconnect', function ()
 	{
     	console.log( 'Disconnected from Server' );
     	window.setTimeout( 'app.connect()', 5000 );
