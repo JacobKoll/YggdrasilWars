@@ -4,6 +4,86 @@
 		"selected_items":
 		[
 			[
+				"spawn",
+				"spawnerGroup"
+			],
+			[
+				"draw",
+				"drawSprites"
+			],
+			[
+				"remove",
+				"remove"
+			],
+			[
+				"ene",
+				"enemyGroup"
+			],
+			[
+				"mat",
+				"maxHealth"
+			],
+			[
+				"health",
+				"health"
+			],
+			[
+				"fi",
+				"fighter"
+			],
+			[
+				"fig",
+				"fighterArray"
+			],
+			[
+				"figh",
+				"fighter"
+			],
+			[
+				"fighter",
+				"fighterArray"
+			],
+			[
+				"enemy",
+				"enemyKey"
+			],
+			[
+				"enem",
+				"enemyArray"
+			],
+			[
+				"sp",
+				"sprite"
+			],
+			[
+				"hea",
+				"healthBars"
+			],
+			[
+				"da",
+				"drawSprites"
+			],
+			[
+				"g",
+				"greenDotGroup"
+			],
+			[
+				"curr",
+				"currAlly"
+			],
+			[
+				"cur",
+				"currFighter"
+			],
+			[
+				"isPla",
+				"isPlayer"
+			],
+			[
+				"lan",
+				"landscapeSprite"
+			],
+			[
 				"lcoa",
 				"localFighter"
 			],
@@ -16,16 +96,8 @@
 				"playerToChase"
 			],
 			[
-				"cur",
-				"currAlly"
-			],
-			[
 				"all",
 				"allyArray"
-			],
-			[
-				"curr",
-				"currFighter"
 			],
 			[
 				"server",
@@ -34,18 +106,6 @@
 			[
 				"ser",
 				"serverKey"
-			],
-			[
-				"ene",
-				"enemyGroup"
-			],
-			[
-				"enem",
-				"enemyID"
-			],
-			[
-				"enemy",
-				"enemyArray"
 			],
 			[
 				"em",
@@ -102,10 +162,6 @@
 			[
 				"pro",
 				"proto\tPrototype"
-			],
-			[
-				"sp",
-				"spawner"
 			],
 			[
 				"new",
@@ -168,16 +224,8 @@
 				"speed"
 			],
 			[
-				"hea",
-				"health"
-			],
-			[
 				"get",
 				"getAnimationLabel"
-			],
-			[
-				"health",
-				"maxHealth"
 			],
 			[
 				"SCE",
@@ -250,10 +298,6 @@
 			[
 				"selec",
 				"selectButton"
-			],
-			[
-				"draw",
-				"drawGame"
 			],
 			[
 				"prel",
@@ -392,10 +436,6 @@
 				"hello\thello"
 			],
 			[
-				"fighter",
-				"fighterGroup"
-			],
-			[
 				"hello",
 				"hello\tlog"
 			],
@@ -414,10 +454,6 @@
 			[
 				"go",
 				"gokuPic"
-			],
-			[
-				"spawn",
-				"spawnCount"
 			],
 			[
 				"re",
@@ -487,7 +523,8 @@
 			"file": "public/pregamescreens.js",
 			"settings":
 			{
-				"buffer_size": 7493,
+				"buffer_size": 7566,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
@@ -495,7 +532,79 @@
 			"file": "public/YggdrasillWars.js",
 			"settings":
 			{
-				"buffer_size": 16124,
+				"buffer_size": 16665,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/enemyspawner.js",
+			"settings":
+			{
+				"buffer_size": 734,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Searching 14 files for \"restoreHealth\" (case sensitive)\n\nC:\\Users\\Owner\\cs309\\public\\YggdrasillWars.js:\n  193  \t\tfullHealthBar.width = 200 * (localFighter.sprite.health / localFighter.sprite.maxHealth);\n  194  \n  195: \t\trestoreHealthWidth();\n  196  \n  197  \t\tcamera.position.x = localFighter.sprite.position.x;\n\nC:\\Users\\Owner\\cs309\\public\\hud.js:\n  101  \n  102  \n  103: function restoreHealthWidth(){\n  104  \n  105    localFighter.sprite.health += localFighter.sprite.healthRate;\n\n2 matches across 2 files\n\n\nSearching 10 files for \"<<<\" (case sensitive)\n\n0 matches",
+			"settings":
+			{
+				"buffer_size": 565,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "public/preparationscreen.js",
+			"settings":
+			{
+				"buffer_size": 7354,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/fighter.js",
+			"settings":
+			{
+				"buffer_size": 4457,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/minimap.js",
+			"settings":
+			{
+				"buffer_size": 2908,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/enemyServer.js",
+			"settings":
+			{
+				"buffer_size": 3283,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/enemy.js",
+			"settings":
+			{
+				"buffer_size": 1341,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/index.html",
+			"settings":
+			{
+				"buffer_size": 2447,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -505,96 +614,6 @@
 			"settings":
 			{
 				"buffer_size": 371,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/enemyServer.js",
-			"settings":
-			{
-				"buffer_size": 3341,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/enemy.js",
-			"settings":
-			{
-				"buffer_size": 1286,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/classes.js",
-			"settings":
-			{
-				"buffer_size": 4931,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/hud.js",
-			"settings":
-			{
-				"buffer_size": 3913,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Searching 12 files for \"changeHealthPosition\" (case sensitive)\n\nC:\\Users\\Owner\\cs309\\public\\hud.js:\n   47  \n   48  }\n   49: function changeHealthPosition(xPos, yPos){\n   50  \n   51    fullHealthBar.position.x = xPos;\n   ..\n  162  \n  163    changeItemPosition(camera.position.x-150, camera.position.y+310);\n  164:   changeHealthPosition((camera.position.x - 385) , camera.position.y-335);\n  165    changeStaminaPosition((camera.position.x - 395) + localFighter.sprite.maxHealth + 150, camera.position.y-335);\n  166    text(\"Score: \" + score, camera.position.x+343, camera.position.y-330);\n\n2 matches in 1 file\n",
-			"settings":
-			{
-				"buffer_size": 609,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "server/YggdrasillServer.js",
-			"settings":
-			{
-				"buffer_size": 6289,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/ally.js",
-			"settings":
-			{
-				"buffer_size": 591,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/enemyServerTypes.js",
-			"settings":
-			{
-				"buffer_size": 385,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "public/fighter.js",
-			"settings":
-			{
-				"buffer_size": 4553,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/fighterServer.js",
-			"settings":
-			{
-				"buffer_size": 271,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -751,23 +770,26 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Owner/cs309/server/fighterServer.js",
+		"/C/Users/Owner/cs309/server/enemyServerTypes.js",
+		"/C/Users/Owner/cs309/public/ally.js",
+		"/C/Users/Owner/cs309/public/YggdrasillWars.html",
+		"/C/Users/Owner/cs309/server/YggdrasillServer.js",
+		"/C/Users/Owner/cs309/public/hud.js",
+		"/C/Users/Owner/cs309/public/classes.js",
+		"/C/Users/Owner/cs309/public/partyScreen.js",
+		"/C/Users/Owner/cs309/server/enemyspawnerServer.js",
 		"/C/Users/Owner/cs309/public/fighter.js",
 		"/C/Users/Owner/cs309/public/pregamescreens.js",
 		"/C/Users/Owner/cs309/server/mapobjectsServer.js",
 		"/C/Users/Owner/cs309/public/map_objects.js",
-		"/C/Users/Owner/cs309/public/classes.js",
 		"/C/Users/Owner/cs309/public/enemyspawner.js",
-		"/C/Users/Owner/cs309/server/enemyServerTypes.js",
 		"/C/Users/Owner/cs309/server/YggdrasillServerBackup.js",
 		"/C/Users/Owner/cs309/public/inventory.js",
-		"/C/Users/Owner/cs309/public/partyScreen.js",
 		"/C/Users/Owner/cs309/public/preparationscreen.js",
-		"/C/Users/Owner/cs309/server/YggdrasillServer.js",
 		"/C/Users/Owner/cs309/map_objects.js",
 		"/C/Users/Owner/cs309/server/enemy.js",
 		"/C/Users/Owner/cs309/public/enemy.js",
-		"/C/Users/Owner/cs309/public/YggdrasillWars.html",
-		"/C/Users/Owner/cs309/public/hud.js",
 		"/C/Users/Owner/cs309/public/mainmenu.js",
 		"/C/Users/Owner/cs309/public/index.html",
 		"/C/Users/Owner/cs309/public/minimap.js",
@@ -875,10 +897,7 @@
 		"/C/Users/Chand/OneDrive/Documents/ComS230HW5.tex",
 		"/C/Users/Chand/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
 		"/C/Users/Chand/AppData/Local/Sublime Text 3/Cache/LaTeXTools/preview_math/304047b238cdc0b487f3ed0e2f1f9c44.png.err",
-		"/C/Users/Chand/OneDrive/Documents/ComS230HW3.tex",
-		"/C/Users/Chand/AppData/Local/Sublime Text 3/Cache/LaTeXTools/preview_math/f50b649b0b4997be70fa2d69fea0f3bc.png.err",
-		"/C/Users/Chand/cs309/public/js_modules/p5.play.js",
-		"/C/Users/Chand/cs309/public/js_modules/p5.js"
+		"/C/Users/Chand/OneDrive/Documents/ComS230HW3.tex"
 	],
 	"find":
 	{
@@ -886,7 +905,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 117.0,
+		"height": 143.0,
 		"where_history":
 		[
 			"<open files> ",
@@ -906,6 +925,37 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"<<<",
+			"tempSpawner",
+			"socketid",
+			"restoreHealth",
+			"enemyArray[enemyID]",
+			"Key",
+			"currKey",
+			"enemyKey",
+			"enemy",
+			" .1",
+			".1",
+			"y",
+			"numTeamMates",
+			"partyScreen",
+			"miniMap",
+			"draw",
+			"miniMap",
+			"text",
+			"test",
+			"openChest",
+			"curr",
+			"enemyHealthBarGroup",
+			"Group",
+			"enemySymbols",
+			"enemySymbols ",
+			"greenDotGroup",
+			"enemySymbols",
+			"fighterGroup",
+			"Group",
+			"ealthBar",
+			"healthBars",
 			".depth",
 			"depth",
 			"fighterGroup",
@@ -1002,38 +1052,7 @@
 			"objectArray",
 			"Chest",
 			"Chests",
-			"forest",
-			"Chest",
-			"chest",
-			"unlockCode",
-			"lockStrength",
-			"setUnlockCode",
-			"chest",
-			"Chest",
-			"obstacleGroup",
-			"image",
-			"updateClien",
-			"update",
-			"miniMap",
-			"var",
-			"miniMap",
-			"socket",
-			"generateChests",
-			"generateObstacles",
-			"generate",
-			"overlap",
-			"localFighter.sprite.collide",
-			"setOpen",
-			"this.setOpen",
-			"generate",
-			"random(",
-			"module",
-			"export",
-			"enemyss",
-			"shapeColor",
-			"BOUNCE",
-			"random(",
-			"this.speed"
+			"forest"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1041,6 +1060,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"healthBars",
 			"Cavalry",
 			" stamina",
 			" "
@@ -1054,7 +1074,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1063,23 +1083,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7493,
+						"buffer_size": 7566,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2559,
-								2559
-							],
-							[
-								2677,
-								2677
-							],
-							[
-								2797,
-								2797
+								4433,
+								4433
 							]
 						],
 						"settings":
@@ -1089,10 +1101,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 4308.0,
+						"translation.y": 1119.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -1101,15 +1113,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16124,
+						"buffer_size": 16665,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2295,
-								2295
+								14612,
+								14612
 							]
 						],
 						"settings":
@@ -1120,7 +1132,7 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2178.0,
+						"translation.y": 14886.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -1128,6 +1140,267 @@
 				},
 				{
 					"buffer": 2,
+					"file": "public/enemyspawner.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 734,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								576,
+								576
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 565,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										220,
+										233
+									],
+									[
+										380,
+										393
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								565,
+								565
+							]
+						],
+						"settings":
+						{
+							"default_dir": "C:\\Users\\Owner\\cs309",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 2,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public/preparationscreen.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7354,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5899,
+								5899
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 902.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "public/fighter.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4457,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4424,
+								4424
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2574.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "public/minimap.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2908,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								144,
+								144
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "server/enemyServer.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3283,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2188,
+								2188
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 612.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "public/enemy.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1341,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								943,
+								943
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 528.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "public/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2447,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								98,
+								98
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"file": "server/enemyspawnerServer.js",
 					"semi_transient": false,
 					"settings":
@@ -1139,8 +1412,8 @@
 						"selection":
 						[
 							[
-								317,
-								317
+								371,
+								371
 							]
 						],
 						"settings":
@@ -1151,355 +1424,9 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "server/enemyServer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3341,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2139,
-								2139
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1338.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "public/enemy.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1286,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								989,
-								989
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 132.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 1,
-			"sheets":
-			[
-				{
-					"buffer": 5,
-					"file": "public/classes.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4931,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2720,
-								2720
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 330.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "public/hud.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3913,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								167,
-								161
-							],
-							[
-								237,
-								243
-							],
-							[
-								318,
-								324
-							],
-							[
-								397,
-								403
-							],
-							[
-								844,
-								850
-							],
-							[
-								986,
-								992
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 66.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 609,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										133,
-										153
-									],
-									[
-										315,
-										335
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								331,
-								331
-							]
-						],
-						"settings":
-						{
-							"default_dir": "C:\\Users\\Owner\\cs309",
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ \t].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "server/YggdrasillServer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6289,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1430,
-								1430
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4719.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "public/ally.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 591,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "server/enemyServerTypes.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 385,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								354,
-								354
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "public/fighter.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4553,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3544,
-								3544
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2486.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "server/fighterServer.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 271,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								189,
-								189
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1522,18 +1449,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -1589,7 +1509,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},

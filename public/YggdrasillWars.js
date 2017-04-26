@@ -57,8 +57,9 @@ function becomePlayer(playerType)
 
 	globalType = playerType;
 
-	// localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
-	localFighter = new Fighter(500, 500, playerTypeArray[playerType], socket.id);
+	localFighter = new Fighter(random(SCENE_H), random(SCENE_W), playerTypeArray[playerType]);
+	// localFighter = new Fighter(500, 500, playerTypeArray[playerType], socket.id);
+	
 	fighterArray[socket.id] = localFighter;
 
 	var data = {
@@ -108,8 +109,8 @@ function setupGame()
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 	
-	// socket = io.connect('proj-309-la-1.cs.iastate.edu:3000');
-	socket = io.connect('http://localhost:3000');
+	socket = io.connect('proj-309-la-1.cs.iastate.edu:3000');
+	// socket = io.connect('http://localhost:3000');
 
 	footsteps.setVolume(0.10);
 
