@@ -20,5 +20,5 @@ function EnemySpawner(x, y)
 
 	this.sprite = createSprite(x, y);
 	this.sprite.addImage(spawnerImage);
-	this.sprite.scale = 2.63;
+	this.sprite.scale = .26;
 }

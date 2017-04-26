@@ -118,6 +118,7 @@ Fighter.prototype.update = function(enemyGroup)
 	this.sprite.sword.rotation = this.sprite.rotation;
 
 	this.sprite.sword.overlap(enemyGroup, this.attack);
+	this.sprite.sword.overlap(allyGroup, this.attack);
 }
 
 Fighter.prototype.attack = function(sword, enemy)
