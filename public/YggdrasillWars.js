@@ -109,8 +109,8 @@ function setupGame()
 	landscapeSprite.addImage(landscape);
 	landscapeSprite.depth = 1;
 	
-	//socket = io.connect('proj-309-la-1.cs.iastate.edu:3000');
-	socket = io.connect('http://localhost:3000');
+	socket = io.connect('proj-309-la-1.cs.iastate.edu:3000');
+	//socket = io.connect('http://localhost:3000');
 
 	footsteps.setVolume(0.10);
 
